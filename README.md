@@ -1,28 +1,28 @@
-leafevolver
+tealeaves
 =======
 
-## Evolve leaf traits to different environments *in silico*
+## Solve for leaf temperature using energy balance
 
 ## Description
 
-## Get leafevolver
+## Get tealeaves
 From CRAN (not on CRAN yet)
 
 ```r
-install.packages("leafevolver")
+install.packages("tealeaves")
 ```
 
-or from rOpenSci
+or from GitHub
 
 ```r
 install.packages("devtools")
-devtools::install_github("cdmuir/leafevolver")
+devtools::install_github("cdmuir/tealeaves")
 ```
 
-And load leafevolver
+And load tealeaves
 
 ```r
-library("leafevolver")
+library("tealeaves")
 ```
 
 ## Code of Conduct
