@@ -1,0 +1,221 @@
+#' Make lists of parameters of leaf, environmental, or constant parameters
+#'
+#' @inheritParams tleaf
+#' @param replace A named list of parameters to replace defaults. If \code{NULL}, defaults will be used.
+#'
+#' @name make_parameters
+
+NULL
+
+#' make_leafpar
+#' 
+#' @rdname make_parameters
+#'
+#' @return 
+#' 
+#' \code{make_leafpar}: An object inheriting from class \code{\link{leaf_par}}\cr
+#' \code{make_enviropar}: An object inheriting from class \code{\link{enviro_par}}\cr
+#' \code{make_constants}: An object inheriting from class \code{\link{constants}}
+#'
+#' @details
+#'
+#' \bold{Leaf parameters:}
+#'
+#' \tabular{lllll}{
+#' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
+#' \eqn{d} \tab \code{leafsize} \tab Leaf characteristic dimension in meters \tab m \tab 0.1\cr
+#' \eqn{\alpha_\text{s}}{\alpha_s} \tab \code{abs_s} \tab absortivity of shortwave radiation (0.3 - 4 \eqn{\mu}m) \tab none \tab 0.80\cr
+#' \eqn{\alpha_\text{l}}{\alpha_l} \tab \code{abs_l} \tab absortivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
+#' \eqn{g_\text{sw}}{g_sw} \tab \code{g_sw} \tab stomatal conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 5\cr
+#' \eqn{g_\text{uw}}{g_uw} \tab \code{g_uw} \tab cuticular conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 0.1\cr
+#' \eqn{sr} \tab \code{sr} \tab stomatal ratio \tab none \tab 0 = logit(0.5)\cr
+#' }
+#'
+#' \bold{Environment parameters:}
+#'
+#' \tabular{lllll}{
+#' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
+#' \eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
+#' \eqn{\text{RH}}{RH} \tab \code{RH} \tab relative humidity \tab \% \tab 0.50\cr
+#' \eqn{S_\text{sw}}{S_sw} \tab \code{S_sw} \tab incident short-wave (solar) radiation flux density \tab W / m\eqn{^2} \tab 1000\cr
+#' \eqn{S_\text{lw}}{S_lw} \tab \code{S_lw} \tab incident long-wave radiation flux density \tab W / m\eqn{^2} \tab 825\cr
+#' \eqn{u} \tab \code{wind} \tab windspeed \tab m / s \tab 2\cr
+#' \eqn{P} \tab \code{P} \tab atmospheric pressure \tab kPa \tab 101.3246\cr
+#' }
+#'
+#' \bold{Constants:}
+#' \tabular{lllll}{
+#' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
+#' \eqn{\phi} \tab \code{phi} \tab effective maximum quantum yield of electrons from incident irradiance \tab e- / hv \tab 0.25\cr
+#' \eqn{\sigma} \tab \code{s} \tab Stephan-Boltzmann constant \tab W / (m\eqn{^2} K\eqn{^4}) \tab 5.67e-08\cr
+#' \eqn{R} \tab \code{R} \tab ideal gas constant \tab J / (mol K) \tab 8.3144598\cr
+#' \eqn{R_\text{air}}{R_air} \tab \code{R_air} \tab specific gas constant for dry air \tab J / (kg K) \tab 287.058\cr
+#' \eqn{eT} \tab \code{eT} \tab exponent for temperature dependence of diffusion \tab none \tab 1.75\cr
+#' \eqn{Nu} \tab \code{Nu} \tab Nusselt number \tab none \tab *\cr
+#' \eqn{D_{m,0}}{D_m0} \tab \code{D_m0} \tab diffusion coefficient for momentum in air at 0 C \tab m\eqn{^2} / s \tab 13.3e-06\cr
+#' \eqn{t_\text{air}}{t_air} \tab \code{t_air} \tab coefficient of thermal expansion of air \tab 1 / K \tab 3.66e-3\cr
+#' \eqn{G} \tab \code{G} \tab gravitational acceleration \tab m / s\eqn{^2} \tab 9.8\cr
+#' \eqn{Sh} \tab \code{Sh} \tab Sherwood number \tab none \tab *\cr
+#' \eqn{D_{h,0}}{D_h0} \tab \code{D_h0} \tab diffusion coefficient for heat in air at 0 C \tab m\eqn{^2} / s \tab 1.9e-5\cr
+#' \eqn{D_{w,0}}{D_w0} \tab \code{D_w0} \tab diffusion coefficient for water vapour in air at 0 C \tab m\eqn{^2} / s \tab 21.2\cr
+#' \eqn{c_p} \tab \code{c_p} \tab heat capacity of air \tab J / (g K) \tab 1.01\cr
+#' }
+#'
+#' * see manual for further detail on calculation
+#'
+#' @export
+#' 
+
+make_leafpar <- function(replace = NULL) {
+
+  # Default parameters -----
+  obj <- list(
+    abs_s = set_units(0.8),
+    abs_l = set_units(0.97),
+    g_sw = set_units(5, "umol / (m^2 * s * Pa)"),
+    g_uw = set_units(0.1, "umol / (m^2 * s * Pa)"),
+    leafsize = set_units(0.1, "m"),
+    sr = set_units(0)
+  )
+  
+  # Replace defaults -----
+  obj %<>% replace_defaults(replace)
+
+  # Assign class and return -----
+  obj %<>% leaf_par()
+
+  obj
+
+}
+
+#' make_enviropar
+#' @rdname make_parameters
+#' @export
+
+make_enviropar <- function(replace = NULL) {
+
+  # Default parameters -----
+  obj <- list(
+    T_air = set_units(298.15, "K"),
+    RH = set_units(0.50),
+    S_sw = set_units(1000, "W / m^2"),
+    S_lw = set_units(825, "W / m^2"),
+    wind = set_units(2, "m / s"),
+    P = set_units(101.3246, "kPa")
+  ) 
+  
+  # Replace defaults -----
+
+  obj %<>% replace_defaults(replace)
+
+  # Assign class and return -----
+  obj %<>% enviro_par()
+  
+  obj
+
+}
+
+#' make_constants
+#' @rdname make_parameters
+#' @export
+
+make_constants <- function(replace = NULL) {
+
+  # Defaults parameters -----
+  obj <- list(
+    phi = set_units(0.25), # Foster and Smith reported as e / hv
+    s = set_units(5.67e-08, "W / (m ^ 2 * K ^ 4)"),
+    R = set_units(8.3144598, "J / (mol * K)"),
+    R_air = set_units(287.058, "J / (kg * K)"),
+    eT = set_units(1.75),
+    nu_constant = function(Re, type, T_air, T_leaf, surface) {
+      
+      stopifnot(units(T_air)$numerator == "K" & 
+                  length(units(T_air)$denominator) == 0L)
+      stopifnot(units(T_leaf)$numerator == "K" & 
+                  length(units(T_leaf)$denominator) == 0L)
+      
+      type %<>% match.arg(c("free", "forced"))
+      
+      if (identical(type, "forced")) {
+        if (Re <= set_units(4000)) ret <- list(a = 0.6, b = 0.5)
+        if (Re > set_units(4000)) ret <- list(a = 0.032, b = 0.8)
+        return(ret)
+      }
+      
+      if (identical(type, "free")) {
+        surface %<>% match.arg(c("lower", "upper"))
+        if ((surface == "upper" & T_leaf > T_air) |
+            (surface == "lower" & T_leaf < T_air)) {
+          ret <- list(a = 0.5, b = 0.25)
+        } else {
+          ret <- list(a = 0.23, b = 0.25)
+        }
+        return(ret)
+      }
+      
+    },
+    D_h0 = set_units(1.9e-5, "m ^ 2 / s"),
+    D_m0 = set_units(13.3e-6, "m ^ 2 / s"),
+    D_w0 = set_units(21.2e-6, "m ^ 2 / s"),
+    t_air = set_units(3.66e-3, "1 / K"),
+    G = set_units(9.8, "m / s ^ 2"),
+    sh_constant = function(type) {
+      
+      type %>%
+        match.arg(c("free", "forced")) %>%
+        switch(forced = 0.33, free = 0.25) %>%
+        set_units()
+      
+    },
+    c_p = set_units(1.01, "J / (g * K)")
+  )
+
+  # Replace defaults -----
+
+  if ("nu_constant" %in% names(replace)) {
+    stopifnot(is.function(replace$nu_constant))
+    obj$nu_constant <- replace$nu_constant
+    replace$nu_constant <- NULL
+  }
+
+  if ("sh_constant" %in% names(replace)) {
+    stopifnot(is.function(replace$sh_constant))
+    obj$sh_constant <- replace$sh_constant
+    replace$sh_constant <- NULL
+  }
+
+  obj %<>% replace_defaults(replace)
+
+  # Assign class and return -----
+  obj %<>% constants()
+  
+  obj
+
+}
+
+#' Replace default parameters
+#'
+#' @param obj List of default values
+#' @param replace List of replacement values
+#'
+
+replace_defaults <- function(obj, replace) {
+
+  if (!is.null(replace)) {
+
+    stopifnot(is.list(replace))
+    stopifnot(all(sapply(replace, inherits, what = "units")))
+    stopifnot(all(sapply(replace, is.numeric)))
+    x <- names(replace)
+    if (any(!x %in% names(obj))) {
+      warning(sprintf("The following parameters in 'replace' were not recognized:\n%s", paste0(x[!x %in% names(obj)], collapse = "\n")))
+      x %<>% .[. %in% names(obj)]
+    }
+    obj[x] <- replace[x]
+
+  }
+
+  obj
+
+}
