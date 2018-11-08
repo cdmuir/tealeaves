@@ -4,9 +4,11 @@
 \alias{.get_Sr}
 \title{S_r: longwave re-radiation (W / m^2)}
 \usage{
-.get_Sr(pars)
+.get_Sr(T_leaf, pars)
 }
 \arguments{
+\item{T_leaf}{Leaf temperature in Kelvin}
+
 \item{pars}{Concatenated parameters (\code{leaf_par}, \code{enviro_par}, and \code{constants})}
 }
 \value{
@@ -16,8 +18,10 @@ Value in W / m\eqn{^2} of class \code{units}
 S_r: longwave re-radiation (W / m^2)
 }
 \details{
-\deqn{S_\text{r} = \sigma \alpha_\text{l} T_\text{air} ^ 4}{S_r = \sigma \alpha_l T_air ^ 4 }
+\deqn{S_\text{r} = 2 \sigma \alpha_\text{l} T_\text{air} ^ 4}{S_r = 2 \sigma \alpha_l T_air ^ 4 }
 
+The factor of 2 accounts for re-radiation from both leaf surfaces (Foster and Smith 1987). \cr
+\cr
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 \eqn{\alpha_\text{l}}{\alpha_l} \tab \code{abs_l} \tab absortivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
@@ -26,4 +30,7 @@ S_r: longwave re-radiation (W / m^2)
 }
 
 Note that leaf absortivity is the same value as leaf emissivity
+}
+\references{
+Foster JR, Smith WK. 1987. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell \& Environment 9: 751-9.
 }

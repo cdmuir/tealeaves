@@ -267,13 +267,16 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' S_r: longwave re-radiation (W / m^2)
 #'
 #' @inheritParams .get_Rabs
-#' 
+#' @param T_leaf Leaf temperature in Kelvin
+#'
 #' @return Value in W / m\eqn{^2} of class \code{units}
 #' 
 #' @details
 #' 
-#' \deqn{S_\text{r} = \sigma \alpha_\text{l} T_\text{air} ^ 4}{S_r = \sigma \alpha_l T_air ^ 4 }
+#' \deqn{S_\text{r} = 2 \sigma \alpha_\text{l} T_\text{air} ^ 4}{S_r = 2 \sigma \alpha_l T_air ^ 4 }
 #' 
+#' The factor of 2 accounts for re-radiation from both leaf surfaces (Foster and Smith 1987). \cr
+#' \cr
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 #' \eqn{\alpha_\text{l}}{\alpha_l} \tab \code{abs_l} \tab absortivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
@@ -282,13 +285,17 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' }
 #' 
 #' Note that leaf absortivity is the same value as leaf emissivity
+#' 
+#' @references 
+#' 
+#' Foster JR, Smith WK. 1987. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell \& Environment 9: 751-9.
+#' 
 
-.get_Sr <- function(pars) pars$s * pars$abs_l * pars$T_air ^ 4
+.get_Sr <- function(T_leaf, pars) 2 * pars$s * pars$abs_l * T_leaf ^ 4
 
 #' H: sensible heat flux density (W / m^2)
 #'
 #' @inheritParams .get_Sr
-#' @param T_leaf Leaf temperature in Kelvin
 #' 
 #' @return Value in W / m\eqn{^2} of class \code{units}
 #' 
@@ -430,6 +437,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 .get_gr <- function(T_leaf, pars) {
 
   # Calculate virtual temperature
+  # Assumes inside of leaf is 100% RH
   Tv_leaf <- .get_Tv(T_leaf, .get_ps(T_leaf, pars$P), pars$P)
   Tv_air <-	.get_Tv(pars$T_air, pars$RH * .get_ps(pars$T_air, pars$P), pars$P)
   D_m <- .get_Dx(pars$D_m0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P)
@@ -442,24 +450,31 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' Calculate virtual temperature
 #'
 #' @inheritParams .get_Dx
-#' @param p_air Saturation water vapour pressure of air in kPa
+#' @param p water vapour pressure in kPa
 #' 
 #' @return Value in K of class \code{units}
 #' 
 #' @details 
 #' 
-#' \deqn{T_\text{v} = T / [1 - 0.388 (p_\text{air} / P)]}{T_v = T / [1 - 0.388 (p_air / P)]}
+#' \deqn{T_\text{v} = T / [1 - 0.388 (p / P)]}{T_v = T / [1 - 0.388 (p / P)]}
 #' 
+#' Eq. 2.35 in Monteith & Unsworth (2013) \cr
+#' \cr
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-#' \eqn{p_\text{air}}{p_air} \tab \code{p_air} \tab saturation water vapour pressure of air \tab kPa \tab \link[=.get_ps]{calculated}\cr
+#' \eqn{p} \tab \code{p} \tab water vapour pressure \tab kPa \tab \link[=.get_ps]{calculated}\cr
 #' \eqn{P} \tab \code{P} \tab atmospheric pressure \tab kPa \tab 101.3246
 #' }
+#' 
+#' @references 
+#' 
+#' Monteith JL, Unsworth MH. 2013. Principles of Environmental Physics. 4th edition. Academic Press, London.
+#' 
 
-.get_Tv <- function(Temp, p_air, P) {
+.get_Tv <- function(Temp, p, P) {
 
   set_units(Temp, "K") / 
-    (set_units(1) - (set_units(p_air, "kPa") / set_units(P, "kPa")) * 0.388)
+    (set_units(1) - 0.388 * (set_units(p, "kPa") / set_units(P, "kPa")))
 
 }
 
@@ -496,7 +511,9 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
                  log10(P))
 
   # Convert to kPa
-  p_s %<>% set_units("kPa")
+  p_s %<>% 
+    set_units("hPa") %>%
+    set_units("kPa")
   p_s
 
 }
