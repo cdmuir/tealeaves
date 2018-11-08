@@ -4,12 +4,15 @@ Date: 2018-11-07
 Title: Solve for leaf temperature using energy balance
 Authors@R: person("Chris", "Muir", role = c("aut", "cre"), email = "cdmuir@hawaii.edu")
 Depends: R (>= 3.5.0), units (>= 0.6.0)
-Imports: dplyr (>= 0.7.0),
+Imports: crayon (>= 1.3.0),
+         dplyr (>= 0.7.0),
          glue (>= 1.3.0),
          magrittr (>= 1.5.0),
-         methods,
+         methods (>= 3.5.0),
+         purrr (>= 0.2.5),
          rlang (>= 0.3.0),
-         stringr (>= 1.3.0)
+         stringr (>= 1.3.0),
+         tidyr (>= 0.8.2)
 Suggests: testthat (> 2.0.0)
 Description: A (one paragraph) description of what
   the package does and why it may be useful.
