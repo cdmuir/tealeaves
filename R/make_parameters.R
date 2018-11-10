@@ -28,7 +28,7 @@ NULL
 #' \eqn{\alpha_\text{l}}{\alpha_l} \tab \code{abs_l} \tab absortivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
 #' \eqn{g_\text{sw}}{g_sw} \tab \code{g_sw} \tab stomatal conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 5\cr
 #' \eqn{g_\text{uw}}{g_uw} \tab \code{g_uw} \tab cuticular conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 0.1\cr
-#' \eqn{sr} \tab \code{sr} \tab stomatal ratio \tab none \tab 0 = logit(0.5)\cr
+#' \eqn{\text{logit}(sr)}{logit(sr)} \tab \code{logit_sr} \tab stomatal ratio (logit transformed) \tab none \tab 0 = logit(0.5)\cr
 #' }
 #'
 #' \bold{Environment parameters:}
@@ -75,7 +75,7 @@ make_leafpar <- function(replace = NULL) {
     g_sw = set_units(5, "umol / (m^2 * s * Pa)"),
     g_uw = set_units(0.1, "umol / (m^2 * s * Pa)"),
     leafsize = set_units(0.1, "m"),
-    sr = set_units(0)
+    logit_sr = set_units(0)
   )
   
   # Replace defaults -----

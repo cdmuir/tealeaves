@@ -4,12 +4,12 @@
 \alias{.get_Tv}
 \title{Calculate virtual temperature}
 \usage{
-.get_Tv(Temp, p_air, P)
+.get_Tv(Temp, p, P)
 }
 \arguments{
 \item{Temp}{Temperature in Kelvin}
 
-\item{p_air}{Saturation water vapour pressure of air in kPa}
+\item{p}{water vapour pressure in kPa}
 
 \item{P}{Atmospheric pressure in kPa}
 }
@@ -20,11 +20,16 @@ Value in K of class \code{units}
 Calculate virtual temperature
 }
 \details{
-\deqn{T_\text{v} = T / [1 - 0.388 (p_\text{air} / P)]}{T_v = T / [1 - 0.388 (p_air / P)]}
+\deqn{T_\text{v} = T / [1 - 0.388 (p / P)]}{T_v = T / [1 - 0.388 (p / P)]}
 
+Eq. 2.35 in Monteith & Unsworth (2013) \cr
+\cr
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-\eqn{p_\text{air}}{p_air} \tab \code{p_air} \tab saturation water vapour pressure of air \tab kPa \tab \link[=.get_ps]{calculated}\cr
+\eqn{p} \tab \code{p} \tab water vapour pressure \tab kPa \tab \link[=.get_ps]{calculated}\cr
 \eqn{P} \tab \code{P} \tab atmospheric pressure \tab kPa \tab 101.3246
 }
+}
+\references{
+Monteith JL, Unsworth MH. 2013. Principles of Environmental Physics. 4th edition. Academic Press, London.
 }

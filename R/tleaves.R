@@ -206,7 +206,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   #check_enviropar(enviro_par)
   #check_constants(constants)
 
-  ## Convert tleag to units and message
+  ## Convert tleaf to units and message
   if (!is(tleaf, "units")) {
     if (!quiet) {
       glue::glue("tleaf converted from numeric to {X} K", X = tleaf) %>%
@@ -214,13 +214,14 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
     }
     tleaf %<>% set_units("K")
   }
+  
   pars <- c(leaf_par, enviro_par, constants)
 
   # R_abs: total absorbed radiation (W m^-2) -----
   R_abs <- .get_Rabs(pars) %>% drop_units()
 
   # S_r: longwave re-radiation (W m^-2) -----
-  S_r <- .get_Sr(pars) %>% drop_units()
+  S_r <- .get_Sr(tleaf, pars) %>% drop_units()
 
   # H: sensible heat flux density (W m^-2) -----
   H <- .get_H(tleaf, pars) %>% drop_units()
@@ -631,8 +632,85 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' \deqn{L = h_\text{vap} g_\text{tw} d_\text{wv}}{L = h_vap g_tw d_wv}
 #' 
-#' \bold{Heat of vaporization:} The heat of vaporization (\eqn{h_\text{vap}}{h_vap}) is a function of temperature. I used data from on temperature and \eqn{h_\text{vap}}{h_vap} from Nobel (2009, Appendix 1) to estimate a linear regression. See Examples. \cr
-#' \cr
+#' \tabular{lllll}{
+#' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
+#' \eqn{d_\text{wv}}{d_wv} \tab \code{d_wv} \tab water vapour gradient \tab mol / m ^ 3 \tab \link[=.get_dwv]{calculated} \cr
+#' \eqn{h_\text{vap}}{h_vap} \tab \code{h_vap} \tab latent heat of vaporization \tab J / mol \tab \link[=.get_hvap]{calculated} \cr
+#' \eqn{g_\text{tw}}{g_tw} \tab \code{g_tw} \tab total conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab \link[=.get_gtw]{calculated}
+#' }
+#'
+
+.get_L <- function(T_leaf, pars) {
+
+  h_vap <- .get_hvap(T_leaf)
+  g_tw <- .get_gtw(T_leaf, pars)
+  d_wv <- .get_dwv(T_leaf, pars)
+    
+  L <- h_vap * g_tw * d_wv
+  L %<>% set_units("W / m ^ 2")
+  L
+
+}
+
+#' d_wv: water vapour gradient (mol / m ^ 3)
+#' 
+#' @inheritParams .get_H
+#' 
+#' @return Value in mol / m^3 of class \code{units}
+#' 
+#' @details 
+#' 
+#' \bold{Water vapour gradient:} The water vapour pressure differential from inside to outside of the leaf is the saturation water vapor pressure inside the leaf (\eqn{p_\text{leaf}}{p_leaf}) minus the water vapor pressure of the air (\eqn{p_\text{air}}{p_air}):
+#' 
+#' \deqn{d_\text{wv} = p_\text{leaf} / (R T_\text{leaf}) - RH p_\text{air} / (R T_\text{air})}{d_wv = p_leaf / (R T_leaf) - RH p_air / (R T_air)}
+#' 
+#' Note that water vapor pressure is converted from kPa to mol / m^3 using ideal gas law. \cr
+#' 
+#' \tabular{lllll}{
+#' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
+#' \eqn{p_\text{air}}{p_air} \tab \code{p_air} \tab saturation water vapour pressure of air \tab kPa \tab \link[=.get_ps]{calculated}\cr
+#' \eqn{p_\text{leaf}}{p_leaf} \tab \code{p_leaf} \tab saturation water vapour pressure inside the leaf \tab kPa \tab \link[=.get_ps]{calculated}\cr
+#' \eqn{R} \tab \code{R} \tab ideal gas constant \tab J / (mol K) \tab 8.3144598\cr
+#' \eqn{\text{RH}}{RH} \tab \code{RH} \tab relative humidity \tab \% \tab 0.50\cr
+#' \eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
+#' \eqn{T_\text{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
+#' }
+#'
+#' @examples 
+#' 
+#' # Water vapour gradient: 
+#' 
+#' leaf_par <- make_leafpar()
+#' enviro_par <- make_enviropar()
+#' constants <- make_constants()
+#' pars <- c(leaf_par, enviro_par, constants)
+#' T_leaf <- set_units(300, "K")
+#' T_air <- set_units(298.15, "K")
+#' p_leaf <- set_units(35.31683, "kPa")
+#' p_air <- set_units(31.65367, "kPa")
+#' 
+#' d_wv <- p_leaf / (pars$R * T_leaf) - pars$RH * p_air / (pars$R * T_air)
+#' 
+
+.get_dwv <- function(T_leaf, pars) {
+  
+  # Water vapour differential converted from kPa to mol m ^ -3 using ideal gas law
+  d_wv <- .get_ps(T_leaf, pars$P) / (pars$R * T_leaf) - 
+    pars$RH * .get_ps(pars$T_air, pars$P) / (pars$R * pars$T_air)
+  d_wv %<>% set_units("mol / m ^ 3")
+  
+  d_wv
+  
+}
+
+#' g_tw: total conductance to water vapour (m/s)
+#' 
+#' @inheritParams .get_H
+#' 
+#' @return Value in m/s of class \code{units}
+#' 
+#' @details 
+#' 
 #' \bold{Total conductance to water vapor:} The total conductance to water vapor (\eqn{g_\text{tw}}{g_tw}) is the sum of the parallel lower (abaxial) and upper (adaxial) conductances:
 #' 
 #' \deqn{g_\text{tw} = g_\text{w,lower} + g_\text{w,upper}}{g_tw = gw_lower + gw_upper}
@@ -647,31 +725,94 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \deqn{g_\text{sw,upper} = g_\text{sw} sr R (T_\text{leaf} + T_\text{air}) / 2}{gsw_upper = g_sw sr R (T_leaf + T_air) / 2}
 #' \deqn{g_\text{uw_upper} = g_\text{uw} / 2 R (T_\text{leaf} + T_\text{air}) / 2}{guw_upper = g_uw / 2 R (T_leaf + T_air) / 2}
 #' \cr
-#' Note that the stomatal and cuticular conductances are given in units of (mol H2O) / (m\eqn{^2} s) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\text{sw}}{g_sw}) and cuticular (\eqn{g_\text{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
-#' 
-#' \bold{Water vapour gradient:} The water vapour pressure differential from inside to outside of the leaf is the saturation water vapor pressure inside the leaf (\eqn{p_\text{leaf}}{p_leaf}) minus the water vapor pressure of the air (\eqn{p_\text{air}}{p_air}):
-#' 
-#' \deqn{d_\text{wv} = p_\text{leaf} / (R T_\text{leaf}) - RH p_\text{air} / (R T_\text{air})}{d_wv = p_leaf / (R T_leaf) - RH p_air / (R T_air)}
-#' 
-#' Note that water vapor pressure is converted from kPa to mol / m^3 using ideal gas law. \cr
-#' 
+#' Note that the stomatal and cuticular conductances are given in units of (umol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\text{sw}}{g_sw}) and cuticular (\eqn{g_\text{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
+#'
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-#' \eqn{h_\text{vap}}{h_vap} \tab \code{h_vap} \tab latent heat of vaporization \tab J / mol \tab calculated \cr
 #' \eqn{g_\text{sw}}{g_sw} \tab \code{g_sw} \tab stomatal conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 5\cr
-#' \eqn{g_\text{tw}}{g_tw} \tab \code{g_tw} \tab total conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab calculated\cr
 #' \eqn{g_\text{uw}}{g_uw} \tab \code{g_uw} \tab cuticular conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 0.1\cr
-#' \eqn{p_\text{air}}{p_air} \tab \code{p_air} \tab saturation water vapour pressure of air \tab kPa \tab \link[=.get_ps]{calculated}\cr
-#' \eqn{p_\text{leaf}}{p_leaf} \tab \code{p_leaf} \tab saturation water vapour pressure inside the leaf \tab kPa \tab \link[=.get_ps]{calculated}\cr
 #' \eqn{R} \tab \code{R} \tab ideal gas constant \tab J / (mol K) \tab 8.3144598\cr
-#' \eqn{\text{RH}}{RH} \tab \code{RH} \tab relative humidity \tab \% \tab 0.50\cr
-#' \eqn{sr} \tab \code{sr} \tab stomatal ratio \tab none \tab 0 = logit(0.5)\cr
+#' \eqn{\text{logit}(sr)}{logit(sr)} \tab \code{logit_sr} \tab stomatal ratio (logit transformed) \tab none \tab 0 = logit(0.5)\cr
 #' \eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
 #' \eqn{T_\text{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
 #' }
+#' 
+#' @examples 
+#' 
+#' # Total conductance to water vapor
+#' 
+#' ## Hypostomatous leaf; default parameters
+#' leaf_par <- make_leafpar(replace = list(logit_sr = set_units(-Inf)))
+#' enviro_par <- make_enviropar()
+#' constants <- make_constants()
+#' pars <- c(leaf_par, enviro_par, constants)
+#' T_leaf <- set_units(300, "K")
+#' 
+#' ## Fixing boundary layer conductance rather than calculating
+#' gbw_lower <- set_units(0.1, "m/s")
+#' gbw_upper <- set_units(0.1, "m/s")
+#' 
+#' # Lower surface ----
+#' ## Note that pars$logit_sr is logit-transformed! Use stats::plogis() to convert to proportion.
+#' gsw_lower <- set_units(pars$g_sw * (set_units(1) - stats::plogis(pars$logit_sr)) * pars$R * 
+#'                          ((T_leaf + pars$T_air) / 2), "m / s")
+#' guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+#' gtw_lower <- 1 / (1 / (gsw_lower + guw_lower) + 1 / gbw_lower)
+#' 
+#' # Upper surface ----
+#' gsw_upper <- set_units(pars$g_sw * stats::plogis(pars$logit_sr) * pars$R * 
+#'                          ((T_leaf + pars$T_air) / 2), "m / s")
+#' guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+#' gtw_upper <- 1 / (1 / (gsw_upper + guw_upper) + 1 / gbw_upper)
+#' 
+#' ## Lower and upper surface are in parallel
+#' g_tw <- gtw_lower + gtw_upper
+#' 
+
+.get_gtw <- function(T_leaf, pars) {
+ 
+  # Lower surface ----
+  gbw_lower <- .get_gbw(T_leaf, "lower", pars)
+  
+  # Convert stomatal and cuticular conductance from molar to 'engineering' units
+  # See email from Tom Buckley (July 4, 2017)
+  gsw_lower <- set_units(pars$g_sw * (set_units(1) - stats::plogis(pars$logit_sr)) * pars$R * 
+                           ((T_leaf + pars$T_air) / 2), "m / s")
+  guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+  gtw_lower <- 1 / (1 / (gsw_lower + guw_lower) + 1 / gbw_lower)
+  
+  # Upper surface ----
+  gbw_upper <- .get_gbw(T_leaf, "upper", pars)
+  
+  # Convert stomatal and cuticular conductance from molar to 'engineering' units
+  # See email from Tom Buckley (July 4, 2017)
+  gsw_upper <- set_units(pars$g_sw * stats::plogis(pars$logit_sr) * pars$R * 
+                           ((T_leaf + pars$T_air) / 2), "m / s")
+  guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+  gtw_upper <- 1 / (1 / (gsw_upper + guw_upper) + 1 / gbw_upper)
+  
+  # Lower and upper surface are in parallel
+  g_tw <- gtw_lower + gtw_upper
+  
+  g_tw
+  
+}
+
+ 
+#' 
+#' h_vap: heat of vaporization (J / mol)
+#' 
+#' @inheritParams .get_H
+#' 
+#' @return Value in J/mol of class \code{units}
+#' 
+#' @details 
+#' 
+#' \bold{Heat of vaporization:} The heat of vaporization (\eqn{h_\text{vap}}{h_vap}) is a function of temperature. I used data from on temperature and \eqn{h_\text{vap}}{h_vap} from Nobel (2009, Appendix 1) to estimate a linear regression. See Examples.
 #'
 #' @examples 
-#' # Part 1. Heat of vaporization and temperature
+#' 
+#' # Heat of vaporization and temperature
 #' ## data from Nobel (2009)
 #' 
 #' T_K <- 273.15 + c(0, 10, 20, 25, 30, 40, 50, 60)
@@ -692,57 +833,11 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' set_units(h_vap, "J / mol")
 #' 
-#' # Part 2. Total conductance to water vapor
-#' 
-#' ## Hypostomatous leaf; default parameters
-#' leaf_par <- make_leafpar(replace = list(sr = set_units(-Inf)))
-#' enviro_par <- make_enviropar()
-#' constants <- make_constants()
-#' pars <- c(leaf_par, enviro_par, constants)
-#' T_leaf <- set_units(300, "K")
-#' 
-#' ## Fixing boundary layer conductance rather than calculating
-#' gbw_lower <- set_units(0.1, "m/s")
-#' gbw_upper <- set_units(0.1, "m/s")
-#' 
-#' # Lower surface ----
-#' ## Note that pars$sr is logit-transformed! Use stats::plogis() to convert to proportion.
-#' gsw_lower <- set_units(pars$g_sw * (set_units(1) - stats::plogis(pars$sr)) * pars$R * 
-#'                          ((T_leaf + pars$T_air) / 2), "m / s")
-#' guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
-#' gtw_lower <- 1 / (1 / (gsw_lower + guw_lower) + 1 / gbw_lower)
-#' 
-#' # Upper surface ----
-#' gsw_upper <- set_units(pars$g_sw * stats::plogis(pars$sr) * pars$R * 
-#'                          ((T_leaf + pars$T_air) / 2), "m / s")
-#' guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
-#' gtw_upper <- 1 / (1 / (gsw_upper + guw_upper) + 1 / gbw_upper)
-#' 
-#' ## Lower and upper surface are in parallel
-#' g_tw <- gtw_lower + gtw_upper
-#' 
-#' # Part 3. Water vapour gradient: 
-#' 
-#' leaf_par <- make_leafpar()
-#' enviro_par <- make_enviropar()
-#' constants <- make_constants()
-#' pars <- c(leaf_par, enviro_par, constants)
-#' T_leaf <- set_units(300, "K")
-#' T_air <- set_units(298.15, "K")
-#' p_leaf <- set_units(35.31683, "kPa")
-#' p_air <- set_units(31.65367, "kPa")
-#' 
-#' d_wv <- p_leaf / (pars$R * T_leaf) - pars$RH * p_air / (pars$R * T_air)
-#' 
-#' # Part 4. Putting it all together:
-#' 
-#' L <- set_units(h_vap * g_tw * d_wv, "W / m ^ 2")
-#' L
-#' 
 #' @references Nobel PS. 2009. Physicochemical and Environmental Plant Physiology. 4th Edition. Academic Press.
+#' 
 
-.get_L <- function(T_leaf, pars) {
-
+.get_hvap <- function(T_leaf) {
+  
   # Equation from Foster and Smith 1986 seems to be off:
   # h_vap <- 4.504e4 - 41.94 * T_leaf
   # Instead, using regression based on data from Nobel (2009, 4th Ed, Appendix 1)
@@ -753,38 +848,8 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
     set_units(43.12514, "J / mol / K") * set_units(T_leaf, "K")
   h_vap %<>% set_units("J / mol")
   
-  # Lower surface ----
-  gbw_lower <- .get_gbw(T_leaf, "lower", pars)
+  h_vap
   
-  # Convert stomatal and cuticular conductance from molar to 'engineering' units
-  # See email from Tom Buckley (July 4, 2017)
-  gsw_lower <- set_units(pars$g_sw * (set_units(1) - stats::plogis(pars$sr)) * pars$R * 
-                           ((T_leaf + pars$T_air) / 2), "m / s")
-  guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
-  gtw_lower <- 1 / (1 / (gsw_lower + guw_lower) + 1 / gbw_lower)
-
-  # Upper surface ----
-  gbw_upper <- .get_gbw(T_leaf, "upper", pars)
-  
-  # Convert stomatal and cuticular conductance from molar to 'engineering' units
-  # See email from Tom Buckley (July 4, 2017)
-  gsw_upper <- set_units(pars$g_sw * stats::plogis(pars$sr) * pars$R * 
-                           ((T_leaf + pars$T_air) / 2), "m / s")
-  guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
-  gtw_upper <- 1 / (1 / (gsw_upper + guw_upper) + 1 / gbw_upper)
-  
-  # Lower and upper surface are in parallel
-  g_tw <- gtw_lower + gtw_upper
-    
-  # Water vapour differential converted from kPa to mol m ^ -3 using ideal gas law
-  d_wv <- .get_ps(T_leaf, pars$P) / (pars$R * T_leaf) - 
-    pars$RH * .get_ps(pars$T_air, pars$P) / (pars$R * pars$T_air)
-  d_wv %<>% set_units("mol / m ^ 3")
-
-  L <- h_vap * g_tw * d_wv
-  L %<>% set_units("W / m ^ 2")
-  L
-
 }
 
 #' g_bw: Boundary layer conductance to water vapour (m / s)
