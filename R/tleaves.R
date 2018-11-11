@@ -437,7 +437,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{d} \tab \code{leafsize} \tab Leaf characteristic dimension in meters \tab m \tab 0.1\cr
 #' \eqn{D_\text{m}}{D_m} \tab \code{D_m} \tab diffusion coefficient of momentum in air \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
 #' \eqn{G} \tab \code{G} \tab gravitational acceleration \tab m / s\eqn{^2} \tab 9.8\cr
-#' \eqn{t_\text{air}}{t_air} \tab \code{t_air} \tab coefficient of thermal expansion of air \tab 1 / K \tab 3.66e-3\cr
+#' \eqn{t_\text{air}}{t_air} \tab \code{t_air} \tab coefficient of thermal expansion of air \tab 1 / K \tab 1 / Temp \cr
 #' \eqn{T_\text{v,air}}{Tv_air} \tab \code{Tv_air} \tab virtual air temperature \tab K \tab \link[=.get_Tv]{calculated}\cr
 #' \eqn{T_\text{v,leaf}}{Tv_leaf} \tab \code{Tv_leaf} \tab virtual leaf temperature \tab K \tab \link[=.get_Tv]{calculated}
 #' }
@@ -451,7 +451,8 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   Tv_air <-	.get_Tv(pars$T_air, pars$RH * .get_ps(pars$T_air, pars$P), pars$P,
                     pars$epsilon)
   D_m <- .get_Dx(pars$D_m0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P)
-  Gr <- pars$t_air * pars$G * pars$leafsize ^ 3 * abs(Tv_leaf - Tv_air) / D_m ^ 2
+  Gr <- (set_units(1) / pars$T_air) * pars$G * pars$leafsize ^ 3 * 
+    abs(Tv_leaf - Tv_air) / D_m ^ 2
 
   Gr
 

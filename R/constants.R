@@ -30,7 +30,6 @@ constants <- function(.x) {
   stopifnot(.x$D_h0 >= set_units(0, "m ^ 2 / s"))
   stopifnot(.x$D_m0 >= set_units(0, "m ^ 2 / s"))
   stopifnot(.x$D_w0 >= set_units(0, "m ^ 2 / s"))
-  stopifnot(.x$t_air >= set_units(0, "1 / K"))
   stopifnot(.x$G >= set_units(0, "m / s ^ 2"))
   stopifnot(.x$c_p >= set_units(0, "J / (g * K)"))
   
