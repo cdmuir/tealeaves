@@ -163,14 +163,16 @@ tleaf <- function(leaf_par, enviro_par, constants, n_start = 1,
   soln %<>% dplyr::filter(.data$convergence == 0)
   
   # Energy balance components -----
-  components <- soln %>%
-    dplyr::pull("T_leaf") %>%
-    purrr::map_dfr(~{
-      .x %<>% set_units("K")
-      ret <- energy_balance(.x, leaf_par = leaf_par, enviro_par = enviro_par, 
-                            constants = constants, quiet = TRUE, components = TRUE)
-      ret$components
-    })
+  components <- suppressWarnings(
+    soln %>%
+      dplyr::pull("T_leaf") %>%
+      purrr::map_dfr(~{
+        .x %<>% set_units("K")
+        ret <- energy_balance(.x, leaf_par = leaf_par, enviro_par = enviro_par, 
+                              constants = constants, quiet = TRUE, components = TRUE)
+        ret$components
+      })
+  )
   
   soln %<>% dplyr::bind_cols(components)
   
