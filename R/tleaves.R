@@ -189,9 +189,9 @@ tleaf <- function(leaf_par, enviro_par, constants, n_start = 1,
 #' 
 #' @param abs_val Return absolute value? Useful for finding leaf temperature that balances heat transfer using \code{\link[stats]{optim}}.
 #'
-#' @param components Logical. Should leaf energy components be returned?
+#' @param components Logical. Should leaf energy components be returned? Transpiration (in mol / (m^2 s)) also returned.
 #' 
-#' @return A numeric value in W / m^2. Optionally, a named list of energy balance components in W / m^2.
+#' @return A numeric value in W / m^2. Optionally, a named list of energy balance components in W / m^2 and transpiration in mol / (m^2 s).
 #' 
 #' @export
 #'
@@ -200,12 +200,13 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
                            quiet = FALSE, abs_val = FALSE, components = FALSE) {
 
   # Checks -----
-  warning("implement checks in energy_balance")
-  #traits <- .missing_traits(character(0))
-  #check_leafpar(leaf_par, traits)
-  #check_enviropar(enviro_par)
-  #check_constants(constants)
-
+  leaf_par %<>% leaf_par()
+  enviro_par %<>% enviro_par()
+  constants %<>% constants()
+  stopifnot(length(quiet) == 1L & is.logical(quiet))
+  stopifnot(length(abs_val) == 1L & is.logical(abs_val))
+  stopifnot(length(components) == 1L & is.logical(components))
+  
   ## Convert tleaf to units and message
   if (!is(tleaf, "units")) {
     if (!quiet) {
@@ -229,12 +230,17 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   # L: latent heat flux density (W m^-2) -----
   L <- .get_L(tleaf, pars) %>% drop_units()
 
+  
   # Return -----
   if (abs_val) return(abs(R_abs - (S_r + H + L)))
   if (components) {
+    
+    # E: transpiration (mol / (m^2 s))
+    E <- set_units(.get_gtw(tleaf, pars) * .get_dwv(tleaf, pars), "mol/m^2/s")
+    
     ret <- list(
       energy_balance = R_abs - (S_r + H + L),
-      components = list(R_abs = R_abs, S_r = S_r, H = H, L = L)
+      components = list(R_abs = R_abs, S_r = S_r, H = H, L = L, E = E)
       )
     return(ret)
   }

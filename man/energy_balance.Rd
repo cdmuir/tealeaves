@@ -20,10 +20,10 @@ energy_balance(tleaf, leaf_par, enviro_par, constants, quiet = FALSE,
 
 \item{abs_val}{Return absolute value? Useful for finding leaf temperature that balances heat transfer using \code{\link[stats]{optim}}.}
 
-\item{components}{Logical. Should leaf energy components be returned?}
+\item{components}{Logical. Should leaf energy components be returned? Transpiration (in mol / (m^2 s)) also returned.}
 }
 \value{
-A numeric value in W / m^2. Optionally, a named list of energy balance components in W / m^2.
+A numeric value in W / m^2. Optionally, a named list of energy balance components in W / m^2 and transpiration in mol / (m^2 s).
 }
 \description{
 Calculate leaf energy balance
