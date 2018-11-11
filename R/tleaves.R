@@ -404,6 +404,8 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' @details 
 #' 
 #' \deqn{D = D_\text{0} (T / 273.15) ^ {eT} (101.3246 / P)}{D = D_0 [(T / 273.15) ^ eT] (101.3246 / P)}
+#' \cr
+#' According to Montieth & Unger (2013), eT is generally between 1.5 and 2. Their data in Appendix 3 indicate eT = 1.75 is reasonble for environmental physics.
 #' 
 #' @references 
 #' 
@@ -445,8 +447,9 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 
   # Calculate virtual temperature
   # Assumes inside of leaf is 100% RH
-  Tv_leaf <- .get_Tv(T_leaf, .get_ps(T_leaf, pars$P), pars$P)
-  Tv_air <-	.get_Tv(pars$T_air, pars$RH * .get_ps(pars$T_air, pars$P), pars$P)
+  Tv_leaf <- .get_Tv(T_leaf, .get_ps(T_leaf, pars$P), pars$P, pars$epsilon)
+  Tv_air <-	.get_Tv(pars$T_air, pars$RH * .get_ps(pars$T_air, pars$P), pars$P,
+                    pars$epsilon)
   D_m <- .get_Dx(pars$D_m0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P)
   Gr <- pars$t_air * pars$G * pars$leafsize ^ 3 * abs(Tv_leaf - Tv_air) / D_m ^ 2
 
@@ -458,17 +461,19 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #'
 #' @inheritParams .get_Dx
 #' @param p water vapour pressure in kPa
+#' @param epsilon ratio of water to air molar masses (unitless)
 #' 
 #' @return Value in K of class \code{units}
 #' 
 #' @details 
 #' 
-#' \deqn{T_\text{v} = T / [1 - 0.388 (p / P)]}{T_v = T / [1 - 0.388 (p / P)]}
+#' \deqn{T_\text{v} = T / [1 - (1 - \epsilon) (p / P)]}{T_v = T / [1 - (1 - epsilon) (p / P)]}
 #' 
 #' Eq. 2.35 in Monteith & Unsworth (2013) \cr
 #' \cr
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
+#' \eqn{\epsilon} \tab \code{epsilon} \tab ratio of water to air molar masses \tab unitless \tab 0.622 \cr
 #' \eqn{p} \tab \code{p} \tab water vapour pressure \tab kPa \tab \link[=.get_ps]{calculated}\cr
 #' \eqn{P} \tab \code{P} \tab atmospheric pressure \tab kPa \tab 101.3246
 #' }
@@ -478,10 +483,10 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' Monteith JL, Unsworth MH. 2013. Principles of Environmental Physics. 4th edition. Academic Press, London.
 #' 
 
-.get_Tv <- function(Temp, p, P) {
+.get_Tv <- function(Temp, p, P, epsilon) {
 
   set_units(Temp, "K") / 
-    (set_units(1) - 0.388 * (set_units(p, "kPa") / set_units(P, "kPa")))
+    (set_units(1) - (set_units(1) - epsilon) * (set_units(p, "kPa") / set_units(P, "kPa")))
 
 }
 
@@ -593,39 +598,19 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   Re <- .get_re(T_leaf, pars)
 
   # Archemides number
-  Ar <- Gr / Re ^ 2
-
-  # Forced or free convection? Cutoffs based on Nobel (2009) pg.344
-  if (Ar < set_units(0.1)) {
-    type <- "forced"
-    cons <- pars$nu_constant(Re, type, pars$T_air, T_leaf, surface)
-    Nu <- cons$a * drop_units(Re) ^ cons$b
-    Nu %<>% set_units()
-    return(Nu)
-  }
-
-  if (Ar >= set_units(0.1) & Ar <= set_units(10)) {
-    type <- "forced"
-    cons <- pars$nu_constant(Re, type, pars$T_air, T_leaf, surface)
-    Nu_forced <- cons$a * drop_units(Re) ^ cons$b
-
-    type <- "free"
-    cons <- pars$nu_constant(Re, type, pars$T_air, T_leaf, surface)
-    Nu_free <- cons$a * drop_units(Gr) ^ cons$b
-
-    Nu <- (Nu_forced ^ 3.5 + Nu_free ^ 3.5) ^ (1 / 3.5)
-    Nu %<>% set_units()
-    return(Nu)
-  }
-
-  if (Ar > set_units(10)) {
-    type <- "free"
-    cons <- pars$nu_constant(Re, type, pars$T_air, T_leaf, surface)
-    Nu <- cons$a * drop_units(Gr) ^ cons$b
-    Nu %<>% set_units()
-    return(Nu)
-  }
-
+  # Ar <- Gr / Re ^ 2
+  
+  cons <- pars$nu_constant(Re, "forced", pars$T_air, T_leaf, surface)
+  Nu_forced <- cons$a * drop_units(Re) ^ cons$b
+  
+  cons <- pars$nu_constant(Re, "free", pars$T_air, T_leaf, surface)
+  Nu_free <- cons$a * drop_units(Gr) ^ cons$b
+  
+  Nu <- (Nu_forced ^ 3.5 + Nu_free ^ 3.5) ^ (1 / 3.5)
+  Nu %<>% set_units()
+  
+  Nu
+  
 }
 
 #' L: Latent heat flux density (W / m^2)
@@ -930,45 +915,22 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   Re <- .get_re(T_leaf, pars)
 
   # Archemides number
-  Ar <- Gr / Re ^ 2
+  # Ar <- Gr / Re ^ 2
 
   D_h <- .get_Dx(pars$D_h0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P)
   D_w <- .get_Dx(pars$D_w0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P)
 
-  # Forced or free convection? Cutoffs based on Nobel (2009) pg.344
-  if (Ar < set_units(0.1)) {
-    type <- "forced"
-    cons <- pars$nu_constant(Re, type, pars$T_air, T_leaf, surface)
-    Nu <- cons$a * drop_units(Re) ^ cons$b
-    Sh <- Nu * drop_units(D_h / D_w) ^ drop_units(pars$sh_constant(type))
-    Nu %<>% set_units()
-    return(Sh)
-  }
+  cons <- pars$nu_constant(Re, "forced", pars$T_air, T_leaf, surface)
+  Nu_forced <- cons$a * drop_units(Re) ^ cons$b
+  Sh_forced <- Nu_forced * drop_units(D_h / D_w) ^ drop_units(pars$sh_constant("forced"))
 
-  if (Ar >= set_units(0.1) & Ar <= set_units(10)) {
-    type <- "forced"
-    cons <- pars$nu_constant(Re, type, pars$T_air, T_leaf, surface)
-    Nu_forced <- cons$a * drop_units(Re) ^ cons$b
-    Sh_forced <- Nu_forced * drop_units(D_h / D_w) ^ drop_units(pars$sh_constant(type))
+  cons <- pars$nu_constant(Re, "free", pars$T_air, T_leaf, surface)
+  Nu_free <- cons$a * drop_units(Gr) ^ cons$b
+  Sh_free <- Nu_free * drop_units(D_h / D_w) ^ drop_units(pars$sh_constant("free"))
 
-    type <- "free"
-    cons <- pars$nu_constant(Re, type, pars$T_air, T_leaf, surface)
-    Nu_free <- cons$a * drop_units(Gr) ^ cons$b
-    Sh_free <- Nu_free * drop_units(D_h / D_w) ^ drop_units(pars$sh_constant(type))
+  Sh <- (Sh_forced ^ 3.5 + Sh_free ^ 3.5) ^ (1 / 3.5)
+  Sh %<>% set_units()
 
-    warning("check on exponents in mixed convection Sherwood equation in .get_sh")
-    Sh <- (Sh_forced ^ 3.5 + Sh_free ^ 3.5) ^ (1 / 3.5)
-    Sh %<>% set_units()
-    return(Sh)
-  }
-
-  if (Ar > set_units(10)) {
-    type <- "free"
-    cons <- pars$nu_constant(Re, type, pars$T_air, T_leaf, surface)
-    Nu <- cons$a * drop_units(Gr) ^ cons$b
-    Sh <- Nu * drop_units(D_h / D_w) ^ drop_units(pars$sh_constant(type))
-    Sh %<>% set_units()
-    return(Sh)
-  }
+  Sh
 
 }

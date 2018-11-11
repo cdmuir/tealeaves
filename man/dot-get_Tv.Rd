@@ -4,7 +4,7 @@
 \alias{.get_Tv}
 \title{Calculate virtual temperature}
 \usage{
-.get_Tv(Temp, p, P)
+.get_Tv(Temp, p, P, epsilon)
 }
 \arguments{
 \item{Temp}{Temperature in Kelvin}
@@ -12,6 +12,8 @@
 \item{p}{water vapour pressure in kPa}
 
 \item{P}{Atmospheric pressure in kPa}
+
+\item{epsilon}{ratio of water to air molar masses (unitless)}
 }
 \value{
 Value in K of class \code{units}
@@ -20,12 +22,13 @@ Value in K of class \code{units}
 Calculate virtual temperature
 }
 \details{
-\deqn{T_\text{v} = T / [1 - 0.388 (p / P)]}{T_v = T / [1 - 0.388 (p / P)]}
+\deqn{T_\text{v} = T / [1 - (1 - \epsilon) (p / P)]}{T_v = T / [1 - (1 - epsilon) (p / P)]}
 
 Eq. 2.35 in Monteith & Unsworth (2013) \cr
 \cr
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
+\eqn{\epsilon} \tab \code{epsilon} \tab ratio of water to air molar masses \tab unitless \tab 0.622 \cr
 \eqn{p} \tab \code{p} \tab water vapour pressure \tab kPa \tab \link[=.get_ps]{calculated}\cr
 \eqn{P} \tab \code{P} \tab atmospheric pressure \tab kPa \tab 101.3246
 }

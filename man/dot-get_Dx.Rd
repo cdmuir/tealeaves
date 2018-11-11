@@ -23,6 +23,8 @@ D_x: Calculate diffusion coefficient for a given temperature and pressure
 }
 \details{
 \deqn{D = D_\text{0} (T / 273.15) ^ {eT} (101.3246 / P)}{D = D_0 [(T / 273.15) ^ eT] (101.3246 / P)}
+\cr
+According to Montieth & Unger (2013), eT is generally between 1.5 and 2. Their data in Appendix 3 indicate eT = 1.75 is reasonble for environmental physics.
 }
 \references{
 Monteith JL, Unsworth MH. 2013. Principles of Environmental Physics. 4th edition. Academic Press, London.

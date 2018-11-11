@@ -14,7 +14,7 @@
 
 ## Description
 
-`tealeaves` is a lightweight R package to model leaf temperature using leaf energy balance. It uses the R packge [units](https://cran.r-project.org/web/packages/units/index.html) to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind, or trait gradients such as leaf size or stomatal conductance. 
+`tealeaves` is a lightweight R package to model leaf temperature using leaf energy balance. It uses the R package [units](https://cran.r-project.org/web/packages/units/index.html) to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind, or trait gradients such as leaf size or stomatal conductance. 
 
 ## Get `tealeaves`
 

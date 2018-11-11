@@ -70,6 +70,7 @@ make_constants
 \eqn{Sh} \tab \code{Sh} \tab Sherwood number \tab none \tab *\cr
 \eqn{D_{h,0}}{D_h0} \tab \code{D_h0} \tab diffusion coefficient for heat in air at 0 C \tab m\eqn{^2} / s \tab 1.9e-5\cr
 \eqn{D_{w,0}}{D_w0} \tab \code{D_w0} \tab diffusion coefficient for water vapour in air at 0 C \tab m\eqn{^2} / s \tab 21.2\cr
+\eqn{\epsilon} \tab \code{epsilon} \tab ratio of water to air molar masses \tab unitless \tab 0.622 \cr
 \eqn{c_p} \tab \code{c_p} \tab heat capacity of air \tab J / (g K) \tab 1.01\cr
 }
 
