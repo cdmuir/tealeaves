@@ -3,3 +3,5 @@
 ^\.Rproj\.user$
 ^R/issues\.R$
 CONDUCT.md
+README.Rmd
+README_files/*
