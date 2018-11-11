@@ -14,7 +14,7 @@ tealeaves
 
 ## Description
 
-`tealeaves` is a lightweight R package to model leaf temperature using leaf energy balance. It uses the R packge `citation(package = 'units')` to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind, or trait gradients such as leaf size or stomatal conductance. 
+`tealeaves` is a lightweight R package to model leaf temperature using leaf energy balance. It uses the R packge [units](https://cran.r-project.org/web/packages/units/index.html) to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind, or trait gradients such as leaf size or stomatal conductance. 
 
 ## Get tealeaves
 
@@ -36,8 +36,21 @@ And load tealeaves
 ```r
 library("tealeaves")
 ```
+## Contributors
 
-## Code of Conduct
+* [Chris Muir](https://github.com/cdmuir)
 
-Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md).
-By participating in this project you agree to abide by its terms.
+## Comments and contributions
+
+We welcome comments, criticisms, and especially contributions!
+GitHub issues are the preferred way to report bugs, ask questions, or request new features.
+You can submit issues here:
+
+https://github.com/ropensci/taxa/issues
+
+## Meta
+
+* Please [report any issues or bugs](https://github.com/cdmuir/tealeaves/issues).
+* License: MIT
+<!--- * Get citation information for `tealeaves` in R doing `citation(package = 'tealeaves')` -->
+* Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
