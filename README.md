@@ -42,11 +42,11 @@ library("tealeaves")
 
 ## Comments and contributions
 
-We welcome comments, criticisms, and especially contributions!
+I welcome comments, criticisms, and especially contributions!
 GitHub issues are the preferred way to report bugs, ask questions, or request new features.
 You can submit issues here:
 
-https://github.com/ropensci/taxa/issues
+https://github.com/cdmuir/tealeaves/issues
 
 ## Meta
 
