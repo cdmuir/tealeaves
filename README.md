@@ -1,5 +1,5 @@
-tealeaves <img src="hex-sticker/hex-sticker.png" align="right" />
-=================================================================
+tealeaves <img src="hex-sticker/hex-sticker.png" align="right" height="200" width="200"/>
+=========================================================================================
 
 [![Project Status: WIP - Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
