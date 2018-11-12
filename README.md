@@ -5,7 +5,7 @@ tealeaves
 has not yet been a stable, usable release suitable for the
 public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 [![Build
-Status](https://travis-ci.org/cdmuir/tealeaves.svg?branch=master)](https://travis-ci.org/cdmuir/tealeaves)
+Status](https://travis-ci.com/cdmuir/tealeaves.svg?branch=master)](https://travis-ci.com/cdmuir/tealeaves)
 
 <!---
 [![codecov](https://codecov.io/gh/cdmuir/tealeaves/branch/master/graph/badge.svg)](https://codecov.io/gh/cdmuir/tealeaves)
@@ -93,12 +93,11 @@ Replace default parameters
 --------------------------
 
 You can look at default parameters settings in the manual (run
-/Library/Frameworks/R.framework/Versions/3.5/Resources/library/tealeaves/help/make\_parameters).
-These defaults are reasonable, but of course you will probably want to
-use different choices and allow some parameters to vary. Here, I'll
-demonstrate how to replace a default. In the next section, I'll show you
-how to set up a gradient of parameter values over which to solve for
-leaf temperature.
+`?make_parameters`). These defaults are reasonable, but of course you
+will probably want to use different choices and allow some parameters to
+vary. Here, I'll demonstrate how to replace a default. In the next
+section, I'll show you how to set up a gradient of parameter values over
+which to solve for leaf temperature.
 
 
     # Use the `replace` argument to replace defaults. This must be a named list, and
