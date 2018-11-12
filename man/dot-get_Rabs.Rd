@@ -16,13 +16,13 @@ Value in W / m\eqn{^2} of class \code{units}
 R_abs: total absorbed radiation (W / m^2)
 }
 \details{
-\deqn{R_\text{abs} = \alpha_\text{s} S_\text{sw} + \alpha_\text{l} S_\text{lw}}{R_abs = \alpha_s * S_sw + \alpha_l * S_lw}
+\deqn{R_\mathrm{abs} = \alpha_\mathrm{s} S_\mathrm{sw} + \alpha_\mathrm{l} S_\mathrm{lw}}{R_abs = \alpha_s * S_sw + \alpha_l * S_lw}
 
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-\eqn{\alpha_\text{s}}{\alpha_s} \tab \code{abs_s} \tab absorbtivity of shortwave radiation (0.3 - 4 \eqn{\mu}m) \tab none \tab 0.80\cr
-\eqn{\alpha_\text{l}}{\alpha_l} \tab \code{abs_l} \tab absorbtivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
-\eqn{S_\text{sw}}{S_sw} \tab \code{S_sw} \tab incident short-wave (solar) radiation flux density \tab W / m\eqn{^2} \tab 1000\cr
-\eqn{S_\text{lw}}{S_lw} \tab \code{S_lw} \tab incident long-wave radiation flux density \tab W / m\eqn{^2} \tab 825
+\eqn{\alpha_\mathrm{s}}{\alpha_s} \tab \code{abs_s} \tab absorbtivity of shortwave radiation (0.3 - 4 \eqn{\mu}m) \tab none \tab 0.80\cr
+\eqn{\alpha_\mathrm{l}}{\alpha_l} \tab \code{abs_l} \tab absorbtivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
+\eqn{S_\mathrm{sw}}{S_sw} \tab \code{S_sw} \tab incident short-wave (solar) radiation flux density \tab W / m\eqn{^2} \tab 1000\cr
+\eqn{S_\mathrm{lw}}{S_lw} \tab \code{S_lw} \tab incident long-wave radiation flux density \tab W / m\eqn{^2} \tab 825
 }
 }

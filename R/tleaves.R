@@ -11,12 +11,12 @@
 #' @param progress Logical. Should a progress bar be displayed?
 #' 
 #' @param quiet Logical. Should messages be displayed?
-
+#'
 #' @return 
 #' 
 #' \code{tleaves}: \cr
 #' \cr
-#' 
+#' A data.frame (more information coming soon!)
 #' \cr
 #' \code{tleaf}: \cr
 #' \cr
@@ -38,7 +38,6 @@
 #' leaf_par <- make_leafpar()
 #' enviro_par <- make_enviropar()
 #' constants <- make_constants()
-#' pars <- c(leaf_par, enviro_par, constants)
 #' T_leaf <- tleaf(leaf_par, enviro_par, constants)
 #' T_leaf
 #' 
@@ -81,8 +80,8 @@ tleaves <- function(leaf_par, enviro_par, constants, n_start = 1,
   soln <- pars %>%
     purrr::map_dfr(~{
       
-      ret <-tleaf(leaf_par(.x), enviro_par(.x), constants, n_start = n_start, 
-                  progress = FALSE, quiet = TRUE)
+      ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, n_start = n_start, 
+                   progress = FALSE, quiet = TRUE)
       if (progress) pb$tick()$print()
       ret
       
@@ -258,14 +257,14 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details
 #' 
-#' \deqn{R_\text{abs} = \alpha_\text{s} S_\text{sw} + \alpha_\text{l} S_\text{lw}}{R_abs = \alpha_s * S_sw + \alpha_l * S_lw}
+#' \deqn{R_\mathrm{abs} = \alpha_\mathrm{s} S_\mathrm{sw} + \alpha_\mathrm{l} S_\mathrm{lw}}{R_abs = \alpha_s * S_sw + \alpha_l * S_lw}
 #' 
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-#' \eqn{\alpha_\text{s}}{\alpha_s} \tab \code{abs_s} \tab absorbtivity of shortwave radiation (0.3 - 4 \eqn{\mu}m) \tab none \tab 0.80\cr
-#' \eqn{\alpha_\text{l}}{\alpha_l} \tab \code{abs_l} \tab absorbtivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
-#' \eqn{S_\text{sw}}{S_sw} \tab \code{S_sw} \tab incident short-wave (solar) radiation flux density \tab W / m\eqn{^2} \tab 1000\cr
-#' \eqn{S_\text{lw}}{S_lw} \tab \code{S_lw} \tab incident long-wave radiation flux density \tab W / m\eqn{^2} \tab 825
+#' \eqn{\alpha_\mathrm{s}}{\alpha_s} \tab \code{abs_s} \tab absorbtivity of shortwave radiation (0.3 - 4 \eqn{\mu}m) \tab none \tab 0.80\cr
+#' \eqn{\alpha_\mathrm{l}}{\alpha_l} \tab \code{abs_l} \tab absorbtivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
+#' \eqn{S_\mathrm{sw}}{S_sw} \tab \code{S_sw} \tab incident short-wave (solar) radiation flux density \tab W / m\eqn{^2} \tab 1000\cr
+#' \eqn{S_\mathrm{lw}}{S_lw} \tab \code{S_lw} \tab incident long-wave radiation flux density \tab W / m\eqn{^2} \tab 825
 #' }
 
 .get_Rabs <- function(pars) {
@@ -282,14 +281,14 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details
 #' 
-#' \deqn{S_\text{r} = 2 \sigma \alpha_\text{l} T_\text{air} ^ 4}{S_r = 2 \sigma \alpha_l T_air ^ 4 }
+#' \deqn{S_\mathrm{r} = 2 \sigma \alpha_\mathrm{l} T_\mathrm{air} ^ 4}{S_r = 2 \sigma \alpha_l T_air ^ 4 }
 #' 
 #' The factor of 2 accounts for re-radiation from both leaf surfaces (Foster and Smith 1987). \cr
 #' \cr
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-#' \eqn{\alpha_\text{l}}{\alpha_l} \tab \code{abs_l} \tab absortivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
-#' \eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
+#' \eqn{\alpha_\mathrm{l}}{\alpha_l} \tab \code{abs_l} \tab absortivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
+#' \eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
 #' \eqn{\sigma} \tab \code{s} \tab Stephan-Boltzmann constant \tab W / (m\eqn{^2} K\eqn{^4}) \tab 5.67e-08
 #' }
 #' 
@@ -310,15 +309,15 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \deqn{H = P_\text{a} c_p g_\text{h} (T_\text{leaf} - T_\text{air})}{H = P_a c_p g_h * (T_leaf - T_air)}
+#' \deqn{H = P_\mathrm{a} c_p g_\mathrm{h} (T_\mathrm{leaf} - T_\mathrm{air})}{H = P_a c_p g_h * (T_leaf - T_air)}
 #' 
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 #' \eqn{c_p} \tab \code{c_p} \tab heat capacity of air \tab J / (g K) \tab 1.01\cr
-#' \eqn{g_\text{h}}{g_h} \tab \code{g_h} \tab boundary layer conductance to heat \tab m / s \tab \link[=.get_gh]{calculated}\cr
-#' \eqn{P_\text{a}}{P_a} \tab \code{P_a} \tab density of dry air \tab g / m^3 \tab \link[=.get_Pa]{calculated}\cr
-#' \eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
-#' \eqn{T_\text{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
+#' \eqn{g_\mathrm{h}}{g_h} \tab \code{g_h} \tab boundary layer conductance to heat \tab m / s \tab \link[=.get_gh]{calculated}\cr
+#' \eqn{P_\mathrm{a}}{P_a} \tab \code{P_a} \tab density of dry air \tab g / m^3 \tab \link[=.get_Pa]{calculated}\cr
+#' \eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
+#' \eqn{T_\mathrm{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
 #' }
 #' 
 #' @seealso \code{\link{.get_gh}}, \code{\link{.get_Pa}} 
@@ -345,14 +344,14 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \deqn{P_\text{a} = P / (R_\text{air} (T_\text{leaf} - T_\text{air}) / 2)}{P_a = P / (R_air (T_leaf - T_air) / 2)}
+#' \deqn{P_\mathrm{a} = P / (R_\mathrm{air} (T_\mathrm{leaf} - T_\mathrm{air}) / 2)}{P_a = P / (R_air (T_leaf - T_air) / 2)}
 #' 
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 #' \eqn{P} \tab \code{P} \tab atmospheric pressure \tab kPa \tab 101.3246\cr
-#' \eqn{R_\text{air}}{R_air} \tab \code{R_air} \tab specific gas constant for dry air \tab J / (kg K) \tab 287.058\cr
-#' \eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
-#' \eqn{T_\text{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
+#' \eqn{R_\mathrm{air}}{R_air} \tab \code{R_air} \tab specific gas constant for dry air \tab J / (kg K) \tab 287.058\cr
+#' \eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
+#' \eqn{T_\mathrm{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
 #' }
 #' 
 
@@ -370,12 +369,12 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \deqn{g_\text{h} = D_\text{h} Nu / d}{g_h = D_h Nu / d}
+#' \deqn{g_\mathrm{h} = D_\mathrm{h} Nu / d}{g_h = D_h Nu / d}
 #' 
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 #' \eqn{d} \tab \code{leafsize} \tab Leaf characteristic dimension in meters \tab m \tab 0.1\cr
-#' \eqn{D_\text{h}}{D_h} \tab \code{D_h} \tab diffusion coefficient for heat in air \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
+#' \eqn{D_\mathrm{h}}{D_h} \tab \code{D_h} \tab diffusion coefficient for heat in air \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
 #' \eqn{Nu} \tab \code{Nu} \tab Nusselt number \tab none \tab \link[=.get_nu]{calculated}
 #' }
 #' 
@@ -405,7 +404,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \deqn{D = D_\text{0} (T / 273.15) ^ {eT} (101.3246 / P)}{D = D_0 [(T / 273.15) ^ eT] (101.3246 / P)}
+#' \deqn{D = D_\mathrm{0} (T / 273.15) ^ {eT} (101.3246 / P)}{D = D_0 [(T / 273.15) ^ eT] (101.3246 / P)}
 #' \cr
 #' According to Montieth & Unger (2013), eT is generally between 1.5 and 2. Their data in Appendix 3 indicate eT = 1.75 is reasonble for environmental physics.
 #' 
@@ -432,16 +431,16 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \deqn{Gr = t_\text{air} G d ^ 3 |T_\text{v,leaf} - T_\text{v,air}| / D_\text{m} ^ 2}{Gr = t_air G d ^ 3 abs(Tv_leaf - Tv_air) / D_m ^ 2}
+#' \deqn{Gr = t_\mathrm{air} G d ^ 3 |T_\mathrm{v,leaf} - T_\mathrm{v,air}| / D_\mathrm{m} ^ 2}{Gr = t_air G d ^ 3 abs(Tv_leaf - Tv_air) / D_m ^ 2}
 #' 
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 #' \eqn{d} \tab \code{leafsize} \tab Leaf characteristic dimension in meters \tab m \tab 0.1\cr
-#' \eqn{D_\text{m}}{D_m} \tab \code{D_m} \tab diffusion coefficient of momentum in air \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
+#' \eqn{D_\mathrm{m}}{D_m} \tab \code{D_m} \tab diffusion coefficient of momentum in air \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
 #' \eqn{G} \tab \code{G} \tab gravitational acceleration \tab m / s\eqn{^2} \tab 9.8\cr
-#' \eqn{t_\text{air}}{t_air} \tab \code{t_air} \tab coefficient of thermal expansion of air \tab 1 / K \tab 1 / Temp \cr
-#' \eqn{T_\text{v,air}}{Tv_air} \tab \code{Tv_air} \tab virtual air temperature \tab K \tab \link[=.get_Tv]{calculated}\cr
-#' \eqn{T_\text{v,leaf}}{Tv_leaf} \tab \code{Tv_leaf} \tab virtual leaf temperature \tab K \tab \link[=.get_Tv]{calculated}
+#' \eqn{t_\mathrm{air}}{t_air} \tab \code{t_air} \tab coefficient of thermal expansion of air \tab 1 / K \tab 1 / Temp \cr
+#' \eqn{T_\mathrm{v,air}}{Tv_air} \tab \code{Tv_air} \tab virtual air temperature \tab K \tab \link[=.get_Tv]{calculated}\cr
+#' \eqn{T_\mathrm{v,leaf}}{Tv_leaf} \tab \code{Tv_leaf} \tab virtual leaf temperature \tab K \tab \link[=.get_Tv]{calculated}
 #' }
 #' 
 
@@ -470,7 +469,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \deqn{T_\text{v} = T / [1 - (1 - \epsilon) (p / P)]}{T_v = T / [1 - (1 - epsilon) (p / P)]}
+#' \deqn{T_\mathrm{v} = T / [1 - (1 - \epsilon) (p / P)]}{T_v = T / [1 - (1 - epsilon) (p / P)]}
 #' 
 #' Eq. 2.35 in Monteith & Unsworth (2013) \cr
 #' \cr
@@ -507,7 +506,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \cr
 #' This returns p_s in hPa, which is converted to kPa: \cr
 #' \cr
-#' \deqn{p_\text{s} = 10 ^ (-7.90298 * (373.16 / Temp - 1) + 5.02808 * log_{10}(373.16 / Temp) - 1.3816e-7 * (10 ^ (11.344 * (1 - Temp / 373.16) - 1)) + 8.1328e-3 * (10 ^ (-3.49149 * (373.16 / Temp - 1)) - 1) + log_{10}(P))}{p_s = 10 ^ (-7.90298 * (373.16 / Temp - 1) + 5.02808 * log10(373.16 / Temp) - 1.3816e-7 * (10 ^ (11.344 * (1 - Temp / 373.16) - 1)) + 8.1328e-3 * (10 ^ (-3.49149 * (373.16 / Temp - 1)) - 1) + log10(P))}
+#' \deqn{p_\mathrm{s} = 10 ^ (-7.90298 * (373.16 / Temp - 1) + 5.02808 * log_{10}(373.16 / Temp) - 1.3816e-7 * (10 ^ (11.344 * (1 - Temp / 373.16) - 1)) + 8.1328e-3 * (10 ^ (-3.49149 * (373.16 / Temp - 1)) - 1) + log_{10}(P))}{p_s = 10 ^ (-7.90298 * (373.16 / Temp - 1) + 5.02808 * log10(373.16 / Temp) - 1.3816e-7 * (10 ^ (11.344 * (1 - Temp / 373.16) - 1)) + 8.1328e-3 * (10 ^ (-3.49149 * (373.16 / Temp - 1)) - 1) + log10(P))}
 #' 
 #' @references \url{http://cires1.colorado.edu/~voemel/vp.html}
 #' 
@@ -542,12 +541,12 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \deqn{Re = u d / D_\text{m}}{Re = u d / D_m}
+#' \deqn{Re = u d / D_\mathrm{m}}{Re = u d / D_m}
 #' 
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 #' \eqn{d} \tab \code{leafsize} \tab Leaf characteristic dimension in meters \tab m \tab 0.1\cr
-#' \eqn{D_\text{m}}{D_m} \tab \code{D_m} \tab diffusion coefficient of momentum in air \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
+#' \eqn{D_\mathrm{m}}{D_m} \tab \code{D_m} \tab diffusion coefficient of momentum in air \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
 #' \eqn{u} \tab \code{wind} \tab windspeed \tab m / s \tab 2
 #' }
 #' 
@@ -624,13 +623,13 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \deqn{L = h_\text{vap} g_\text{tw} d_\text{wv}}{L = h_vap g_tw d_wv}
+#' \deqn{L = h_\mathrm{vap} g_\mathrm{tw} d_\mathrm{wv}}{L = h_vap g_tw d_wv}
 #' 
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-#' \eqn{d_\text{wv}}{d_wv} \tab \code{d_wv} \tab water vapour gradient \tab mol / m ^ 3 \tab \link[=.get_dwv]{calculated} \cr
-#' \eqn{h_\text{vap}}{h_vap} \tab \code{h_vap} \tab latent heat of vaporization \tab J / mol \tab \link[=.get_hvap]{calculated} \cr
-#' \eqn{g_\text{tw}}{g_tw} \tab \code{g_tw} \tab total conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab \link[=.get_gtw]{calculated}
+#' \eqn{d_\mathrm{wv}}{d_wv} \tab \code{d_wv} \tab water vapour gradient \tab mol / m ^ 3 \tab \link[=.get_dwv]{calculated} \cr
+#' \eqn{h_\mathrm{vap}}{h_vap} \tab \code{h_vap} \tab latent heat of vaporization \tab J / mol \tab \link[=.get_hvap]{calculated} \cr
+#' \eqn{g_\mathrm{tw}}{g_tw} \tab \code{g_tw} \tab total conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab \link[=.get_gtw]{calculated}
 #' }
 #'
 
@@ -654,20 +653,20 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \bold{Water vapour gradient:} The water vapour pressure differential from inside to outside of the leaf is the saturation water vapor pressure inside the leaf (\eqn{p_\text{leaf}}{p_leaf}) minus the water vapor pressure of the air (\eqn{p_\text{air}}{p_air}):
+#' \bold{Water vapour gradient:} The water vapour pressure differential from inside to outside of the leaf is the saturation water vapor pressure inside the leaf (p_leaf) minus the water vapor pressure of the air (p_air):
 #' 
-#' \deqn{d_\text{wv} = p_\text{leaf} / (R T_\text{leaf}) - RH p_\text{air} / (R T_\text{air})}{d_wv = p_leaf / (R T_leaf) - RH p_air / (R T_air)}
+#' \deqn{d_\mathrm{wv} = p_\mathrm{leaf} / (R T_\mathrm{leaf}) - RH p_\mathrm{air} / (R T_\mathrm{air})}{d_wv = p_leaf / (R T_leaf) - RH p_air / (R T_air)}
 #' 
 #' Note that water vapor pressure is converted from kPa to mol / m^3 using ideal gas law. \cr
 #' 
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-#' \eqn{p_\text{air}}{p_air} \tab \code{p_air} \tab saturation water vapour pressure of air \tab kPa \tab \link[=.get_ps]{calculated}\cr
-#' \eqn{p_\text{leaf}}{p_leaf} \tab \code{p_leaf} \tab saturation water vapour pressure inside the leaf \tab kPa \tab \link[=.get_ps]{calculated}\cr
+#' \eqn{p_\mathrm{air}}{p_air} \tab \code{p_air} \tab saturation water vapour pressure of air \tab kPa \tab \link[=.get_ps]{calculated}\cr
+#' \eqn{p_\mathrm{leaf}}{p_leaf} \tab \code{p_leaf} \tab saturation water vapour pressure inside the leaf \tab kPa \tab \link[=.get_ps]{calculated}\cr
 #' \eqn{R} \tab \code{R} \tab ideal gas constant \tab J / (mol K) \tab 8.3144598\cr
-#' \eqn{\text{RH}}{RH} \tab \code{RH} \tab relative humidity \tab \% \tab 0.50\cr
-#' \eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
-#' \eqn{T_\text{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
+#' \eqn{\mathrm{RH}}{RH} \tab \code{RH} \tab relative humidity \tab \% \tab 0.50\cr
+#' \eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
+#' \eqn{T_\mathrm{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
 #' }
 #'
 #' @examples 
@@ -705,30 +704,30 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \bold{Total conductance to water vapor:} The total conductance to water vapor (\eqn{g_\text{tw}}{g_tw}) is the sum of the parallel lower (abaxial) and upper (adaxial) conductances:
+#' \bold{Total conductance to water vapor:} The total conductance to water vapor (\eqn{g_\mathrm{tw}}{g_tw}) is the sum of the parallel lower (abaxial) and upper (adaxial) conductances:
 #' 
-#' \deqn{g_\text{tw} = g_\text{w,lower} + g_\text{w,upper}}{g_tw = gw_lower + gw_upper}
+#' \deqn{g_\mathrm{tw} = g_\mathrm{w,lower} + g_\mathrm{w,upper}}{g_tw = gw_lower + gw_upper}
 #' 
-#' The conductance to water vapor on each surface is a function of parallel stomatal (\eqn{g_\text{sw}}{g_sw}) and cuticular (\eqn{g_\text{uw}}{g_uw}) conductances in series with the boundary layer conductance (\eqn{g_\text{bw}}{g_bw}). The stomatal, cuticular, and boundary layer conductance on the lower surface are:
+#' The conductance to water vapor on each surface is a function of parallel stomatal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances in series with the boundary layer conductance (\eqn{g_\mathrm{bw}}{g_bw}). The stomatal, cuticular, and boundary layer conductance on the lower surface are:
 #' 
-#' \deqn{g_\text{sw,lower} = g_\text{sw} (1 - sr) R (T_\text{leaf} + T_\text{air}) / 2}{gsw_lower = g_sw (1 - sr) R (T_leaf + T_air) / 2}
-#' \deqn{g_\text{uw_lower} = g_\text{uw} / 2 R (T_\text{leaf} + T_\text{air}) / 2}{guw_lower = g_uw / 2 R (T_leaf + T_air) / 2}
+#' \deqn{g_\mathrm{sw,lower} = g_\mathrm{sw} (1 - sr) R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{gsw_lower = g_sw (1 - sr) R (T_leaf + T_air) / 2}
+#' \deqn{g_\mathrm{uw_lower} = g_\mathrm{uw} / 2 R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{guw_lower = g_uw / 2 R (T_leaf + T_air) / 2}
 #' \cr
 #' See \code{\link{.get_gbw}} for details on calculating boundary layer conductance. The equations for the upper surface are:
 #' 
-#' \deqn{g_\text{sw,upper} = g_\text{sw} sr R (T_\text{leaf} + T_\text{air}) / 2}{gsw_upper = g_sw sr R (T_leaf + T_air) / 2}
-#' \deqn{g_\text{uw_upper} = g_\text{uw} / 2 R (T_\text{leaf} + T_\text{air}) / 2}{guw_upper = g_uw / 2 R (T_leaf + T_air) / 2}
+#' \deqn{g_\mathrm{sw,upper} = g_\mathrm{sw} sr R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{gsw_upper = g_sw sr R (T_leaf + T_air) / 2}
+#' \deqn{g_\mathrm{uw_upper} = g_\mathrm{uw} / 2 R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{guw_upper = g_uw / 2 R (T_leaf + T_air) / 2}
 #' \cr
-#' Note that the stomatal and cuticular conductances are given in units of (umol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\text{sw}}{g_sw}) and cuticular (\eqn{g_\text{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
+#' Note that the stomatal and cuticular conductances are given in units of (umol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
 #'
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-#' \eqn{g_\text{sw}}{g_sw} \tab \code{g_sw} \tab stomatal conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 5\cr
-#' \eqn{g_\text{uw}}{g_uw} \tab \code{g_uw} \tab cuticular conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 0.1\cr
+#' \eqn{g_\mathrm{sw}}{g_sw} \tab \code{g_sw} \tab stomatal conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 5\cr
+#' \eqn{g_\mathrm{uw}}{g_uw} \tab \code{g_uw} \tab cuticular conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 0.1\cr
 #' \eqn{R} \tab \code{R} \tab ideal gas constant \tab J / (mol K) \tab 8.3144598\cr
-#' \eqn{\text{logit}(sr)}{logit(sr)} \tab \code{logit_sr} \tab stomatal ratio (logit transformed) \tab none \tab 0 = logit(0.5)\cr
-#' \eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
-#' \eqn{T_\text{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
+#' \eqn{\mathrm{logit}(sr)}{logit(sr)} \tab \code{logit_sr} \tab stomatal ratio (logit transformed) \tab none \tab 0 = logit(0.5)\cr
+#' \eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
+#' \eqn{T_\mathrm{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
 #' }
 #' 
 #' @examples 
@@ -802,7 +801,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \bold{Heat of vaporization:} The heat of vaporization (\eqn{h_\text{vap}}{h_vap}) is a function of temperature. I used data from on temperature and \eqn{h_\text{vap}}{h_vap} from Nobel (2009, Appendix 1) to estimate a linear regression. See Examples.
+#' \bold{Heat of vaporization:} The heat of vaporization (\eqn{h_\mathrm{vap}}{h_vap}) is a function of temperature. I used data from on temperature and \eqn{h_\mathrm{vap}}{h_vap} from Nobel (2009, Appendix 1) to estimate a linear regression. See Examples.
 #'
 #' @examples 
 #' 
@@ -855,12 +854,12 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' \deqn{g_\text{bw} = D_\text{w} Sh / d}{g_bw = D_w Sh / d}
+#' \deqn{g_\mathrm{bw} = D_\mathrm{w} Sh / d}{g_bw = D_w Sh / d}
 #' 
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 #' \eqn{d} \tab \code{leafsize} \tab Leaf characteristic dimension in meters \tab m \tab 0.1\cr
-#' \eqn{D_\text{w}}{D_w} \tab \code{D_w} \tab diffusion coefficient for water vapour \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
+#' \eqn{D_\mathrm{w}}{D_w} \tab \code{D_w} \tab diffusion coefficient for water vapour \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
 #' \eqn{Sh} \tab \code{Sh} \tab Sherwood number \tab none \tab \link[=.get_sh]{calculated}
 #' }
 #' 

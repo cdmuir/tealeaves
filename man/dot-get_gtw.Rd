@@ -18,30 +18,30 @@ Value in m/s of class \code{units}
 g_tw: total conductance to water vapour (m/s)
 }
 \details{
-\bold{Total conductance to water vapor:} The total conductance to water vapor (\eqn{g_\text{tw}}{g_tw}) is the sum of the parallel lower (abaxial) and upper (adaxial) conductances:
+\bold{Total conductance to water vapor:} The total conductance to water vapor (\eqn{g_\mathrm{tw}}{g_tw}) is the sum of the parallel lower (abaxial) and upper (adaxial) conductances:
 
-\deqn{g_\text{tw} = g_\text{w,lower} + g_\text{w,upper}}{g_tw = gw_lower + gw_upper}
+\deqn{g_\mathrm{tw} = g_\mathrm{w,lower} + g_\mathrm{w,upper}}{g_tw = gw_lower + gw_upper}
 
-The conductance to water vapor on each surface is a function of parallel stomatal (\eqn{g_\text{sw}}{g_sw}) and cuticular (\eqn{g_\text{uw}}{g_uw}) conductances in series with the boundary layer conductance (\eqn{g_\text{bw}}{g_bw}). The stomatal, cuticular, and boundary layer conductance on the lower surface are:
+The conductance to water vapor on each surface is a function of parallel stomatal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances in series with the boundary layer conductance (\eqn{g_\mathrm{bw}}{g_bw}). The stomatal, cuticular, and boundary layer conductance on the lower surface are:
 
-\deqn{g_\text{sw,lower} = g_\text{sw} (1 - sr) R (T_\text{leaf} + T_\text{air}) / 2}{gsw_lower = g_sw (1 - sr) R (T_leaf + T_air) / 2}
-\deqn{g_\text{uw_lower} = g_\text{uw} / 2 R (T_\text{leaf} + T_\text{air}) / 2}{guw_lower = g_uw / 2 R (T_leaf + T_air) / 2}
+\deqn{g_\mathrm{sw,lower} = g_\mathrm{sw} (1 - sr) R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{gsw_lower = g_sw (1 - sr) R (T_leaf + T_air) / 2}
+\deqn{g_\mathrm{uw_lower} = g_\mathrm{uw} / 2 R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{guw_lower = g_uw / 2 R (T_leaf + T_air) / 2}
 \cr
 See \code{\link{.get_gbw}} for details on calculating boundary layer conductance. The equations for the upper surface are:
 
-\deqn{g_\text{sw,upper} = g_\text{sw} sr R (T_\text{leaf} + T_\text{air}) / 2}{gsw_upper = g_sw sr R (T_leaf + T_air) / 2}
-\deqn{g_\text{uw_upper} = g_\text{uw} / 2 R (T_\text{leaf} + T_\text{air}) / 2}{guw_upper = g_uw / 2 R (T_leaf + T_air) / 2}
+\deqn{g_\mathrm{sw,upper} = g_\mathrm{sw} sr R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{gsw_upper = g_sw sr R (T_leaf + T_air) / 2}
+\deqn{g_\mathrm{uw_upper} = g_\mathrm{uw} / 2 R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{guw_upper = g_uw / 2 R (T_leaf + T_air) / 2}
 \cr
-Note that the stomatal and cuticular conductances are given in units of (umol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\text{sw}}{g_sw}) and cuticular (\eqn{g_\text{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
+Note that the stomatal and cuticular conductances are given in units of (umol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
 
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-\eqn{g_\text{sw}}{g_sw} \tab \code{g_sw} \tab stomatal conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 5\cr
-\eqn{g_\text{uw}}{g_uw} \tab \code{g_uw} \tab cuticular conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 0.1\cr
+\eqn{g_\mathrm{sw}}{g_sw} \tab \code{g_sw} \tab stomatal conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 5\cr
+\eqn{g_\mathrm{uw}}{g_uw} \tab \code{g_uw} \tab cuticular conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab 0.1\cr
 \eqn{R} \tab \code{R} \tab ideal gas constant \tab J / (mol K) \tab 8.3144598\cr
-\eqn{\text{logit}(sr)}{logit(sr)} \tab \code{logit_sr} \tab stomatal ratio (logit transformed) \tab none \tab 0 = logit(0.5)\cr
-\eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
-\eqn{T_\text{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
+\eqn{\mathrm{logit}(sr)}{logit(sr)} \tab \code{logit_sr} \tab stomatal ratio (logit transformed) \tab none \tab 0 = logit(0.5)\cr
+\eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
+\eqn{T_\mathrm{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
 }
 }
 \examples{

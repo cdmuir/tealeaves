@@ -24,7 +24,7 @@ This assumes P = 1 atm = 101.3246 kPa, otherwise boiling temperature needs to ch
 \cr
 This returns p_s in hPa, which is converted to kPa: \cr
 \cr
-\deqn{p_\text{s} = 10 ^ (-7.90298 * (373.16 / Temp - 1) + 5.02808 * log_{10}(373.16 / Temp) - 1.3816e-7 * (10 ^ (11.344 * (1 - Temp / 373.16) - 1)) + 8.1328e-3 * (10 ^ (-3.49149 * (373.16 / Temp - 1)) - 1) + log_{10}(P))}{p_s = 10 ^ (-7.90298 * (373.16 / Temp - 1) + 5.02808 * log10(373.16 / Temp) - 1.3816e-7 * (10 ^ (11.344 * (1 - Temp / 373.16) - 1)) + 8.1328e-3 * (10 ^ (-3.49149 * (373.16 / Temp - 1)) - 1) + log10(P))}
+\deqn{p_\mathrm{s} = 10 ^ (-7.90298 * (373.16 / Temp - 1) + 5.02808 * log_{10}(373.16 / Temp) - 1.3816e-7 * (10 ^ (11.344 * (1 - Temp / 373.16) - 1)) + 8.1328e-3 * (10 ^ (-3.49149 * (373.16 / Temp - 1)) - 1) + log_{10}(P))}{p_s = 10 ^ (-7.90298 * (373.16 / Temp - 1) + 5.02808 * log10(373.16 / Temp) - 1.3816e-7 * (10 ^ (11.344 * (1 - Temp / 373.16) - 1)) + 8.1328e-3 * (10 ^ (-3.49149 * (373.16 / Temp - 1)) - 1) + log10(P))}
 }
 \references{
 \url{http://cires1.colorado.edu/~voemel/vp.html}

@@ -16,7 +16,7 @@ Value in J/mol of class \code{units}
 h_vap: heat of vaporization (J / mol)
 }
 \details{
-\bold{Heat of vaporization:} The heat of vaporization (\eqn{h_\text{vap}}{h_vap}) is a function of temperature. I used data from on temperature and \eqn{h_\text{vap}}{h_vap} from Nobel (2009, Appendix 1) to estimate a linear regression. See Examples.
+\bold{Heat of vaporization:} The heat of vaporization (\eqn{h_\mathrm{vap}}{h_vap}) is a function of temperature. I used data from on temperature and \eqn{h_\mathrm{vap}}{h_vap} from Nobel (2009, Appendix 1) to estimate a linear regression. See Examples.
 }
 \examples{
 

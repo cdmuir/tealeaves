@@ -20,12 +20,12 @@ Value in m/s of class \code{units}
 g_h: boundary layer conductance to heat (m / s)
 }
 \details{
-\deqn{g_\text{h} = D_\text{h} Nu / d}{g_h = D_h Nu / d}
+\deqn{g_\mathrm{h} = D_\mathrm{h} Nu / d}{g_h = D_h Nu / d}
 
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 \eqn{d} \tab \code{leafsize} \tab Leaf characteristic dimension in meters \tab m \tab 0.1\cr
-\eqn{D_\text{h}}{D_h} \tab \code{D_h} \tab diffusion coefficient for heat in air \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
+\eqn{D_\mathrm{h}}{D_h} \tab \code{D_h} \tab diffusion coefficient for heat in air \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
 \eqn{Nu} \tab \code{Nu} \tab Nusselt number \tab none \tab \link[=.get_nu]{calculated}
 }
 }

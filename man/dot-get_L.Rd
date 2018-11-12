@@ -18,12 +18,12 @@ Value in W / m^2 of class \code{units}
 L: Latent heat flux density (W / m^2)
 }
 \details{
-\deqn{L = h_\text{vap} g_\text{tw} d_\text{wv}}{L = h_vap g_tw d_wv}
+\deqn{L = h_\mathrm{vap} g_\mathrm{tw} d_\mathrm{wv}}{L = h_vap g_tw d_wv}
 
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-\eqn{d_\text{wv}}{d_wv} \tab \code{d_wv} \tab water vapour gradient \tab mol / m ^ 3 \tab \link[=.get_dwv]{calculated} \cr
-\eqn{h_\text{vap}}{h_vap} \tab \code{h_vap} \tab latent heat of vaporization \tab J / mol \tab \link[=.get_hvap]{calculated} \cr
-\eqn{g_\text{tw}}{g_tw} \tab \code{g_tw} \tab total conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab \link[=.get_gtw]{calculated}
+\eqn{d_\mathrm{wv}}{d_wv} \tab \code{d_wv} \tab water vapour gradient \tab mol / m ^ 3 \tab \link[=.get_dwv]{calculated} \cr
+\eqn{h_\mathrm{vap}}{h_vap} \tab \code{h_vap} \tab latent heat of vaporization \tab J / mol \tab \link[=.get_hvap]{calculated} \cr
+\eqn{g_\mathrm{tw}}{g_tw} \tab \code{g_tw} \tab total conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab \link[=.get_gtw]{calculated}
 }
 }

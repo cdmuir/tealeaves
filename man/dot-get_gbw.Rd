@@ -20,12 +20,12 @@ Value in m / s of class \code{units}
 g_bw: Boundary layer conductance to water vapour (m / s)
 }
 \details{
-\deqn{g_\text{bw} = D_\text{w} Sh / d}{g_bw = D_w Sh / d}
+\deqn{g_\mathrm{bw} = D_\mathrm{w} Sh / d}{g_bw = D_w Sh / d}
 
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 \eqn{d} \tab \code{leafsize} \tab Leaf characteristic dimension in meters \tab m \tab 0.1\cr
-\eqn{D_\text{w}}{D_w} \tab \code{D_w} \tab diffusion coefficient for water vapour \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
+\eqn{D_\mathrm{w}}{D_w} \tab \code{D_w} \tab diffusion coefficient for water vapour \tab m\eqn{^2} / s \tab \link[=.get_Dx]{calculated}\cr
 \eqn{Sh} \tab \code{Sh} \tab Sherwood number \tab none \tab \link[=.get_sh]{calculated}
 }
 }

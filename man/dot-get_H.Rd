@@ -18,15 +18,15 @@ Value in W / m\eqn{^2} of class \code{units}
 H: sensible heat flux density (W / m^2)
 }
 \details{
-\deqn{H = P_\text{a} c_p g_\text{h} (T_\text{leaf} - T_\text{air})}{H = P_a c_p g_h * (T_leaf - T_air)}
+\deqn{H = P_\mathrm{a} c_p g_\mathrm{h} (T_\mathrm{leaf} - T_\mathrm{air})}{H = P_a c_p g_h * (T_leaf - T_air)}
 
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 \eqn{c_p} \tab \code{c_p} \tab heat capacity of air \tab J / (g K) \tab 1.01\cr
-\eqn{g_\text{h}}{g_h} \tab \code{g_h} \tab boundary layer conductance to heat \tab m / s \tab \link[=.get_gh]{calculated}\cr
-\eqn{P_\text{a}}{P_a} \tab \code{P_a} \tab density of dry air \tab g / m^3 \tab \link[=.get_Pa]{calculated}\cr
-\eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
-\eqn{T_\text{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
+\eqn{g_\mathrm{h}}{g_h} \tab \code{g_h} \tab boundary layer conductance to heat \tab m / s \tab \link[=.get_gh]{calculated}\cr
+\eqn{P_\mathrm{a}}{P_a} \tab \code{P_a} \tab density of dry air \tab g / m^3 \tab \link[=.get_Pa]{calculated}\cr
+\eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
+\eqn{T_\mathrm{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
 }
 }
 \seealso{

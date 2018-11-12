@@ -18,20 +18,20 @@ Value in mol / m^3 of class \code{units}
 d_wv: water vapour gradient (mol / m ^ 3)
 }
 \details{
-\bold{Water vapour gradient:} The water vapour pressure differential from inside to outside of the leaf is the saturation water vapor pressure inside the leaf (\eqn{p_\text{leaf}}{p_leaf}) minus the water vapor pressure of the air (\eqn{p_\text{air}}{p_air}):
+\bold{Water vapour gradient:} The water vapour pressure differential from inside to outside of the leaf is the saturation water vapor pressure inside the leaf (p_leaf) minus the water vapor pressure of the air (p_air):
 
-\deqn{d_\text{wv} = p_\text{leaf} / (R T_\text{leaf}) - RH p_\text{air} / (R T_\text{air})}{d_wv = p_leaf / (R T_leaf) - RH p_air / (R T_air)}
+\deqn{d_\mathrm{wv} = p_\mathrm{leaf} / (R T_\mathrm{leaf}) - RH p_\mathrm{air} / (R T_\mathrm{air})}{d_wv = p_leaf / (R T_leaf) - RH p_air / (R T_air)}
 
 Note that water vapor pressure is converted from kPa to mol / m^3 using ideal gas law. \cr
 
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-\eqn{p_\text{air}}{p_air} \tab \code{p_air} \tab saturation water vapour pressure of air \tab kPa \tab \link[=.get_ps]{calculated}\cr
-\eqn{p_\text{leaf}}{p_leaf} \tab \code{p_leaf} \tab saturation water vapour pressure inside the leaf \tab kPa \tab \link[=.get_ps]{calculated}\cr
+\eqn{p_\mathrm{air}}{p_air} \tab \code{p_air} \tab saturation water vapour pressure of air \tab kPa \tab \link[=.get_ps]{calculated}\cr
+\eqn{p_\mathrm{leaf}}{p_leaf} \tab \code{p_leaf} \tab saturation water vapour pressure inside the leaf \tab kPa \tab \link[=.get_ps]{calculated}\cr
 \eqn{R} \tab \code{R} \tab ideal gas constant \tab J / (mol K) \tab 8.3144598\cr
-\eqn{\text{RH}}{RH} \tab \code{RH} \tab relative humidity \tab \% \tab 0.50\cr
-\eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
-\eqn{T_\text{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
+\eqn{\mathrm{RH}}{RH} \tab \code{RH} \tab relative humidity \tab \% \tab 0.50\cr
+\eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
+\eqn{T_\mathrm{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
 }
 }
 \examples{

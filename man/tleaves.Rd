@@ -27,7 +27,7 @@ tleaf(leaf_par, enviro_par, constants, n_start = 1, progress = TRUE,
 \value{
 \code{tleaves}: \cr
 \cr
-
+A data.frame (more information coming soon!)
 \cr
 \code{tleaf}: \cr
 \cr
@@ -54,7 +54,6 @@ A data.frame with the following numeric columns: \cr
 leaf_par <- make_leafpar()
 enviro_par <- make_enviropar()
 constants <- make_constants()
-pars <- c(leaf_par, enviro_par, constants)
 T_leaf <- tleaf(leaf_par, enviro_par, constants)
 T_leaf
 

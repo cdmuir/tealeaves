@@ -18,13 +18,13 @@ Value in g / m\eqn{^3} of class \code{units}
 P_a: density of dry air (g / m^3)
 }
 \details{
-\deqn{P_\text{a} = P / (R_\text{air} (T_\text{leaf} - T_\text{air}) / 2)}{P_a = P / (R_air (T_leaf - T_air) / 2)}
+\deqn{P_\mathrm{a} = P / (R_\mathrm{air} (T_\mathrm{leaf} - T_\mathrm{air}) / 2)}{P_a = P / (R_air (T_leaf - T_air) / 2)}
 
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 \eqn{P} \tab \code{P} \tab atmospheric pressure \tab kPa \tab 101.3246\cr
-\eqn{R_\text{air}}{R_air} \tab \code{R_air} \tab specific gas constant for dry air \tab J / (kg K) \tab 287.058\cr
-\eqn{T_\text{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
-\eqn{T_\text{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
+\eqn{R_\mathrm{air}}{R_air} \tab \code{R_air} \tab specific gas constant for dry air \tab J / (kg K) \tab 287.058\cr
+\eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
+\eqn{T_\mathrm{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
 }
 }

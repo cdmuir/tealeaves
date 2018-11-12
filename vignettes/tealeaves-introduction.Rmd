@@ -53,7 +53,7 @@ T_leaf
 
 ## Replace default parameters
 
-You can look at default parameters settings in the manual (run `r ?make_parameters`). These defaults are reasonable, but of course you will probably want to use different choices and allow some parameters to vary. Here, I'll demonstrate how to replace a default. In the next section, I'll show you how to set up a gradient of parameter values over which to solve for leaf temperature.
+You can look at default parameters settings in the manual (run `?make_parameters`). These defaults are reasonable, but of course you will probably want to use different choices and allow some parameters to vary. Here, I'll demonstrate how to replace a default. In the next section, I'll show you how to set up a gradient of parameter values over which to solve for leaf temperature.
 
 ```{r, Replace default parameters}
 

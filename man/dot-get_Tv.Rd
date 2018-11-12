@@ -22,7 +22,7 @@ Value in K of class \code{units}
 Calculate virtual temperature
 }
 \details{
-\deqn{T_\text{v} = T / [1 - (1 - \epsilon) (p / P)]}{T_v = T / [1 - (1 - epsilon) (p / P)]}
+\deqn{T_\mathrm{v} = T / [1 - (1 - \epsilon) (p / P)]}{T_v = T / [1 - (1 - epsilon) (p / P)]}
 
 Eq. 2.35 in Monteith & Unsworth (2013) \cr
 \cr
