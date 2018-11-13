@@ -17,7 +17,7 @@ Suggests:
     testthat (> 2.0.0),
     knitr,
     rmarkdown
-Description: \code{tealeaves} is a lightweight R package to model leaf temperature using leaf energy balance. It uses the R package \code{units} to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind, or trait gradients such as leaf size or stomatal conductance. 
+Description: tealeaves is a lightweight R package to model leaf temperature using leaf energy balance. It uses the R package units to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind, or trait gradients such as leaf size or stomatal conductance. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -32,7 +32,7 @@ See \code{\link{.get_gbw}} for details on calculating boundary layer conductance
 \deqn{g_\mathrm{sw,upper} = g_\mathrm{sw} sr R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{gsw_upper = g_sw sr R (T_leaf + T_air) / 2}
 \deqn{g_\mathrm{uw_upper} = g_\mathrm{uw} / 2 R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{guw_upper = g_uw / 2 R (T_leaf + T_air) / 2}
 \cr
-Note that the stomatal and cuticular conductances are given in units of (umol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
+Note that the stomatal and cuticular conductances are given in units of (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
 
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr

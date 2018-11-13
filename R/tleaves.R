@@ -18,8 +18,8 @@
 #'
 #' \tabular{ll}{
 #' \bold{Input:} \tab \cr
-#' \code{abs_l} \tab Absortivity of longwave radiation (unitless) \cr
-#' \code{abs_s} \tab Absortivity of shortwave radiation (unitless) \cr
+#' \code{abs_l} \tab Absorbtivity of longwave radiation (unitless) \cr
+#' \code{abs_s} \tab Absorbtivity of shortwave radiation (unitless) \cr
 #' \code{g_sw} \tab Stomatal conductance to H2O (\eqn{\mu}mol H2O / (m^2 s Pa)) \cr
 #' \code{g_uw} \tab Cuticular conductance to H2O (\eqn{\mu}mol H2O / (m^2 s Pa)) \cr
 #' \code{leafsize} Leaf characteristic dimension \tab (m) \cr
@@ -41,7 +41,6 @@
 #' \code{E} \tab Evapotranspiration (mol H2O/ (m^2 s))
 #' }
 #' 
-#' \cr
 #' \code{tleaf}: \cr
 #' \cr
 #' A data.frame with the following numeric columns: \cr
@@ -303,12 +302,12 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \cr
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-#' \eqn{\alpha_\mathrm{l}}{\alpha_l} \tab \code{abs_l} \tab absortivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
+#' \eqn{\alpha_\mathrm{l}}{\alpha_l} \tab \code{abs_l} \tab absorbtivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
 #' \eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
 #' \eqn{\sigma} \tab \code{s} \tab Stephan-Boltzmann constant \tab W / (m\eqn{^2} K\eqn{^4}) \tab 5.67e-08
 #' }
 #' 
-#' Note that leaf absortivity is the same value as leaf emissivity
+#' Note that leaf absorbtivity is the same value as leaf emissivity
 #' 
 #' @references 
 #' 
@@ -422,7 +421,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' \deqn{D = D_\mathrm{0} (T / 273.15) ^ {eT} (101.3246 / P)}{D = D_0 [(T / 273.15) ^ eT] (101.3246 / P)}
 #' \cr
-#' According to Montieth & Unger (2013), eT is generally between 1.5 and 2. Their data in Appendix 3 indicate eT = 1.75 is reasonble for environmental physics.
+#' According to Montieth & Unger (2013), eT is generally between 1.5 and 2. Their data in Appendix 3 indicate \eqn{eT = 1.75} is reasonble for environmental physics.
 #' 
 #' @references 
 #' 
@@ -518,11 +517,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' Goff-Gratch equation (see http://cires1.colorado.edu/~voemel/vp.html) \cr
 #' \cr
-#' This assumes P = 1 atm = 101.3246 kPa, otherwise boiling temperature needs to change \cr
-#' \cr
-#' This returns p_s in hPa, which is converted to kPa: \cr
-#' \cr
-#' \deqn{p_\mathrm{s} = 10 ^ (-7.90298 * (373.16 / Temp - 1) + 5.02808 * log_{10}(373.16 / Temp) - 1.3816e-7 * (10 ^ (11.344 * (1 - Temp / 373.16) - 1)) + 8.1328e-3 * (10 ^ (-3.49149 * (373.16 / Temp - 1)) - 1) + log_{10}(P))}{p_s = 10 ^ (-7.90298 * (373.16 / Temp - 1) + 5.02808 * log10(373.16 / Temp) - 1.3816e-7 * (10 ^ (11.344 * (1 - Temp / 373.16) - 1)) + 8.1328e-3 * (10 ^ (-3.49149 * (373.16 / Temp - 1)) - 1) + log10(P))}
+#' This equation assumes P = 1 atm = 101.3246 kPa, otherwise boiling temperature needs to change \cr
 #' 
 #' @references \url{http://cires1.colorado.edu/~voemel/vp.html}
 #' 
@@ -585,19 +580,9 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' The Nusselt number depends on whether convection is free or forced. According to Nobel (2009, pg. 344), free convection dominates when \eqn{Ar < 0.1}, forced convection dominates when \eqn{Ar > 10}, and mixed convection when \eqn{0.1 > Ar > 10}. \eqn{Ar} is Archemides number \eqn{Ar = Gr / Re ^ 2}.\cr 
+#' The Nusselt number depends on a combination how much free or forced convection predominates. For mixed convection: \cr 
 #' \cr
-#' Free convection (\eqn{Ar < 0.1}) \cr
-#' \cr
-#' \deqn{Nu = a Re ^ b}
-#' \cr
-#' Forced convection (\eqn{Ar > 10}) \cr
-#' \cr
-#' \deqn{Nu = c Gr ^ d}
-#' \cr
-#' Mixed convection (\eqn{0.1 > Ar > 10}) \cr
-#' \cr
-#' \deqn{Nu = (a Re ^ b) ^ 3.5 + (c Gr ^ d) ^ 3.5) ^ (1 / 3.5)}
+#' \deqn{Nu = (a Re ^ b) ^ {3.5} + (c Gr ^ d) ^ {3.5}) ^ {1 / 3.5}}{Nu = (a Re ^ b) ^ 3.5 + (c Gr ^ d) ^ 3.5) ^ (1 / 3.5)}
 #' \cr
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
@@ -606,7 +591,6 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{Re} \tab \code{Re} \tab Reynolds number \tab none \tab \link[=.get_re]{calculated}
 #' }
 #' 
-#' @references Nobel PS. 2009. Physicochemical and Environmental Plant Physiology. 4th Edition. Academic Press.
 
 .get_nu <- function(T_leaf, surface, pars) {
 
@@ -734,7 +718,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \deqn{g_\mathrm{sw,upper} = g_\mathrm{sw} sr R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{gsw_upper = g_sw sr R (T_leaf + T_air) / 2}
 #' \deqn{g_\mathrm{uw_upper} = g_\mathrm{uw} / 2 R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{guw_upper = g_uw / 2 R (T_leaf + T_air) / 2}
 #' \cr
-#' Note that the stomatal and cuticular conductances are given in units of (umol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
+#' Note that the stomatal and cuticular conductances are given in units of (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
 #'
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
@@ -901,19 +885,9 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' The Sherwood number depends on whether convection is free or forced. According to Nobel (2009, pg. 344), free convection dominates when \eqn{Ar < 0.1}, forced convection dominates when \eqn{Ar > 10}, and mixed convection when \eqn{0.1 > Ar > 10}. \eqn{Ar} is Archemides number \eqn{Ar = Gr / Re ^ 2}.\cr 
+#' The Sherwood number depends on a combination how much free or forced convection predominates. For mixed convection: \cr 
 #' \cr
-#' Free convection (\eqn{Ar < 0.1}) \cr
-#' \cr
-#' \deqn{Sh = a Re ^ b}
-#' \cr
-#' Forced convection (\eqn{Ar > 10}) \cr
-#' \cr
-#' \deqn{Sh = c Gr ^ d}
-#' \cr
-#' Mixed convection (\eqn{0.1 > Ar > 10}) \cr
-#' \cr
-#' \deqn{Sh = (a Re ^ b) ^ 3.5 + (c Gr ^ d) ^ 3.5) ^ (1 / 3.5)}
+#' \deqn{Sh = (a Re ^ b) ^ {3.5} + (c Gr ^ d) ^ {3.5}) ^ {1 / 3.5}}{Sh = (a Re ^ b) ^ 3.5 + (c Gr ^ d) ^ 3.5) ^ (1 / 3.5)}
 #' \cr
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
@@ -921,8 +895,6 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{Gr} \tab \code{Gr} \tab Grashof number \tab none \tab \link[=.get_gr]{calculated}\cr
 #' \eqn{Re} \tab \code{Re} \tab Reynolds number \tab none \tab \link[=.get_re]{calculated}
 #' }
-#' 
-#' @references Nobel PS. 2009. Physicochemical and Environmental Plant Physiology. 4th Edition. Academic Press.
 #' 
 
 .get_sh <- function(T_leaf, surface, pars) {

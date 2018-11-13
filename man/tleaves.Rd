@@ -28,8 +28,8 @@ A tibble with the followering \code{units} columns \cr
 
 \tabular{ll}{
 \bold{Input:} \tab \cr
-\code{abs_l} \tab Absortivity of longwave radiation (unitless) \cr
-\code{abs_s} \tab Absortivity of shortwave radiation (unitless) \cr
+\code{abs_l} \tab Absorbtivity of longwave radiation (unitless) \cr
+\code{abs_s} \tab Absorbtivity of shortwave radiation (unitless) \cr
 \code{g_sw} \tab Stomatal conductance to H2O (\eqn{\mu}mol H2O / (m^2 s Pa)) \cr
 \code{g_uw} \tab Cuticular conductance to H2O (\eqn{\mu}mol H2O / (m^2 s Pa)) \cr
 \code{leafsize} Leaf characteristic dimension \tab (m) \cr
@@ -51,7 +51,6 @@ A tibble with the followering \code{units} columns \cr
 \code{E} \tab Evapotranspiration (mol H2O/ (m^2 s))
 }
 
-\cr
 \code{tleaf}: \cr
 \cr
 A data.frame with the following numeric columns: \cr

@@ -20,19 +20,9 @@ A unitless number of class \code{units}
 Nu: Nusselt number
 }
 \details{
-The Nusselt number depends on whether convection is free or forced. According to Nobel (2009, pg. 344), free convection dominates when \eqn{Ar < 0.1}, forced convection dominates when \eqn{Ar > 10}, and mixed convection when \eqn{0.1 > Ar > 10}. \eqn{Ar} is Archemides number \eqn{Ar = Gr / Re ^ 2}.\cr 
+The Nusselt number depends on a combination how much free or forced convection predominates. For mixed convection: \cr 
 \cr
-Free convection (\eqn{Ar < 0.1}) \cr
-\cr
-\deqn{Nu = a Re ^ b}
-\cr
-Forced convection (\eqn{Ar > 10}) \cr
-\cr
-\deqn{Nu = c Gr ^ d}
-\cr
-Mixed convection (\eqn{0.1 > Ar > 10}) \cr
-\cr
-\deqn{Nu = (a Re ^ b) ^ 3.5 + (c Gr ^ d) ^ 3.5) ^ (1 / 3.5)}
+\deqn{Nu = (a Re ^ b) ^ {3.5} + (c Gr ^ d) ^ {3.5}) ^ {1 / 3.5}}{Nu = (a Re ^ b) ^ 3.5 + (c Gr ^ d) ^ 3.5) ^ (1 / 3.5)}
 \cr
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
@@ -40,7 +30,4 @@ Mixed convection (\eqn{0.1 > Ar > 10}) \cr
 \eqn{Gr} \tab \code{Gr} \tab Grashof number \tab none \tab \link[=.get_gr]{calculated}\cr
 \eqn{Re} \tab \code{Re} \tab Reynolds number \tab none \tab \link[=.get_re]{calculated}
 }
-}
-\references{
-Nobel PS. 2009. Physicochemical and Environmental Plant Physiology. 4th Edition. Academic Press.
 }

@@ -24,12 +24,12 @@ The factor of 2 accounts for re-radiation from both leaf surfaces (Foster and Sm
 \cr
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
-\eqn{\alpha_\mathrm{l}}{\alpha_l} \tab \code{abs_l} \tab absortivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
+\eqn{\alpha_\mathrm{l}}{\alpha_l} \tab \code{abs_l} \tab absorbtivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
 \eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
 \eqn{\sigma} \tab \code{s} \tab Stephan-Boltzmann constant \tab W / (m\eqn{^2} K\eqn{^4}) \tab 5.67e-08
 }
 
-Note that leaf absortivity is the same value as leaf emissivity
+Note that leaf absorbtivity is the same value as leaf emissivity
 }
 \references{
 Foster JR, Smith WK. 1987. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell \& Environment 9: 751-9.
