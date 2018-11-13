@@ -5,11 +5,10 @@
 \alias{tleaf}
 \title{\code{tleaves}: find leaf temperatures for multiple parameter sets}
 \usage{
-tleaves(leaf_par, enviro_par, constants, n_start = 1, progress = TRUE,
+tleaves(leaf_par, enviro_par, constants, progress = TRUE,
   quiet = FALSE)
 
-tleaf(leaf_par, enviro_par, constants, n_start = 1, progress = TRUE,
-  quiet = FALSE)
+tleaf(leaf_par, enviro_par, constants, progress = TRUE, quiet = FALSE)
 }
 \arguments{
 \item{leaf_par}{A list of leaf parameters. This can be generated using the \code{make_leafpar} function.}
@@ -18,8 +17,6 @@ tleaf(leaf_par, enviro_par, constants, n_start = 1, progress = TRUE,
 
 \item{constants}{A list of physical constants. This can be generated using the \code{make_constants} function.}
 
-\item{n_start}{Number of initial values to try in \code{\link[stats]{optim}}. The default is \code{n_start = 1} with the initial guess being \code{enviro_par$T_air}. If \code{n_start > 1}, the function will try \code{n_start} evenly spaced initial guesses between \code{enviro_par$T_air +/- 30}. Greater \code{n_start} will slow down optimization.}
-
 \item{progress}{Logical. Should a progress bar be displayed?}
 
 \item{quiet}{Logical. Should messages be displayed?}
@@ -27,7 +24,33 @@ tleaf(leaf_par, enviro_par, constants, n_start = 1, progress = TRUE,
 \value{
 \code{tleaves}: \cr
 \cr
-A data.frame (more information coming soon!)
+A tibble with the followering \code{units} columns \cr
+
+\tabular{ll}{
+\bold{Input:} \tab \cr
+\code{abs_l} \tab Absortivity of longwave radiation (unitless) \cr
+\code{abs_s} \tab Absortivity of shortwave radiation (unitless) \cr
+\code{g_sw} \tab Stomatal conductance to H2O (\eqn{\mu}mol H2O / (m^2 s Pa)) \cr
+\code{g_uw} \tab Cuticular conductance to H2O (\eqn{\mu}mol H2O / (m^2 s Pa)) \cr
+\code{leafsize} Leaf characteristic dimension \tab (m) \cr
+\code{logit_sr} \tab Stomatal ratio (logit transformed; unitless) \cr
+\code{P} \tab Atmospheric pressure (kPa) \cr
+\code{RH} \tab Relative humidity (unitless) \cr
+\code{S_lw} \tab incident long-wave radiation flux density (W / m^2) \cr
+\code{S_sw} \tab incident short-wave (solar) radiation flux density (W / m^2) \cr
+\code{T_air} \tab Air temperature (K) \cr
+\code{wind} \tab Wind speed (m / s) \cr
+\bold{Output:} \tab \cr
+\code{T_leaf} \tab Equilibrium leaf tempearture (K) \cr
+\code{value} \tab Leaf energy balance (W / m^2) at \code{tleaf} \cr
+\code{convergence} \tab Convergence code (0 = converged) \cr
+\code{R_abs} \tab Total absorbed radiation (W / m^2; see \code{\link{.get_Rabs}}) \cr
+\code{S_r} \tab Longwave re-radiation (W / m^2; see \code{\link{.get_Sr}}) \cr
+\code{H} \tab Sensible heat flux density (W / m^2; see \code{\link{.get_H}}) \cr
+\code{L} \tab Latent heat flux density (W / m^2; see \code{\link{.get_L}}) \cr
+\code{E} \tab Evapotranspiration (mol H2O/ (m^2 s))
+}
+
 \cr
 \code{tleaf}: \cr
 \cr
@@ -35,13 +58,13 @@ A data.frame with the following numeric columns: \cr
 
 \tabular{ll}{
 \code{T_leaf} \tab Equilibrium leaf tempearture (K) \cr
-\code{init} \tab Initial leaf tempearture (K) for optim search \cr
 \code{value} \tab Leaf energy balance (W / m^2) at \code{tleaf} \cr
-\code{convergence} \tab Convergence code (see \code{\link[stats]{optim}}) \cr
+\code{convergence} \tab Convergence code (0 = converged) \cr
 \code{R_abs} \tab Total absorbed radiation (W / m^2; see \code{\link{.get_Rabs}}) \cr
 \code{S_r} \tab Longwave re-radiation (W / m^2; see \code{\link{.get_Sr}}) \cr
 \code{H} \tab Sensible heat flux density (W / m^2; see \code{\link{.get_H}}) \cr
-\code{L}\tab Latent heat flux density (W / m^2; see \code{\link{.get_L}})
+\code{L}\tab Latent heat flux density (W / m^2; see \code{\link{.get_L}}) \cr
+\code{E} \tab Evapotranspiration (mol H2O/ (m^2 s))
 }
 }
 \description{
@@ -50,11 +73,20 @@ A data.frame with the following numeric columns: \cr
 \code{tleaf}: find leaf temperatures for a single parameter set
 }
 \examples{
+# tleaf for single parameter set:
 
 leaf_par <- make_leafpar()
 enviro_par <- make_enviropar()
 constants <- make_constants()
-T_leaf <- tleaf(leaf_par, enviro_par, constants)
-T_leaf
+tleaf(leaf_par, enviro_par, constants)
+
+# tleaves for multiple parameter set:
+
+leaf_par <- make_leafpar(
+  replace = list(
+    T_air = set_units(c(293.15, 298.15), "K")
+  )
+)
+tleaves(leaf_par, enviro_par, constants)
 
 }

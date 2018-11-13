@@ -5,7 +5,7 @@
 \title{Calculate leaf energy balance}
 \usage{
 energy_balance(tleaf, leaf_par, enviro_par, constants, quiet = FALSE,
-  abs_val = FALSE, components = FALSE)
+  components = FALSE)
 }
 \arguments{
 \item{tleaf}{Leaf temperature in Kelvin. If input is numeric, it will be automatically converted to \code{units}.}
@@ -16,9 +16,7 @@ energy_balance(tleaf, leaf_par, enviro_par, constants, quiet = FALSE,
 
 \item{constants}{A list of physical constants. This can be generated using the \code{make_constants} function.}
 
-\item{quiet}{Logical. Should a message appear about conversion from \code{numeric} to \code{units}? Useful for finding leaf temperature that balances heat transfer using \code{\link[stats]{optim}}.}
-
-\item{abs_val}{Return absolute value? Useful for finding leaf temperature that balances heat transfer using \code{\link[stats]{optim}}.}
+\item{quiet}{Logical. Should a message appear about conversion from \code{numeric} to \code{units}? Useful for finding leaf temperature that balances heat transfer using \code{\link[stats]{uniroot}}.}
 
 \item{components}{Logical. Should leaf energy components be returned? Transpiration (in mol / (m^2 s)) also returned.}
 }

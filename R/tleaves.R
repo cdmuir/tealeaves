@@ -6,8 +6,6 @@
 #' 
 #' @param constants A list of physical constants. This can be generated using the \code{make_constants} function.
 #' 
-#' @param n_start Number of initial values to try in \code{\link[stats]{optim}}. The default is \code{n_start = 1} with the initial guess being \code{enviro_par$T_air}. If \code{n_start > 1}, the function will try \code{n_start} evenly spaced initial guesses between \code{enviro_par$T_air +/- 30}. Greater \code{n_start} will slow down optimization.
-#' 
 #' @param progress Logical. Should a progress bar be displayed?
 #' 
 #' @param quiet Logical. Should messages be displayed?
@@ -16,7 +14,33 @@
 #' 
 #' \code{tleaves}: \cr
 #' \cr
-#' A data.frame (more information coming soon!)
+#' A tibble with the followering \code{units} columns \cr
+#'
+#' \tabular{ll}{
+#' \bold{Input:} \tab \cr
+#' \code{abs_l} \tab Absortivity of longwave radiation (unitless) \cr
+#' \code{abs_s} \tab Absortivity of shortwave radiation (unitless) \cr
+#' \code{g_sw} \tab Stomatal conductance to H2O (\eqn{\mu}mol H2O / (m^2 s Pa)) \cr
+#' \code{g_uw} \tab Cuticular conductance to H2O (\eqn{\mu}mol H2O / (m^2 s Pa)) \cr
+#' \code{leafsize} Leaf characteristic dimension \tab (m) \cr
+#' \code{logit_sr} \tab Stomatal ratio (logit transformed; unitless) \cr
+#' \code{P} \tab Atmospheric pressure (kPa) \cr
+#' \code{RH} \tab Relative humidity (unitless) \cr
+#' \code{S_lw} \tab incident long-wave radiation flux density (W / m^2) \cr
+#' \code{S_sw} \tab incident short-wave (solar) radiation flux density (W / m^2) \cr
+#' \code{T_air} \tab Air temperature (K) \cr
+#' \code{wind} \tab Wind speed (m / s) \cr
+#' \bold{Output:} \tab \cr
+#' \code{T_leaf} \tab Equilibrium leaf tempearture (K) \cr
+#' \code{value} \tab Leaf energy balance (W / m^2) at \code{tleaf} \cr
+#' \code{convergence} \tab Convergence code (0 = converged) \cr
+#' \code{R_abs} \tab Total absorbed radiation (W / m^2; see \code{\link{.get_Rabs}}) \cr
+#' \code{S_r} \tab Longwave re-radiation (W / m^2; see \code{\link{.get_Sr}}) \cr
+#' \code{H} \tab Sensible heat flux density (W / m^2; see \code{\link{.get_H}}) \cr
+#' \code{L} \tab Latent heat flux density (W / m^2; see \code{\link{.get_L}}) \cr
+#' \code{E} \tab Evapotranspiration (mol H2O/ (m^2 s))
+#' }
+#' 
 #' \cr
 #' \code{tleaf}: \cr
 #' \cr
@@ -24,28 +48,37 @@
 #' 
 #' \tabular{ll}{
 #' \code{T_leaf} \tab Equilibrium leaf tempearture (K) \cr
-#' \code{init} \tab Initial leaf tempearture (K) for optim search \cr
 #' \code{value} \tab Leaf energy balance (W / m^2) at \code{tleaf} \cr
-#' \code{convergence} \tab Convergence code (see \code{\link[stats]{optim}}) \cr
+#' \code{convergence} \tab Convergence code (0 = converged) \cr
 #' \code{R_abs} \tab Total absorbed radiation (W / m^2; see \code{\link{.get_Rabs}}) \cr
 #' \code{S_r} \tab Longwave re-radiation (W / m^2; see \code{\link{.get_Sr}}) \cr
 #' \code{H} \tab Sensible heat flux density (W / m^2; see \code{\link{.get_H}}) \cr
-#' \code{L}\tab Latent heat flux density (W / m^2; see \code{\link{.get_L}})
+#' \code{L}\tab Latent heat flux density (W / m^2; see \code{\link{.get_L}}) \cr
+#' \code{E} \tab Evapotranspiration (mol H2O/ (m^2 s))
 #' }
 #' 
 #' @examples 
+#' # tleaf for single parameter set:
 #' 
 #' leaf_par <- make_leafpar()
 #' enviro_par <- make_enviropar()
 #' constants <- make_constants()
-#' T_leaf <- tleaf(leaf_par, enviro_par, constants)
-#' T_leaf
+#' tleaf(leaf_par, enviro_par, constants)
+#' 
+#' # tleaves for multiple parameter set:
+#' 
+#' leaf_par <- make_leafpar(
+#'   replace = list(
+#'     T_air = set_units(c(293.15, 298.15), "K")
+#'   )
+#' )
+#' tleaves(leaf_par, enviro_par, constants)
 #' 
 #' @export
 #'
 
-tleaves <- function(leaf_par, enviro_par, constants, n_start = 1, 
-                    progress = TRUE, quiet = FALSE) {
+tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE, 
+                    quiet = FALSE) {
   
   pars <- c(leaf_par, enviro_par)
   par_units <- purrr::map(pars, units) %>%
@@ -80,8 +113,8 @@ tleaves <- function(leaf_par, enviro_par, constants, n_start = 1,
   soln <- pars %>%
     purrr::map_dfr(~{
       
-      ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, n_start = n_start, 
-                   progress = FALSE, quiet = TRUE)
+      ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, progress = FALSE, 
+                   quiet = TRUE)
       if (progress) pb$tick()$print()
       ret
       
@@ -101,6 +134,7 @@ tleaves <- function(leaf_par, enviro_par, constants, n_start = 1,
   units(pars$S_r) <- "W/m^2"
   units(pars$H) <- "W/m^2"
   units(pars$L) <- "W/m^2"
+  units(pars$E) <- "mol/m^2/s"
 
   pars
   
@@ -110,67 +144,53 @@ tleaves <- function(leaf_par, enviro_par, constants, n_start = 1,
 #' @rdname tleaves
 #' @export
 
-tleaf <- function(leaf_par, enviro_par, constants, n_start = 1, 
-                  progress = TRUE, quiet = FALSE) {
-  
-  stopifnot(is.numeric(n_start) & n_start >= 1)
-  n_start %<>% floor()
+tleaf <- function(leaf_par, enviro_par, constants, progress = TRUE, 
+                  quiet = FALSE) {
   
   # Balance energy fluxes -----
   enviro_par$T_air %<>% set_units("K") # convert T_air to Kelvin before dropping units
   init <- drop_units(enviro_par$T_air)
   
   if (!quiet) {
-    glue::glue("\nSolving for T_leaf from {n} initial value{s}...", n = n_start,
-               s = dplyr::if_else(n_start > 1, "s", "")) %>%
+    "\nSolving for T_leaf ..." %>%
       crayon::green() %>%
       message(appendLF = FALSE)
   }
   
-  if (progress) pb <- dplyr::progress_estimated(n_start)
-  
-  soln <- seq(from = init - 30, to = init + 30, length.out = n_start + 2) %>%
-    magrittr::extract(2:(n_start + 1)) %>%
-    purrr::map_dfr(~{
-      
-      ret <- stats::optim(.x, fn = energy_balance, leaf_par = leaf_par,
-                          enviro_par = enviro_par, constants = constants,
-                          abs_val = TRUE, quiet = TRUE, method = "Brent",
-                          lower = drop_units(enviro_par$T_air - set_units(30, "K")),
-                          upper = drop_units(enviro_par$T_air + set_units(30, "K")))
-      if (progress) pb$tick()$print()
-      
-      data.frame(T_leaf = ret$par, init = .x, value = ret$value, 
-                 convergence = ret$convergence)
-      
-    })
-  
+  fit <- tryCatch({
+    stats::uniroot(f = energy_balance, leaf_par = leaf_par,
+                   enviro_par = enviro_par, constants = constants,
+                   quiet = TRUE,
+                   lower = drop_units(enviro_par$T_air - set_units(30, "K")),
+                   upper = drop_units(enviro_par$T_air + set_units(30, "K")))
+  }, finally = {
+    fit <- list(root = NA, f.root = NA, convergence = 1)
+  })
+
+  soln <- data.frame(T_leaf = fit$root, value = fit$f.root, 
+                     convergence = dplyr::if_else(is.null(fit$convergence), 0, 1))
+
   if (!quiet) {
-    glue::glue("\nSolving for T_leaf from {n} initial value{s}...done", n = n_start,
-               s = dplyr::if_else(n_start > 1, "s", "")) %>%
+    "... done" %>%
       crayon::green() %>%
       message()
   }
   
   # Check results -----
-  if (!any(soln$convergence == 0)) {
-    "The solver did not converge for any of the initial starting value. Inspect results carefully" %>%
+  if (soln$convergence == 1) {
+    "stats::uniroot did not converge, NA returned. Inspect parameters carefully." %>%
       crayon::red() %>%
       message()
   }
-  
-  soln %<>% dplyr::filter(.data$convergence == 0)
   
   # Energy balance components -----
   components <- suppressWarnings(
     soln %>%
       dplyr::pull("T_leaf") %>%
-      purrr::map_dfr(~{
-        .x %<>% set_units("K")
-        ret <- energy_balance(.x, leaf_par = leaf_par, enviro_par = enviro_par, 
-                              constants = constants, quiet = TRUE, components = TRUE)
-        ret$components
-      })
+      set_units("K") %>%
+      energy_balance(leaf_par = leaf_par, enviro_par = enviro_par, 
+                     constants = constants, quiet = TRUE, components = TRUE) %>%
+      magrittr::use_series("components")
   )
   
   soln %<>% dplyr::bind_cols(components)
@@ -186,9 +206,7 @@ tleaf <- function(leaf_par, enviro_par, constants, n_start = 1,
 #' 
 #' @param tleaf Leaf temperature in Kelvin. If input is numeric, it will be automatically converted to \code{units}.
 #' 
-#' @param quiet Logical. Should a message appear about conversion from \code{numeric} to \code{units}? Useful for finding leaf temperature that balances heat transfer using \code{\link[stats]{optim}}. 
-#' 
-#' @param abs_val Return absolute value? Useful for finding leaf temperature that balances heat transfer using \code{\link[stats]{optim}}.
+#' @param quiet Logical. Should a message appear about conversion from \code{numeric} to \code{units}? Useful for finding leaf temperature that balances heat transfer using \code{\link[stats]{uniroot}}. 
 #'
 #' @param components Logical. Should leaf energy components be returned? Transpiration (in mol / (m^2 s)) also returned.
 #' 
@@ -198,14 +216,13 @@ tleaf <- function(leaf_par, enviro_par, constants, n_start = 1,
 #'
 
 energy_balance <- function(tleaf, leaf_par, enviro_par, constants, 
-                           quiet = FALSE, abs_val = FALSE, components = FALSE) {
+                           quiet = FALSE, components = FALSE) {
 
   # Checks -----
   leaf_par %<>% leaf_par()
   enviro_par %<>% enviro_par()
   constants %<>% constants()
   stopifnot(length(quiet) == 1L & is.logical(quiet))
-  stopifnot(length(abs_val) == 1L & is.logical(abs_val))
   stopifnot(length(components) == 1L & is.logical(components))
   
   ## Convert tleaf to units and message
@@ -233,7 +250,6 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 
   
   # Return -----
-  if (abs_val) return(abs(R_abs - (S_r + H + L)))
   if (components) {
     
     # E: transpiration (mol / (m^2 s))
