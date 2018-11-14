@@ -81,13 +81,13 @@ temperature in a single leaf using the `make_*()` functions and
     enviro_par <- make_enviropar() # environmental parameters
     constants  <- make_constants() # physical constants
 
-    T_leaf <- tleaf(leaf_par, enviro_par, constants, progress = FALSE, quiet = TRUE)
+    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
 
     T_leaf
-    #>     T_leaf   init        value convergence   R_abs      S_r        H
-    #> 1 304.3652 298.15 5.034899e-05           0 1600.25 943.9849 203.6401
-    #>          L          E
-    #> 1 452.6249 0.01035236
+    #>     T_leaf        value convergence   R_abs      S_r        H       L
+    #> 1 304.3652 -6.31087e-08           0 1600.25 943.9849 203.6401 452.625
+    #>                        E
+    #> 1 0.01035237 [mol/m^2/s]
 
 Replace default parameters
 --------------------------
@@ -105,7 +105,7 @@ which to solve for leaf temperature.
     # for all parameter names and proper units.
 
     # First, we'll change stomatal conductance to 4 umol / (m^2 s Pa)
-    leaf_par   <- make_leafpar(
+    leaf_par <- make_leafpar(
       replace = list(
         g_sw = set_units(4, "umol/m^2/s/Pa")
         )
@@ -122,13 +122,13 @@ which to solve for leaf temperature.
     # that's why we call them 'constants'!
     constants  <- make_constants()
 
-    T_leaf <- tleaf(leaf_par, enviro_par, constants, progress = FALSE, quiet = TRUE)
+    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
 
     T_leaf
-    #>     T_leaf   init       value convergence   R_abs      S_r        H
-    #> 1 305.2116 298.15 3.06387e-05           0 1600.25 954.5288 231.1993
-    #>          L           E
-    #> 1 414.5218 0.009488798
+    #>     T_leaf         value convergence   R_abs      S_r        H        L
+    #> 1 305.2116 -6.916707e-09           0 1600.25 954.5288 231.1993 414.5218
+    #>                         E
+    #> 1 0.009488798 [mol/m^2/s]
 
 Environmental gradients
 -----------------------

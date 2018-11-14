@@ -45,7 +45,7 @@ leaf_par   <- make_leafpar()   # leaf parameters
 enviro_par <- make_enviropar() # environmental parameters
 constants  <- make_constants() # physical constants
 
-T_leaf <- tleaf(leaf_par, enviro_par, constants, progress = FALSE, quiet = TRUE)
+T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
 
 T_leaf
 
@@ -62,7 +62,7 @@ You can look at default parameters settings in the manual (run `?make_parameters
 # for all parameter names and proper units.
 
 # First, we'll change stomatal conductance to 4 umol / (m^2 s Pa)
-leaf_par   <- make_leafpar(
+leaf_par <- make_leafpar(
   replace = list(
     g_sw = set_units(4, "umol/m^2/s/Pa")
     )
@@ -79,7 +79,7 @@ enviro_par <- make_enviropar(
 # that's why we call them 'constants'!
 constants  <- make_constants()
 
-T_leaf <- tleaf(leaf_par, enviro_par, constants, progress = FALSE, quiet = TRUE)
+T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
 
 T_leaf
 

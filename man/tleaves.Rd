@@ -8,7 +8,7 @@
 tleaves(leaf_par, enviro_par, constants, progress = TRUE,
   quiet = FALSE)
 
-tleaf(leaf_par, enviro_par, constants, progress = TRUE, quiet = FALSE)
+tleaf(leaf_par, enviro_par, constants, quiet = FALSE)
 }
 \arguments{
 \item{leaf_par}{A list of leaf parameters. This can be generated using the \code{make_leafpar} function.}

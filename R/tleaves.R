@@ -112,8 +112,7 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
   soln <- pars %>%
     purrr::map_dfr(~{
       
-      ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, progress = FALSE, 
-                   quiet = TRUE)
+      ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, quiet = TRUE)
       if (progress) pb$tick()$print()
       ret
       
@@ -143,8 +142,7 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
 #' @rdname tleaves
 #' @export
 
-tleaf <- function(leaf_par, enviro_par, constants, progress = TRUE, 
-                  quiet = FALSE) {
+tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE) {
   
   # Balance energy fluxes -----
   enviro_par$T_air %<>% set_units("K") # convert T_air to Kelvin before dropping units
