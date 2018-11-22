@@ -50,6 +50,8 @@ And load `tealeaves`
 library("tealeaves")
 ```
 
+## Vignette
+
 ```{r child = 'vignettes/tealeaves-introduction.Rmd'}
 ```
 
