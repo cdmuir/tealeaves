@@ -20,6 +20,11 @@ leaf_par <- function(.x) {
   stopifnot(all(nms %in% names(.x)))
   
   .x %<>% magrittr::extract(nms)
+
+  .x %>%
+    purrr::map(class) %>%
+    magrittr::equals("units") %>%
+    stopifnot()
   
   # Set units ----
   .x$abs_l %<>% set_units()

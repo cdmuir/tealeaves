@@ -24,7 +24,7 @@ tleaf(leaf_par, enviro_par, constants, quiet = FALSE)
 \value{
 \code{tleaves}: \cr
 \cr
-A tibble with the followering \code{units} columns \cr
+A tibble with the following \code{units} columns \cr
 
 \tabular{ll}{
 \bold{Input:} \tab \cr

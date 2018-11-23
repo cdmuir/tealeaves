@@ -21,6 +21,11 @@ enviro_par <- function(.x) {
   
   .x %<>% magrittr::extract(nms)
   
+  .x %>%
+    purrr::map(class) %>%
+    magrittr::equals("units") %>%
+    stopifnot()
+  
   # Set units ----
   .x$P %<>% set_units("kPa")
   .x$RH %<>% set_units()
