@@ -2,12 +2,14 @@
 #'
 #' @inheritParams .get_H
 #' @inheritParams .get_gh
-#'
-#' @return A unitless number of class \code{units} 
+#' 
+#' @return 
+#' \code{unitless = TRUE}: A unitless number of class \code{numeric} 
+#' \code{unitless = FALSE}: A unitless number of class \code{units} 
 #' 
 #' @details 
 #' 
-#' The Archimedes number is a dimensionless number that describes when free or forced convection dominates. depends on a combination how much free or forced convection predominates.
+#' The Archimedes number is a dimensionless number that describes when free or forced convection dominates.
 #' 
 #' \deqn{Ar = Gr / Re ^ 2}
 #' \cr
@@ -24,21 +26,18 @@
 #' pars <- c(cs, lp, ep)
 #' T_leaf <- set_units(298.15, "K")
 #' 
-#' Ar(T_leaf, "lower", pars)
-#' Ar(T_leaf, "upper", pars)
+#' Ar(T_leaf, pars)
 #' 
 #' @export
 #' 
 
-Ar <- function(T_leaf, surface, pars) {
+Ar <- function(T_leaf, pars, unitless = FALSE) {
   
-  surface %<>% match.arg(c("lower", "upper"))
-  
-  Gr <- .get_gr(T_leaf, pars)
-  Re <- .get_re(T_leaf, pars)
+  Gr <- .get_gr(T_leaf, pars, unitless)
+  Re <- .get_re(T_leaf, pars, unitless)
   
   Ar <- Gr / Re ^ 2
-  
+
   Ar
   
 }

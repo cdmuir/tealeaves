@@ -4,12 +4,14 @@
 \alias{.get_Pa}
 \title{P_a: density of dry air (g / m^3)}
 \usage{
-.get_Pa(T_leaf, pars)
+.get_Pa(T_leaf, pars, unitless)
 }
 \arguments{
 \item{T_leaf}{Leaf temperature in Kelvin}
 
 \item{pars}{Concatenated parameters (\code{leaf_par}, \code{enviro_par}, and \code{constants})}
+
+\item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
 }
 \value{
 Value in g / m\eqn{^3} of class \code{units}

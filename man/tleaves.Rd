@@ -6,9 +6,9 @@
 \title{\code{tleaves}: find leaf temperatures for multiple parameter sets}
 \usage{
 tleaves(leaf_par, enviro_par, constants, progress = TRUE,
-  quiet = FALSE)
+  quiet = FALSE, unitless = FALSE)
 
-tleaf(leaf_par, enviro_par, constants, quiet = FALSE)
+tleaf(leaf_par, enviro_par, constants, quiet = FALSE, unitless = FALSE)
 }
 \arguments{
 \item{leaf_par}{A list of leaf parameters. This can be generated using the \code{make_leafpar} function.}
@@ -20,6 +20,8 @@ tleaf(leaf_par, enviro_par, constants, quiet = FALSE)
 \item{progress}{Logical. Should a progress bar be displayed?}
 
 \item{quiet}{Logical. Should messages be displayed?}
+
+\item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
 }
 \value{
 \code{tleaves}: \cr

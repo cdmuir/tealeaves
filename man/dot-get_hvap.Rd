@@ -4,10 +4,12 @@
 \alias{.get_hvap}
 \title{h_vap: heat of vaporization (J / mol)}
 \usage{
-.get_hvap(T_leaf)
+.get_hvap(T_leaf, unitless)
 }
 \arguments{
 \item{T_leaf}{Leaf temperature in Kelvin}
+
+\item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
 }
 \value{
 Value in J/mol of class \code{units}

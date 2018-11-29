@@ -45,7 +45,7 @@ leaf_par   <- make_leafpar()   # leaf parameters
 enviro_par <- make_enviropar() # environmental parameters
 constants  <- make_constants() # physical constants
 
-T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
+T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, unitless = FALSE)
 
 T_leaf
 
@@ -79,7 +79,7 @@ enviro_par <- make_enviropar(
 # that's why we call them 'constants'!
 constants  <- make_constants()
 
-T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
+T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, unitless = FALSE)
 
 T_leaf
 
@@ -111,7 +111,8 @@ enviro_par <- make_enviropar(
 constants  <- make_constants()
 
 # Now there should be 4 combinations (high and low g_sw crossed with high and low T_air)
-T_leaves <- tleaves(leaf_par, enviro_par, constants, progress = FALSE, quiet = TRUE)
+T_leaves <- tleaves(leaf_par, enviro_par, constants, progress = FALSE, 
+                    quiet = TRUE, unitless = FALSE)
 
 T_leaves %>% dplyr::select(T_air, g_sw, T_leaf)
 

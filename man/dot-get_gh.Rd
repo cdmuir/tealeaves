@@ -4,7 +4,7 @@
 \alias{.get_gh}
 \title{g_h: boundary layer conductance to heat (m / s)}
 \usage{
-.get_gh(T_leaf, surface, pars)
+.get_gh(T_leaf, surface, pars, unitless)
 }
 \arguments{
 \item{T_leaf}{Leaf temperature in Kelvin}
@@ -12,6 +12,8 @@
 \item{surface}{Leaf surface (lower or upper)}
 
 \item{pars}{Concatenated parameters (\code{leaf_par}, \code{enviro_par}, and \code{constants})}
+
+\item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
 }
 \value{
 Value in m/s of class \code{units}

@@ -1,0 +1,119 @@
+---
+title: "{tealeaves} for Intermediate Users"
+author: "Chris Mur"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(dplyr)
+library(ggplot2)
+library(magrittr)
+library(tealeaves)
+
+```
+
+blah
+
+```{r, eval = FALSE, echo = TRUE}
+
+# install tidyverse if necessary
+# install.packages("tidyverse")
+
+library(dplyr)
+library(ggplot2)
+library(magrittr)
+library(tealeaves)
+
+# Parameter sets ----
+
+## 1. High and low light
+  cs <- leafoptimizer::make_constants()
+  S_sw <- leafoptimizer::ppfd2sun(set_units(c(500, 1500), "umol/m^2/s"), 
+                                  set_units(0.5), 
+                                  set_units(220, "kJ/mol"))
+
+## 2. Hypo- and amphistomatous leaves
+logit_sr <- set_units(c(-Inf, qlogis(0.25), 0))
+
+## Make parameters
+cs <- tealeaves::make_constants()
+lp <- tealeaves::make_leafpar(
+  replace = list(
+    logit_sr = logit_sr
+  )
+)
+ep <- tealeaves::make_enviropar(
+  replace = list(
+    S_sw = S_sw,
+    T_air = set_units(seq(278.15, 313.15, length.out = 25), "K")  
+    )
+)
+
+# Run tleaves ----
+tl_example1 <- tleaves(lp, ep, cs)
+
+# usethis::use_data(tl_example1)
+
+```
+
+```{r plot, echo = FALSE, eval = TRUE, fig.width=7}
+
+tl_example1 %<>%
+  
+  # Drop units for plotting
+  mutate_if(function(x) inherits(x, what = "units"), drop_units) %>%
+  
+  # Calculate leaf temperature differential
+  mutate(dT = T_leaf - T_air) %>%
+  
+  # Factorize stomatal ratio 
+  mutate(`Stomatal Ratio` = case_when(
+    logit_sr == -Inf ~ "hypostomatous",
+    logit_sr == qlogis(0.25) ~ "intermediate",
+    logit_sr == 0 ~ "amphistomatous"
+  )) %>%
+  
+  # Factorize light environment 
+  mutate(Light = case_when(
+    round(S_sw, 0) == 220 ~ "Shade",
+    round(S_sw, 0) == 660 ~ "Sun"
+  ))
+
+ggplot(tl_example1, aes(T_air, dT, color = `Stomatal Ratio`)) +
+  facet_grid(Light ~ .) + 
+  geom_line() +
+  theme_minimal() + 
+  NULL
+
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))

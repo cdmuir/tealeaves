@@ -126,18 +126,25 @@ make_constants <- function(replace = NULL) {
     R = set_units(8.3144598, "J / (mol * K)"),
     R_air = set_units(287.058, "J / (kg * K)"),
     eT = set_units(1.75),
-    nu_constant = function(Re, type, T_air, T_leaf, surface) {
+    nu_constant = function(Re, type, T_air, T_leaf, surface, unitless) {
       
-      stopifnot(units(T_air)$numerator == "K" & 
-                  length(units(T_air)$denominator) == 0L)
-      stopifnot(units(T_leaf)$numerator == "K" & 
-                  length(units(T_leaf)$denominator) == 0L)
+      if (!unitless) {
+        stopifnot(units(T_air)$numerator == "K" & 
+                    length(units(T_air)$denominator) == 0L)
+        stopifnot(units(T_leaf)$numerator == "K" & 
+                    length(units(T_leaf)$denominator) == 0L)
+      }
       
       type %<>% match.arg(c("free", "forced"))
       
       if (identical(type, "forced")) {
-        if (Re <= set_units(4000)) ret <- list(a = 0.6, b = 0.5)
-        if (Re > set_units(4000)) ret <- list(a = 0.032, b = 0.8)
+        if (unitless) {
+          if (Re <= 4000) ret <- list(a = 0.6, b = 0.5)
+          if (Re > 4000) ret <- list(a = 0.032, b = 0.8)
+        } else {
+          if (Re <= set_units(4000)) ret <- list(a = 0.6, b = 0.5)
+          if (Re > set_units(4000)) ret <- list(a = 0.032, b = 0.8)
+        }
         return(ret)
       }
       
@@ -158,13 +165,12 @@ make_constants <- function(replace = NULL) {
     D_w0 = set_units(21.2e-6, "m ^ 2 / s"),
     epsilon = set_units(0.622),
     G = set_units(9.8, "m / s ^ 2"),
-    sh_constant = function(type) {
+    sh_constant = function(type, unitless) {
       
       type %>%
         match.arg(c("free", "forced")) %>%
-        switch(forced = 0.33, free = 0.25) %>%
-        set_units()
-      
+        switch(forced = 0.33, free = 0.25)
+
     },
     c_p = set_units(1.01, "J / (g * K)")
   )

@@ -10,6 +10,8 @@
 #' 
 #' @param quiet Logical. Should messages be displayed?
 #'
+#' @param unitless Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.
+#'
 #' @return 
 #' 
 #' \code{tleaves}: \cr
@@ -77,7 +79,7 @@
 #'
 
 tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE, 
-                    quiet = FALSE) {
+                    quiet = FALSE, unitless = FALSE) {
   
   pars <- c(leaf_par, enviro_par)
   par_units <- purrr::map(pars, units) %>%
@@ -112,7 +114,8 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
   soln <- pars %>%
     purrr::map_dfr(~{
       
-      ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, quiet = TRUE)
+      ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, quiet = TRUE,
+                   unitless)
       if (progress) pb$tick()$print()
       ret
       
@@ -142,7 +145,8 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
 #' @rdname tleaves
 #' @export
 
-tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE) {
+tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE, 
+                  unitless = FALSE) {
   
   # Balance energy fluxes -----
   enviro_par$T_air %<>% set_units("K") # convert T_air to Kelvin before dropping units
@@ -157,7 +161,7 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE) {
   fit <- tryCatch({
     stats::uniroot(f = energy_balance, leaf_par = leaf_par,
                    enviro_par = enviro_par, constants = constants,
-                   quiet = TRUE,
+                   quiet = TRUE, unitless = unitless,
                    lower = drop_units(enviro_par$T_air - set_units(30, "K")),
                    upper = drop_units(enviro_par$T_air + set_units(30, "K")))
   }, finally = {
@@ -191,7 +195,11 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE) {
   )
   
   soln %<>% dplyr::bind_cols(components)
-  
+  units(soln$R_abs) <- "W/m^2"
+  units(soln$S_r) <- "W/m^2"
+  units(soln$H) <- "W/m^2"
+  units(soln$L) <- "W/m^2"
+
   # Return -----
   soln
   
@@ -213,7 +221,7 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE) {
 #'
 
 energy_balance <- function(tleaf, leaf_par, enviro_par, constants, 
-                           quiet = FALSE, components = FALSE) {
+                           quiet = FALSE, components = FALSE, unitless = FALSE) {
 
   # Checks -----
   leaf_par %<>% leaf_par()
@@ -223,7 +231,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   stopifnot(length(components) == 1L & is.logical(components))
   
   ## Convert tleaf to units and message
-  if (!is(tleaf, "units")) {
+  if (!is(tleaf, "units") & !unitless) {
     if (!quiet) {
       glue::glue("tleaf converted from numeric to {X} K", X = tleaf) %>%
         message()
@@ -233,24 +241,26 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   
   pars <- c(leaf_par, enviro_par, constants)
 
+  if (unitless) pars %<>% purrr::map_if(function(x) is(x, "units"), drop_units)
+  
   # R_abs: total absorbed radiation (W m^-2) -----
-  R_abs <- .get_Rabs(pars) %>% drop_units()
+  R_abs <- .get_Rabs(pars) %>% set_units("W/m^2") %>% drop_units()
 
   # S_r: longwave re-radiation (W m^-2) -----
-  S_r <- .get_Sr(tleaf, pars) %>% drop_units()
+  S_r <- .get_Sr(tleaf, pars) %>% set_units("W/m^2") %>% drop_units()
 
   # H: sensible heat flux density (W m^-2) -----
-  H <- .get_H(tleaf, pars) %>% drop_units()
+  H <- .get_H(tleaf, pars, unitless) %>% set_units("W/m^2") %>% drop_units()
 
   # L: latent heat flux density (W m^-2) -----
-  L <- .get_L(tleaf, pars) %>% drop_units()
-
+  L <- .get_L(tleaf, pars, unitless) %>% set_units("W/m^2") %>% drop_units()
   
   # Return -----
   if (components) {
     
     # E: transpiration (mol / (m^2 s))
-    E <- set_units(.get_gtw(tleaf, pars) * .get_dwv(tleaf, pars), "mol/m^2/s")
+    E <- set_units(.get_gtw(tleaf, pars, unitless) * 
+                     .get_dwv(tleaf, pars, unitless), "mol/m^2/s")
     
     ret <- list(
       energy_balance = R_abs - (S_r + H + L),
@@ -316,6 +326,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 
 #' H: sensible heat flux density (W / m^2)
 #'
+#' @inheritParams tleaves
 #' @inheritParams .get_Sr
 #' 
 #' @return Value in W / m\eqn{^2} of class \code{units}
@@ -335,16 +346,16 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @seealso \code{\link{.get_gh}}, \code{\link{.get_Pa}} 
 
-.get_H <- function(T_leaf, pars) {
+.get_H <- function(T_leaf, pars, unitless) {
 
   # Density of dry air
-  P_a <- .get_Pa(T_leaf, pars)
+  P_a <- .get_Pa(T_leaf, pars, unitless)
 
   # Boundary layer conductance to heat
-  g_h <- sum(.get_gh(T_leaf, "lower", pars), .get_gh(T_leaf, "upper", pars))
+  g_h <- sum(.get_gh(T_leaf, "lower", pars, unitless), 
+             .get_gh(T_leaf, "upper", pars, unitless))
 
   H <- P_a * pars$c_p * g_h * (T_leaf - pars$T_air)
-  H %<>% set_units("W / m ^ 2")
   H
   
 }
@@ -368,9 +379,18 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' }
 #' 
 
-.get_Pa <- function(T_leaf, pars) {
+.get_Pa <- function(T_leaf, pars, unitless) {
+  
   P_a <- pars$P / (pars$R_air * (pars$T_air + T_leaf) / 2)
-  P_a %<>% set_units("g / m^3")
+  
+  if (unitless) {
+    P_a %<>% magrittr::multiply_by(1e6)
+  } else {
+    P_a %<>% set_units("g / m^3")
+  }
+  
+  P_a
+  
 }
 
 #' g_h: boundary layer conductance to heat (m / s)
@@ -392,15 +412,15 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' }
 #' 
 
-.get_gh <- function(T_leaf, surface, pars) {
+.get_gh <- function(T_leaf, surface, pars, unitless) {
 
   surface %<>% match.arg(c("lower", "upper"))
   
   # Calculate diffusion coefficient to heat
-  D_h <- .get_Dx(pars$D_h0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P)
+  D_h <- .get_Dx(pars$D_h0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P, unitless)
 
   # Calculate Nusselt numbers
-  Nu <- .get_nu(T_leaf, surface, pars)
+  Nu <- .get_nu(T_leaf, surface, pars, unitless)
 
   D_h * Nu / pars$leafsize
 
@@ -412,6 +432,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' @param Temp Temperature in Kelvin
 #' @param eT Exponent for temperature dependence of diffusion
 #' @param P Atmospheric pressure in kPa
+#' @inheritParams tleaves
 #' 
 #' @return Value in m\eqn{^2}/s of class \code{units}
 #' 
@@ -426,13 +447,23 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' Monteith JL, Unsworth MH. 2013. Principles of Environmental Physics. 4th edition. Academic Press, London.
 #' 
 
-.get_Dx <- function(D_0, Temp, eT, P) {
+.get_Dx <- function(D_0, Temp, eT, P, unitless) {
 
   # See Eq. 3.10 in Monteith & Unger ed. 4
-  D_0 * 
-    drop_units((set_units(Temp, "K") / set_units(273.15, "K"))) ^ drop_units(eT) * 
-    drop_units((set_units(101.3246, "kPa") / set_units(P, "kPa")))
-
+  if (unitless) {
+    
+    Dx <- D_0 * (Temp / 273.15) ^ eT * (101.3246 / P)
+    
+  } else {
+    
+    Dx <- D_0 * 
+      drop_units((set_units(Temp, "K") / set_units(273.15, "K"))) ^ drop_units(eT) * 
+      drop_units((set_units(101.3246, "kPa") / set_units(P, "kPa")))
+    
+  }
+  
+  Dx
+  
 }
 
 #' Gr: Grashof number
@@ -457,17 +488,27 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' }
 #' 
 
-.get_gr <- function(T_leaf, pars) {
+.get_gr <- function(T_leaf, pars, unitless) {
 
   # Calculate virtual temperature
   # Assumes inside of leaf is 100% RH
-  Tv_leaf <- .get_Tv(T_leaf, .get_ps(T_leaf, pars$P), pars$P, pars$epsilon)
-  Tv_air <-	.get_Tv(pars$T_air, pars$RH * .get_ps(pars$T_air, pars$P), pars$P,
-                    pars$epsilon)
-  D_m <- .get_Dx(pars$D_m0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P)
-  Gr <- (set_units(1) / pars$T_air) * pars$G * pars$leafsize ^ 3 * 
-    abs(Tv_leaf - Tv_air) / D_m ^ 2
-
+  Tv_leaf <- .get_Tv(T_leaf, .get_ps(T_leaf, pars$P, unitless), pars$P, 
+                     pars$epsilon, unitless)
+  Tv_air <-	.get_Tv(pars$T_air, pars$RH * .get_ps(pars$T_air, pars$P, unitless), pars$P,
+                    pars$epsilon, unitless)
+  D_m <- .get_Dx(pars$D_m0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P, unitless)
+  if (unitless) {
+    
+    Gr <- (1 / pars$T_air) * pars$G * pars$leafsize ^ 3 * 
+      abs(Tv_leaf - Tv_air) / D_m ^ 2
+    
+  } else {
+    
+    Gr <- (set_units(1) / pars$T_air) * pars$G * pars$leafsize ^ 3 * 
+      abs(Tv_leaf - Tv_air) / D_m ^ 2
+    
+  }
+  
   Gr
 
 }
@@ -498,11 +539,22 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' Monteith JL, Unsworth MH. 2013. Principles of Environmental Physics. 4th edition. Academic Press, London.
 #' 
 
-.get_Tv <- function(Temp, p, P, epsilon) {
+.get_Tv <- function(Temp, p, P, epsilon, unitless) {
 
-  set_units(Temp, "K") / 
-    (set_units(1) - (set_units(1) - epsilon) * (set_units(p, "kPa") / set_units(P, "kPa")))
-
+  if (unitless) {
+    
+    Tv <- Temp / (1 - (1 - epsilon) * (p / P))
+    
+  } else {
+    
+    Tv <- set_units(Temp, "K") / 
+      (set_units(1) - (set_units(1) - epsilon) * 
+         (set_units(p, "kPa") / set_units(P, "kPa")))
+    
+  }
+  
+  Tv
+  
 }
 
 #' Saturation water vapour pressure (kPa)
@@ -520,13 +572,18 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' @references \url{http://cires1.colorado.edu/~voemel/vp.html}
 #' 
 
-.get_ps <- function(Temp, P) {
+.get_ps <- function(Temp, P, unitless) {
 
   # Goff-Gratch equation (see http://cires1.colorado.edu/~voemel/vp.html)
   # This assumes P = 1 atm = 101.3246 kPa, otherwise boiling temperature needs to change
   # This returns p_s in hPa
-  Temp %<>% set_units("K") %>% drop_units()
-  P %<>% set_units("hPa") %>% drop_units()
+  if (unitless) {
+    P %<>% magrittr::multiply_by(10)
+  } else {
+    Temp %<>% set_units("K") %>% drop_units()
+    P %<>% set_units("hPa") %>% drop_units()
+  }
+  
   p_s <- 10 ^ (-7.90298 * (373.16 / Temp - 1) +
                  5.02808 * log10(373.16 / Temp) -
                  1.3816e-7 * (10 ^ (11.344 * (1 - Temp / 373.16) - 1)) +
@@ -534,9 +591,14 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
                  log10(P))
 
   # Convert to kPa
-  p_s %<>% 
-    set_units("hPa") %>%
-    set_units("kPa")
+  if (unitless) {
+    p_s %<>% magrittr::multiply_by(0.1)
+  } else {
+    p_s %<>% 
+      set_units("hPa") %>%
+      set_units("kPa")
+  }
+  
   p_s
 
 }
@@ -560,9 +622,9 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' }
 #' 
 
-.get_re <- function(T_leaf, pars) {
+.get_re <- function(T_leaf, pars, unitless) {
 
-  D_m <- .get_Dx(pars$D_m0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P)
+  D_m <- .get_Dx(pars$D_m0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P, unitless)
   Re <- pars$wind * pars$leafsize / D_m
 
   Re
@@ -590,24 +652,32 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' }
 #' 
 
-.get_nu <- function(T_leaf, surface, pars) {
+.get_nu <- function(T_leaf, surface, pars, unitless) {
 
   surface %<>% match.arg(c("lower", "upper"))
   
-  Gr <- .get_gr(T_leaf, pars)
-  Re <- .get_re(T_leaf, pars)
+  Gr <- .get_gr(T_leaf, pars, unitless)
+  Re <- .get_re(T_leaf, pars, unitless)
 
   # Archemides number
   # Ar <- Gr / Re ^ 2
   
-  cons <- pars$nu_constant(Re, "forced", pars$T_air, T_leaf, surface)
-  Nu_forced <- cons$a * drop_units(Re) ^ cons$b
+  cons <- pars$nu_constant(Re, "forced", pars$T_air, T_leaf, surface, unitless)
+  if (unitless) {
+    Nu_forced <- cons$a * Re ^ cons$b
+  } else {
+    Nu_forced <- cons$a * drop_units(Re) ^ cons$b
+  }
   
-  cons <- pars$nu_constant(Re, "free", pars$T_air, T_leaf, surface)
-  Nu_free <- cons$a * drop_units(Gr) ^ cons$b
+  cons <- pars$nu_constant(Re, "free", pars$T_air, T_leaf, surface, unitless)
+  if (unitless) {
+    Nu_free <- cons$a * Gr ^ cons$b
+  } else {
+    Nu_free <- cons$a * drop_units(Gr) ^ cons$b
+  }
   
   Nu <- (Nu_forced ^ 3.5 + Nu_free ^ 3.5) ^ (1 / 3.5)
-  Nu %<>% set_units()
+  if (!unitless) Nu %<>% set_units()
   
   Nu
   
@@ -631,14 +701,14 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' }
 #'
 
-.get_L <- function(T_leaf, pars) {
+.get_L <- function(T_leaf, pars, unitless) {
 
-  h_vap <- .get_hvap(T_leaf)
-  g_tw <- .get_gtw(T_leaf, pars)
-  d_wv <- .get_dwv(T_leaf, pars)
+  h_vap <- .get_hvap(T_leaf, unitless)
+  g_tw <- .get_gtw(T_leaf, pars, unitless)
+  d_wv <- .get_dwv(T_leaf, pars, unitless)
     
   L <- h_vap * g_tw * d_wv
-  L %<>% set_units("W / m ^ 2")
+  if (!unitless) L %<>% set_units("W / m ^ 2")
   L
 
 }
@@ -683,12 +753,17 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' d_wv <- p_leaf / (pars$R * T_leaf) - pars$RH * p_air / (pars$R * T_air)
 #' 
 
-.get_dwv <- function(T_leaf, pars) {
+.get_dwv <- function(T_leaf, pars, unitless) {
   
   # Water vapour differential converted from kPa to mol m ^ -3 using ideal gas law
-  d_wv <- .get_ps(T_leaf, pars$P) / (pars$R * T_leaf) - 
-    pars$RH * .get_ps(pars$T_air, pars$P) / (pars$R * pars$T_air)
-  d_wv %<>% set_units("mol / m ^ 3")
+  d_wv <- .get_ps(T_leaf, pars$P, unitless) / (pars$R * T_leaf) - 
+    pars$RH * .get_ps(pars$T_air, pars$P, unitless) / (pars$R * pars$T_air)
+  
+  if (unitless) {
+    d_wv %<>% magrittr::multiply_by(1e3)
+  } else {
+    d_wv %<>% set_units("mol / m ^ 3")
+  }
   
   d_wv
   
@@ -760,26 +835,52 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' g_tw <- gtw_lower + gtw_upper
 #' 
 
-.get_gtw <- function(T_leaf, pars) {
+.get_gtw <- function(T_leaf, pars, unitless) {
  
   # Lower surface ----
-  gbw_lower <- .get_gbw(T_leaf, "lower", pars)
+  gbw_lower <- .get_gbw(T_leaf, "lower", pars, unitless)
   
   # Convert stomatal and cuticular conductance from molar to 'engineering' units
   # See email from Tom Buckley (July 4, 2017)
-  gsw_lower <- set_units(pars$g_sw * (set_units(1) - stats::plogis(pars$logit_sr)) * pars$R * 
-                           ((T_leaf + pars$T_air) / 2), "m / s")
-  guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+  if (unitless) {
+    
+    gsw_lower <- (pars$g_sw * (1 - stats::plogis(pars$logit_sr)) * pars$R * 
+      ((T_leaf + pars$T_air) / 2)) %>%
+      magrittr::divide_by(1e6)
+    guw_lower <- (pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2)) %>%
+      magrittr::divide_by(1e6)
+    
+  } else {
+    
+    gsw_lower <- set_units(pars$g_sw * (set_units(1) - stats::plogis(pars$logit_sr)) *
+                             pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+    guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+    
+  }
+  
   gtw_lower <- 1 / (1 / (gsw_lower + guw_lower) + 1 / gbw_lower)
   
   # Upper surface ----
-  gbw_upper <- .get_gbw(T_leaf, "upper", pars)
+  gbw_upper <- .get_gbw(T_leaf, "upper", pars, unitless)
   
   # Convert stomatal and cuticular conductance from molar to 'engineering' units
   # See email from Tom Buckley (July 4, 2017)
-  gsw_upper <- set_units(pars$g_sw * stats::plogis(pars$logit_sr) * pars$R * 
-                           ((T_leaf + pars$T_air) / 2), "m / s")
-  guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+  if (unitless) {
+    
+    gsw_upper <- (pars$g_sw * stats::plogis(pars$logit_sr) * pars$R * 
+                             ((T_leaf + pars$T_air) / 2)) %>%
+      magrittr::divide_by(1e6)
+    guw_upper <- (pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2)) %>%
+                    magrittr::divide_by(1e6)
+    
+  } else {
+    
+    gsw_upper <- set_units(pars$g_sw * stats::plogis(pars$logit_sr) * pars$R * 
+                             ((T_leaf + pars$T_air) / 2), "m / s")
+    guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+    
+  }
+  
   gtw_upper <- 1 / (1 / (gsw_upper + guw_upper) + 1 / gbw_upper)
   
   # Lower and upper surface are in parallel
@@ -789,7 +890,6 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   
 }
 
- 
 #' 
 #' h_vap: heat of vaporization (J / mol)
 #' 
@@ -827,7 +927,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' @references Nobel PS. 2009. Physicochemical and Environmental Plant Physiology. 4th Edition. Academic Press.
 #' 
 
-.get_hvap <- function(T_leaf) {
+.get_hvap <- function(T_leaf, unitless) {
   
   # Equation from Foster and Smith 1986 seems to be off:
   # h_vap <- 4.504e4 - 41.94 * T_leaf
@@ -835,9 +935,13 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   # T_K <- 273.15 + c(0, 10, 20, 25, 30, 40, 50, 60)
   # h_vap <- 1e3 * c(45.06, 44.63, 44.21, 44, 43.78, 43.35, 42.91, 42.47) # (in J / mol)
   # fit <- lm(h_vap ~ T_K)
-  h_vap <- set_units(56847.68250, "J / mol") - 
-    set_units(43.12514, "J / mol / K") * set_units(T_leaf, "K")
-  h_vap %<>% set_units("J / mol")
+  if (unitless) {
+    h_vap <- 56847.68250 - 43.12514 * T_leaf
+  } else {
+    h_vap <- set_units(56847.68250, "J / mol") - 
+      set_units(43.12514, "J / mol / K") * set_units(T_leaf, "K")
+    h_vap %<>% set_units("J / mol")
+  }
   
   h_vap
   
@@ -861,14 +965,14 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{Sh} \tab \code{Sh} \tab Sherwood number \tab none \tab \link[=.get_sh]{calculated}
 #' }
 #' 
-.get_gbw <- function(T_leaf, surface, pars) {
+.get_gbw <- function(T_leaf, surface, pars, unitless) {
 
   surface %<>% match.arg(c("lower", "upper"))
-  
-  D_w <- .get_Dx(pars$D_w0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P)
+
+  D_w <- .get_Dx(pars$D_w0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P, unitless)
 
   # Calculate Sherwood numbers
-  Sh <- .get_sh(T_leaf, surface, pars)
+  Sh <- .get_sh(T_leaf, surface, pars, unitless)
 
   D_w * Sh / pars$leafsize
 
@@ -895,29 +999,39 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' }
 #' 
 
-.get_sh <- function(T_leaf, surface, pars) {
+.get_sh <- function(T_leaf, surface, pars, unitless) {
 
   surface %<>% match.arg(c("lower", "upper"))
   
-  Gr <- .get_gr(T_leaf, pars)
-  Re <- .get_re(T_leaf, pars)
+  Gr <- .get_gr(T_leaf, pars, unitless)
+  Re <- .get_re(T_leaf, pars, unitless)
 
   # Archemides number
   # Ar <- Gr / Re ^ 2
 
-  D_h <- .get_Dx(pars$D_h0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P)
-  D_w <- .get_Dx(pars$D_w0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P)
+  D_h <- .get_Dx(pars$D_h0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P, unitless)
+  D_w <- .get_Dx(pars$D_w0, (pars$T_air + T_leaf) / 2, pars$eT, pars$P, unitless)
 
-  cons <- pars$nu_constant(Re, "forced", pars$T_air, T_leaf, surface)
-  Nu_forced <- cons$a * drop_units(Re) ^ cons$b
-  Sh_forced <- Nu_forced * drop_units(D_h / D_w) ^ drop_units(pars$sh_constant("forced"))
+  cons <- pars$nu_constant(Re, "forced", pars$T_air, T_leaf, surface, unitless)
+  if (unitless) {
+    Nu_forced <- cons$a * Re ^ cons$b
+    Sh_forced <- Nu_forced * (D_h / D_w) ^ pars$sh_constant("forced")
+  } else {
+    Nu_forced <- cons$a * drop_units(Re) ^ cons$b
+    Sh_forced <- Nu_forced * drop_units(D_h / D_w) ^ pars$sh_constant("forced")
+  }
 
-  cons <- pars$nu_constant(Re, "free", pars$T_air, T_leaf, surface)
-  Nu_free <- cons$a * drop_units(Gr) ^ cons$b
-  Sh_free <- Nu_free * drop_units(D_h / D_w) ^ drop_units(pars$sh_constant("free"))
+  cons <- pars$nu_constant(Re, "free", pars$T_air, T_leaf, surface, unitless)
+  if (unitless) {
+    Nu_free <- cons$a * Gr ^ cons$b
+    Sh_free <- Nu_free * (D_h / D_w) ^ pars$sh_constant("free")
+  } else {
+    Nu_free <- cons$a * drop_units(Gr) ^ cons$b
+    Sh_free <- Nu_free * drop_units(D_h / D_w) ^ pars$sh_constant("free")
+  }
 
   Sh <- (Sh_forced ^ 3.5 + Sh_free ^ 3.5) ^ (1 / 3.5)
-  Sh %<>% set_units()
+  if (!unitless) Sh %<>% set_units()
 
   Sh
 

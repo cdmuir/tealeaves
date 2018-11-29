@@ -4,23 +4,24 @@
 \alias{Ar}
 \title{Ar: Archimedes number}
 \usage{
-Ar(T_leaf, surface, pars)
+Ar(T_leaf, pars, unitless = FALSE)
 }
 \arguments{
 \item{T_leaf}{Leaf temperature in Kelvin}
 
-\item{surface}{Leaf surface (lower or upper)}
-
 \item{pars}{Concatenated parameters (\code{leaf_par}, \code{enviro_par}, and \code{constants})}
+
+\item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
 }
 \value{
-A unitless number of class \code{units}
+\code{unitless = TRUE}: A unitless number of class \code{numeric} 
+\code{unitless = FALSE}: A unitless number of class \code{units}
 }
 \description{
 Ar: Archimedes number
 }
 \details{
-The Archimedes number is a dimensionless number that describes when free or forced convection dominates. depends on a combination how much free or forced convection predominates.
+The Archimedes number is a dimensionless number that describes when free or forced convection dominates.
 
 \deqn{Ar = Gr / Re ^ 2}
 \cr
@@ -37,7 +38,6 @@ ep <- make_leafpar()
 pars <- c(cs, lp, ep)
 T_leaf <- set_units(298.15, "K")
 
-Ar(T_leaf, "lower", pars)
-Ar(T_leaf, "upper", pars)
+Ar(T_leaf, pars)
 
 }

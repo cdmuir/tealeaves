@@ -5,7 +5,7 @@
 \title{Calculate leaf energy balance}
 \usage{
 energy_balance(tleaf, leaf_par, enviro_par, constants, quiet = FALSE,
-  components = FALSE)
+  components = FALSE, unitless = FALSE)
 }
 \arguments{
 \item{tleaf}{Leaf temperature in Kelvin. If input is numeric, it will be automatically converted to \code{units}.}
@@ -19,6 +19,8 @@ energy_balance(tleaf, leaf_par, enviro_par, constants, quiet = FALSE,
 \item{quiet}{Logical. Should a message appear about conversion from \code{numeric} to \code{units}? Useful for finding leaf temperature that balances heat transfer using \code{\link[stats]{uniroot}}.}
 
 \item{components}{Logical. Should leaf energy components be returned? Transpiration (in mol / (m^2 s)) also returned.}
+
+\item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
 }
 \value{
 A numeric value in W / m^2. Optionally, a named list of energy balance components in W / m^2 and transpiration in mol / (m^2 s).
