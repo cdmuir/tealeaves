@@ -148,6 +148,10 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
 tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE, 
                   unitless = FALSE) {
   
+  leaf_par %<>% leaf_par()
+  enviro_par %<>% enviro_par()
+  constants %<>% constants()
+  
   # Balance energy fluxes -----
   enviro_par$T_air %<>% set_units("K") # convert T_air to Kelvin before dropping units
   init <- drop_units(enviro_par$T_air)
@@ -161,7 +165,7 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
   fit <- tryCatch({
     stats::uniroot(f = energy_balance, leaf_par = leaf_par,
                    enviro_par = enviro_par, constants = constants,
-                   quiet = TRUE, unitless = unitless,
+                   quiet = TRUE, unitless = unitless, check = FALSE,
                    lower = drop_units(enviro_par$T_air - set_units(30, "K")),
                    upper = drop_units(enviro_par$T_air + set_units(30, "K")))
   }, finally = {
@@ -172,7 +176,7 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
                      convergence = dplyr::if_else(is.null(fit$convergence), 0, 1))
 
   if (!quiet) {
-    "... done" %>%
+    " done" %>%
       crayon::green() %>%
       message()
   }
@@ -215,20 +219,26 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
 #'
 #' @param components Logical. Should leaf energy components be returned? Transpiration (in mol / (m^2 s)) also returned.
 #' 
+#' @param check Logical. Should all parameter sets be checked? TRUE is safer, but FALSE is faster.
+#' 
 #' @return A numeric value in W / m^2. Optionally, a named list of energy balance components in W / m^2 and transpiration in mol / (m^2 s).
 #' 
 #' @export
 #'
 
 energy_balance <- function(tleaf, leaf_par, enviro_par, constants, 
-                           quiet = FALSE, components = FALSE, unitless = FALSE) {
+                           quiet = FALSE, components = FALSE, unitless = FALSE,
+                           check = TRUE) {
 
   # Checks -----
-  leaf_par %<>% leaf_par()
-  enviro_par %<>% enviro_par()
-  constants %<>% constants()
+  if (check) {
+    leaf_par %<>% leaf_par()
+    enviro_par %<>% enviro_par()
+    constants %<>% constants()
+  }
   stopifnot(length(quiet) == 1L & is.logical(quiet))
   stopifnot(length(components) == 1L & is.logical(components))
+  stopifnot(length(unitless) == 1L & is.logical(unitless))
   
   ## Convert tleaf to units and message
   if (!is(tleaf, "units") & !unitless) {
@@ -244,16 +254,16 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   if (unitless) pars %<>% purrr::map_if(function(x) is(x, "units"), drop_units)
   
   # R_abs: total absorbed radiation (W m^-2) -----
-  R_abs <- .get_Rabs(pars) %>% set_units("W/m^2") %>% drop_units()
+  R_abs <- .get_Rabs(pars)
 
   # S_r: longwave re-radiation (W m^-2) -----
-  S_r <- .get_Sr(tleaf, pars) %>% set_units("W/m^2") %>% drop_units()
+  S_r <- .get_Sr(tleaf, pars)
 
   # H: sensible heat flux density (W m^-2) -----
-  H <- .get_H(tleaf, pars, unitless) %>% set_units("W/m^2") %>% drop_units()
+  H <- .get_H(tleaf, pars, unitless)
 
   # L: latent heat flux density (W m^-2) -----
-  L <- .get_L(tleaf, pars, unitless) %>% set_units("W/m^2") %>% drop_units()
+  L <- .get_L(tleaf, pars, unitless)
   
   # Return -----
   if (components) {
