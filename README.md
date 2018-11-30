@@ -7,18 +7,13 @@ public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus
 [![Build
 Status](https://travis-ci.com/cdmuir/tealeaves.svg?branch=master)](https://travis-ci.com/cdmuir/tealeaves)
 
-<!---
-[![codecov](https://codecov.io/gh/cdmuir/tealeaves/branch/master/graph/badge.svg)](https://codecov.io/gh/cdmuir/tealeaves)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/tealeaves)](https://github.com/metacran/cranlogs.app)
-[![cran version](http://www.r-pkg.org/badges/version/tealeaves)](https://cran.r-project.org/package=tealeaves)
--->
 Solve for leaf temperature using energy balance
 -----------------------------------------------
 
 Description
 -----------
 
-`tealeaves` is a lightweight R package to model leaf temperature using
+{tealeaves} is a lightweight R package to model leaf temperature using
 leaf energy balance. It uses the R package
 [units](https://cran.r-project.org/web/packages/units/index.html) to
 ensure that parameters are properly specified and transformed before
@@ -29,8 +24,8 @@ temperature over environmental gradients such as light, air temperature,
 humidity, and wind, or trait gradients such as leaf size or stomatal
 conductance.
 
-Get `tealeaves`
----------------
+Get tealeaves
+-------------
 
 <!--- From CRAN
 
@@ -44,13 +39,16 @@ GitHub
     install.packages("devtools")
     devtools::install_github("cdmuir/tealeaves")
 
-And load `tealeaves`
+And load tealeaves
 
     library("tealeaves")
 
-The `tealeaves` package solves for leaf temperature given a set of
+Vignette
+--------
+
+The {tealeaves} package solves for leaf temperature given a set of
 environmental conditions and leaf traits by balancing the leaf energy
-budget. There are two main steps to using `tealeaves`:
+budget. There are two main steps to using {tealeaves}:
 
 1.  define leaf parameters, environmental parameters, and physical
     constants; and
@@ -81,13 +79,36 @@ temperature in a single leaf using the `make_*()` functions and
     enviro_par <- make_enviropar() # environmental parameters
     constants  <- make_constants() # physical constants
 
-    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
+    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, unitless = FALSE)
 
-    T_leaf
-    #>     T_leaf        value convergence   R_abs      S_r        H       L
-    #> 1 304.3652 -6.31087e-08           0 1600.25 943.9849 203.6401 452.625
-    #>                        E
-    #> 1 0.01035237 [mol/m^2/s]
+    T_leaf %>% knitr::kable()
+
+<table>
+<thead>
+<tr class="header">
+<th align="right">T_leaf</th>
+<th align="right">value</th>
+<th align="right">convergence</th>
+<th align="right">R_abs</th>
+<th align="right">S_r</th>
+<th align="right">H</th>
+<th align="right">L</th>
+<th align="right">E</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">304.3652 [K]</td>
+<td align="right">-1e-07</td>
+<td align="right">0</td>
+<td align="right">1600.25 [W/m^2]</td>
+<td align="right">943.9849 [W/m^2]</td>
+<td align="right">203.6401 [W/m^2]</td>
+<td align="right">452.625 [W/m^2]</td>
+<td align="right">0.01035237 [mol/m^2/s]</td>
+</tr>
+</tbody>
+</table>
 
 Replace default parameters
 --------------------------
@@ -122,13 +143,36 @@ which to solve for leaf temperature.
     # that's why we call them 'constants'!
     constants  <- make_constants()
 
-    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
+    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, unitless = FALSE)
 
-    T_leaf
-    #>     T_leaf         value convergence   R_abs      S_r        H        L
-    #> 1 305.2116 -6.916707e-09           0 1600.25 954.5288 231.1993 414.5218
-    #>                         E
-    #> 1 0.009488798 [mol/m^2/s]
+    T_leaf %>% knitr::kable()
+
+<table>
+<thead>
+<tr class="header">
+<th align="right">T_leaf</th>
+<th align="right">value</th>
+<th align="right">convergence</th>
+<th align="right">R_abs</th>
+<th align="right">S_r</th>
+<th align="right">H</th>
+<th align="right">L</th>
+<th align="right">E</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">305.2116 [K]</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1600.25 [W/m^2]</td>
+<td align="right">954.5288 [W/m^2]</td>
+<td align="right">231.1993 [W/m^2]</td>
+<td align="right">414.5218 [W/m^2]</td>
+<td align="right">0.009488798 [mol/m^2/s]</td>
+</tr>
+</tbody>
+</table>
 
 Environmental gradients
 -----------------------
@@ -162,16 +206,44 @@ leaf or environmental parameters and `tleaves` uses the
     constants  <- make_constants()
 
     # Now there should be 4 combinations (high and low g_sw crossed with high and low T_air)
-    T_leaves <- tleaves(leaf_par, enviro_par, constants, progress = FALSE, quiet = TRUE)
+    T_leaves <- tleaves(leaf_par, enviro_par, constants, progress = FALSE, 
+                        quiet = TRUE, unitless = FALSE)
 
-    T_leaves %>% dplyr::select(T_air, g_sw, T_leaf)
-    #> # A tibble: 4 x 3
-    #>    T_air            g_sw   T_leaf
-    #>      [K] [umol/m^2/Pa/s]      [K]
-    #> 1 293.15               2 304.8484
-    #> 2 298.15               2 307.8130
-    #> 3 293.15               4 302.3785
-    #> 4 298.15               4 305.2116
+    T_leaves %>% 
+      dplyr::select(T_air, g_sw, T_leaf) %>%
+      knitr::kable()
+
+<table>
+<thead>
+<tr class="header">
+<th align="right">T_air</th>
+<th align="right">g_sw</th>
+<th align="right">T_leaf</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">293.15 [K]</td>
+<td align="right">2 [umol/m^2/Pa/s]</td>
+<td align="right">304.8484 [K]</td>
+</tr>
+<tr class="even">
+<td align="right">298.15 [K]</td>
+<td align="right">2 [umol/m^2/Pa/s]</td>
+<td align="right">307.8130 [K]</td>
+</tr>
+<tr class="odd">
+<td align="right">293.15 [K]</td>
+<td align="right">4 [umol/m^2/Pa/s]</td>
+<td align="right">302.3785 [K]</td>
+</tr>
+<tr class="even">
+<td align="right">298.15 [K]</td>
+<td align="right">4 [umol/m^2/Pa/s]</td>
+<td align="right">305.2116 [K]</td>
+</tr>
+</tbody>
+</table>
 
 Contributors
 ------------

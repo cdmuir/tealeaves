@@ -3,7 +3,7 @@
 #' Solve for leaf temperature using energy balance
 #'
 #' See the README on
-#' \href{https://github.com/cdmuir/leafevolver}{GitHub}
+#' \href{https://github.com/cdmuir/tealeaves}{GitHub}
 #'
 #' @docType package
 #' @name tealeaves

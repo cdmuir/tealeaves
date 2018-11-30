@@ -17,19 +17,13 @@ tealeaves <img src="hex-sticker/hex-sticker.png" align="right" height="200" widt
 [![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 [![Build Status](https://travis-ci.com/cdmuir/tealeaves.svg?branch=master)](https://travis-ci.com/cdmuir/tealeaves)
 
-<!---
-[![codecov](https://codecov.io/gh/cdmuir/tealeaves/branch/master/graph/badge.svg)](https://codecov.io/gh/cdmuir/tealeaves)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/tealeaves)](https://github.com/metacran/cranlogs.app)
-[![cran version](http://www.r-pkg.org/badges/version/tealeaves)](https://cran.r-project.org/package=tealeaves)
--->
-
 ## Solve for leaf temperature using energy balance
 
 ## Description
 
-`tealeaves` is a lightweight R package to model leaf temperature using leaf energy balance. It uses the R package [units](https://cran.r-project.org/web/packages/units/index.html) to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind, or trait gradients such as leaf size or stomatal conductance. 
+{tealeaves} is a lightweight R package to model leaf temperature using leaf energy balance. It uses the R package [units](https://cran.r-project.org/web/packages/units/index.html) to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind, or trait gradients such as leaf size or stomatal conductance. 
 
-## Get `tealeaves`
+## Get tealeaves
 
 <!--- From CRAN
 
@@ -44,7 +38,7 @@ install.packages("devtools")
 devtools::install_github("cdmuir/tealeaves")
 ```
 
-And load `tealeaves`
+And load tealeaves
 
 ```r
 library("tealeaves")

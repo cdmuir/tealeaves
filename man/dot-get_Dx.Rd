@@ -7,7 +7,7 @@
 .get_Dx(D_0, Temp, eT, P, unitless)
 }
 \arguments{
-\item{D_0}{Diffusion coefficient at 273.15 K (0 degree C) and 101.3246 kPa}
+\item{D_0}{Diffusion coefficient at 273.15 K (0 °C) and 101.3246 kPa}
 
 \item{Temp}{Temperature in Kelvin}
 

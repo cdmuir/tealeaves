@@ -10,5 +10,5 @@ Solve for leaf temperature using energy balance
 }
 \details{
 See the README on
-\href{https://github.com/cdmuir/leafevolver}{GitHub}
+\href{https://github.com/cdmuir/tealeaves}{GitHub}
 }

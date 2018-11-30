@@ -83,7 +83,7 @@ tleaf(leaf_par, enviro_par, constants)
 
 # tleaves for multiple parameter set:
 
-leaf_par <- make_leafpar(
+enviro_par <- make_enviropar(
   replace = list(
     T_air = set_units(c(293.15, 298.15), "K")
   )

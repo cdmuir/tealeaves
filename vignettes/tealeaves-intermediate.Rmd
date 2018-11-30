@@ -22,11 +22,11 @@ library(tealeaves)
 
 ```
 
-blah
+In this more advanced example, we'll model leaf temperature across a gradient of air temperatures from 0 to 40 °C for leaves under low and high light conditions. We'll also look at differences between hypostomatous and amphistomatous leaves. We use the \code{unitless = TRUE} argument to save time^[The 'unit'ed version ensures that all calculations start and end with the proper units. The unitless functions *should* give the same answer because I run tests every time the package is updated, but it's always good to double check for bugs.], but it still takes a couple minutes. I've saved the output as example data called \code{tl_example1}.
 
 ```{r, eval = FALSE, echo = TRUE}
 
-# install tidyverse if necessary
+# install tidyverse packages if necessary
 # install.packages("tidyverse")
 
 library(dplyr)
@@ -36,37 +36,32 @@ library(tealeaves)
 
 # Parameter sets ----
 
-## 1. High and low light
-  cs <- leafoptimizer::make_constants()
-  S_sw <- leafoptimizer::ppfd2sun(set_units(c(500, 1500), "umol/m^2/s"), 
-                                  set_units(0.5), 
-                                  set_units(220, "kJ/mol"))
-
-## 2. Hypo- and amphistomatous leaves
-logit_sr <- set_units(c(-Inf, qlogis(0.25), 0))
-
-## Make parameters
 cs <- tealeaves::make_constants()
 lp <- tealeaves::make_leafpar(
   replace = list(
-    logit_sr = logit_sr
+    # Hypo- and amphistomatous leaves
+    logit_sr = set_units(c(-Inf, 0))
   )
 )
 ep <- tealeaves::make_enviropar(
   replace = list(
-    S_sw = S_sw,
+    # Low and high light
+    S_sw = set_units(c(220, 660), "W/m^2"),
+    # Air temperature gradient
     T_air = set_units(seq(278.15, 313.15, length.out = 25), "K")  
     )
 )
 
 # Run tleaves ----
-tl_example1 <- tleaves(lp, ep, cs)
+tl_example1 <- tleaves(lp, ep, cs, unitless = TRUE)
 
-# usethis::use_data(tl_example1)
+usethis::use_data(tl_example1)
 
 ```
 
-```{r plot, echo = FALSE, eval = TRUE, fig.width=7}
+Next, we'll usee **ggplot2** to plot the leaf-to-air temperature difference as function of air temperature at the two light levels.
+
+```{r plot temperature, echo = FALSE, eval = TRUE, fig.width=7}
 
 tl_example1 %<>%
   
@@ -77,9 +72,8 @@ tl_example1 %<>%
   mutate(dT = T_leaf - T_air) %>%
   
   # Factorize stomatal ratio 
-  mutate(`Stomatal Ratio` = case_when(
+  mutate("Stomatal Ratio" = case_when(
     logit_sr == -Inf ~ "hypostomatous",
-    logit_sr == qlogis(0.25) ~ "intermediate",
     logit_sr == 0 ~ "amphistomatous"
   )) %>%
   
@@ -91,29 +85,29 @@ tl_example1 %<>%
 
 ggplot(tl_example1, aes(T_air, dT, color = `Stomatal Ratio`)) +
   facet_grid(Light ~ .) + 
+  geom_hline(yintercept = 0) +
   geom_line() +
+  labs(x = "Air Temperature [K]", 
+       y = "Leaf-to-Air Temperature Difference",
+       color = "Stomatal Ratio") + 
   theme_minimal() + 
+  theme(panel.grid.minor = element_blank()) +
   NULL
 
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+The results show that leaves are warmer than the atmosphere at cool temperatures and cooler at high temperatures. In sunnier conditions, leaves are warmer. Finally, amphistomatous leaves are somewhat cooler because they evaporate more water. To see this, let's look directly at transpiration in the same data:
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+```{r plot transpiration, echo = FALSE, eval = TRUE, fig.width=7}
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+ggplot(tl_example1, aes(T_air, 1000 * E, color = `Stomatal Ratio`)) +
+  facet_grid(Light ~ .) + 
+  geom_line() +
+  labs(x = "Air Temperature [K]", 
+       y = expression(paste("Evaporation [mmol ", m^{-2}~s^{-1}, "]")),
+       color = "Stomatal Ratio") + 
+  theme_minimal() + 
+  theme(panel.grid.minor = element_blank()) +
+  NULL
 
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
 ```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))

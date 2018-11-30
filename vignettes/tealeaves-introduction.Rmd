@@ -1,5 +1,5 @@
 ---
-title: "Introduction to the tealeaves package"
+title: "Introduction to the {tealeaves} package"
 author: "Chris Muir"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `tealeaves` package solves for leaf temperature given a set of environmental conditions and leaf traits by balancing the leaf energy budget. There are two main steps to using `tealeaves`:
+The {tealeaves} package solves for leaf temperature given a set of environmental conditions and leaf traits by balancing the leaf energy budget. There are two main steps to using {tealeaves}:
 
 1. define leaf parameters, environmental parameters, and physical constants; and 
 2. solve for the a leaf temperature that balances its energy budget (`tleaf` and `tleaves` for single and multiple parameter sets, respectively).
@@ -47,7 +47,7 @@ constants  <- make_constants() # physical constants
 
 T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, unitless = FALSE)
 
-T_leaf
+T_leaf %>% knitr::kable()
 
 ```
 
@@ -81,7 +81,7 @@ constants  <- make_constants()
 
 T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, unitless = FALSE)
 
-T_leaf
+T_leaf %>% knitr::kable()
 
 ```
 
@@ -114,6 +114,8 @@ constants  <- make_constants()
 T_leaves <- tleaves(leaf_par, enviro_par, constants, progress = FALSE, 
                     quiet = TRUE, unitless = FALSE)
 
-T_leaves %>% dplyr::select(T_air, g_sw, T_leaf)
+T_leaves %>% 
+  dplyr::select(T_air, g_sw, T_leaf) %>%
+  knitr::kable()
 
 ```

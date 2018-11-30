@@ -68,7 +68,7 @@
 #' 
 #' # tleaves for multiple parameter set:
 #' 
-#' leaf_par <- make_leafpar(
+#' enviro_par <- make_enviropar(
 #'   replace = list(
 #'     T_air = set_units(c(293.15, 298.15), "K")
 #'   )
@@ -111,7 +111,7 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
   
   if (progress) pb <- dplyr::progress_estimated(length(pars))
   
-  soln <- pars %>%
+  soln <- suppressWarnings(pars %>%
     purrr::map_dfr(~{
       
       ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, quiet = TRUE,
@@ -119,7 +119,7 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
       if (progress) pb$tick()$print()
       ret
       
-    })
+    }))
   
   pars %<>% purrr::map_dfr(purrr::flatten_dfr)
   
@@ -162,11 +162,17 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
       message(appendLF = FALSE)
   }
   
+  .f <- function(T_leaf, ...) {
+    eb <- energy_balance(T_leaf, ...)
+    if (is(eb, "units")) eb %<>% drop_units()
+    eb
+  }
+  
   fit <- tryCatch({
-    stats::uniroot(f = energy_balance, leaf_par = leaf_par,
-                   enviro_par = enviro_par, constants = constants,
-                   quiet = TRUE, unitless = unitless, check = FALSE,
-                   lower = drop_units(enviro_par$T_air - set_units(30, "K")),
+    stats::uniroot(f = .f, leaf_par = leaf_par, enviro_par = enviro_par, 
+                   constants = constants, quiet = TRUE, unitless = unitless, 
+                   check = FALSE,
+                   lower = drop_units(enviro_par$T_air - set_units(30, "K")), 
                    upper = drop_units(enviro_par$T_air + set_units(30, "K")))
   }, finally = {
     fit <- list(root = NA, f.root = NA, convergence = 1)
@@ -199,6 +205,7 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
   )
   
   soln %<>% dplyr::bind_cols(components)
+  units(soln$T_leaf) <- "K"
   units(soln$R_abs) <- "W/m^2"
   units(soln$S_r) <- "W/m^2"
   units(soln$H) <- "W/m^2"
@@ -438,7 +445,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 
 #' D_x: Calculate diffusion coefficient for a given temperature and pressure
 #'
-#' @param D_0 Diffusion coefficient at 273.15 K (0 degree C) and 101.3246 kPa
+#' @param D_0 Diffusion coefficient at 273.15 K (0 °C) and 101.3246 kPa
 #' @param Temp Temperature in Kelvin
 #' @param eT Exponent for temperature dependence of diffusion
 #' @param P Atmospheric pressure in kPa
@@ -794,12 +801,12 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' The conductance to water vapor on each surface is a function of parallel stomatal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances in series with the boundary layer conductance (\eqn{g_\mathrm{bw}}{g_bw}). The stomatal, cuticular, and boundary layer conductance on the lower surface are:
 #' 
 #' \deqn{g_\mathrm{sw,lower} = g_\mathrm{sw} (1 - sr) R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{gsw_lower = g_sw (1 - sr) R (T_leaf + T_air) / 2}
-#' \deqn{g_\mathrm{uw_lower} = g_\mathrm{uw} / 2 R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{guw_lower = g_uw / 2 R (T_leaf + T_air) / 2}
+#' \deqn{g_\mathrm{uw,lower} = g_\mathrm{uw} / 2 R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{guw_lower = g_uw / 2 R (T_leaf + T_air) / 2}
 #' \cr
 #' See \code{\link{.get_gbw}} for details on calculating boundary layer conductance. The equations for the upper surface are:
 #' 
 #' \deqn{g_\mathrm{sw,upper} = g_\mathrm{sw} sr R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{gsw_upper = g_sw sr R (T_leaf + T_air) / 2}
-#' \deqn{g_\mathrm{uw_upper} = g_\mathrm{uw} / 2 R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{guw_upper = g_uw / 2 R (T_leaf + T_air) / 2}
+#' \deqn{g_\mathrm{uw,upper} = g_\mathrm{uw} / 2 R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{guw_upper = g_uw / 2 R (T_leaf + T_air) / 2}
 #' \cr
 #' Note that the stomatal and cuticular conductances are given in units of (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
 #'
