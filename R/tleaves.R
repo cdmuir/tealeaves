@@ -202,8 +202,10 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
     
     # E: transpiration (mol / (m^2 s))
     pars %<>% purrr::map_if(function(x) is(x, "units"), drop_units)
-    E <- .get_gtw(drop_units(tleaf), pars, unitless = TRUE) * 
-      .get_dwv(drop_units(tleaf), pars, unitless = TRUE)
+    if (is(tleaf, "units")) tleaf %<>% drop_units()
+
+    E <- .get_gtw(tleaf, pars, unitless = TRUE) * 
+      .get_dwv(tleaf, pars, unitless = TRUE)
     E %<>% set_units("mol/m^2/s")
     ret <- list(
       energy_balance = R_abs - (S_r + H + L),
