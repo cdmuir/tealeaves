@@ -85,41 +85,9 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
   par_units <- purrr::map(pars, units) %>%
     magrittr::set_names(names(pars))
   
-  pars %<>%
-    names() %>%
-    glue::glue("{x} = pars${x}", x = .) %>%
-    stringr::str_c(collapse = ", ") %>%
-    glue::glue("tidyr::crossing({x})", x = .) %>%
-    parse(text = .) %>%
-    eval() %>%
-    purrr::transpose()
+  pars %<>% make_parameter_sets(par_units)
   
-  tidyr::crossing(i = seq_len(length(pars)),
-                  par = names(pars[[1]])) %>%
-    dplyr::transmute(ex = glue::glue("units(pars[[{i}]]${par}) <<- par_units${par}", 
-                                     i = .data$i, par = .data$par)) %>%
-    dplyr::pull("ex") %>%
-    parse(text = .) %>%
-    eval()
-  
-  if (!quiet) {
-    glue::glue("\nSolving for T_leaf from {n} parameter set{s}...", 
-               n = length(pars), s = dplyr::if_else(length(pars) > 1, "s", "")) %>%
-      crayon::green() %>%
-      message(appendLF = FALSE)
-  }
-  
-  if (progress) pb <- dplyr::progress_estimated(length(pars))
-  
-  soln <- suppressWarnings(pars %>%
-    purrr::map_dfr(~{
-      
-      ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, quiet = TRUE,
-                   unitless)
-      if (progress) pb$tick()$print()
-      ret
-      
-    }))
+  soln <- find_tleaves(pars, constants, progress, quiet, unitless)
   
   pars %<>% purrr::map_dfr(purrr::flatten_dfr)
   
@@ -130,13 +98,6 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
   
   pars %<>% dplyr::bind_cols(soln)
   
-  units(pars$T_leaf) <- "K"
-  units(pars$R_abs) <- "W/m^2"
-  units(pars$S_r) <- "W/m^2"
-  units(pars$H) <- "W/m^2"
-  units(pars$L) <- "W/m^2"
-  units(pars$E) <- "mol/m^2/s"
-
   pars
   
 }
@@ -152,40 +113,7 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
   enviro_par %<>% enviro_par()
   constants %<>% constants()
   
-  # Balance energy fluxes -----
-  enviro_par$T_air %<>% set_units("K") # convert T_air to Kelvin before dropping units
-  init <- drop_units(enviro_par$T_air)
-  
-  if (!quiet) {
-    "\nSolving for T_leaf ..." %>%
-      crayon::green() %>%
-      message(appendLF = FALSE)
-  }
-  
-  .f <- function(T_leaf, ...) {
-    eb <- energy_balance(T_leaf, ...)
-    if (is(eb, "units")) eb %<>% drop_units()
-    eb
-  }
-  
-  fit <- tryCatch({
-    stats::uniroot(f = .f, leaf_par = leaf_par, enviro_par = enviro_par, 
-                   constants = constants, quiet = TRUE, unitless = unitless, 
-                   check = FALSE,
-                   lower = drop_units(enviro_par$T_air - set_units(30, "K")), 
-                   upper = drop_units(enviro_par$T_air + set_units(30, "K")))
-  }, finally = {
-    fit <- list(root = NA, f.root = NA, convergence = 1)
-  })
-
-  soln <- data.frame(T_leaf = fit$root, value = fit$f.root, 
-                     convergence = dplyr::if_else(is.null(fit$convergence), 0, 1))
-
-  if (!quiet) {
-    " done" %>%
-      crayon::green() %>%
-      message()
-  }
+  soln <- find_tleaf(leaf_par, enviro_par, constants, quiet, unitless)
   
   # Check results -----
   if (soln$convergence == 1) {
@@ -206,10 +134,6 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
   
   soln %<>% dplyr::bind_cols(components)
   units(soln$T_leaf) <- "K"
-  units(soln$R_abs) <- "W/m^2"
-  units(soln$S_r) <- "W/m^2"
-  units(soln$H) <- "W/m^2"
-  units(soln$L) <- "W/m^2"
 
   # Return -----
   soln
@@ -276,15 +200,18 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   if (components) {
     
     # E: transpiration (mol / (m^2 s))
-    E <- set_units(.get_gtw(tleaf, pars, unitless) * 
-                     .get_dwv(tleaf, pars, unitless), "mol/m^2/s")
-    
+    pars %<>% purrr::map_if(function(x) is(x, "units"), drop_units)
+    E <- .get_gtw(drop_units(tleaf), pars, unitless = TRUE) * 
+      .get_dwv(drop_units(tleaf), pars, unitless = TRUE)
+    E %<>% set_units("mol/m^2/s")
     ret <- list(
       energy_balance = R_abs - (S_r + H + L),
       components = list(R_abs = R_abs, S_r = S_r, H = H, L = L, E = E)
       )
     return(ret)
+    
   }
+  
   R_abs - (S_r + H + L)
 
 }
@@ -1053,3 +980,98 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   Sh
 
 }
+
+make_parameter_sets <- function(pars, par_units) {
+  
+  pars %<>%
+    names() %>%
+    glue::glue("{x} = pars${x}", x = .) %>%
+    stringr::str_c(collapse = ", ") %>%
+    glue::glue("tidyr::crossing({x})", x = .) %>%
+    parse(text = .) %>%
+    eval() %>%
+    purrr::transpose()
+  
+  tidyr::crossing(i = seq_len(length(pars)),
+                  par = names(pars[[1]])) %>%
+    dplyr::transmute(ex = glue::glue("units(pars[[{i}]]${par}) <<- par_units${par}", 
+                                     i = .data$i, par = .data$par)) %>%
+    dplyr::pull("ex") %>%
+    parse(text = .) %>%
+    eval()
+  
+  pars
+  
+}
+
+find_tleaves <- function(par_sets, constants, progress = TRUE, quiet = FALSE, 
+                         unitless = FALSE) {
+  
+  if (!quiet) {
+    glue::glue("\nSolving for T_leaf from {n} parameter set{s}...", 
+               n = length(par_sets), 
+               s = dplyr::if_else(length(par_sets) > 1, "s", "")) %>%
+      crayon::green() %>%
+      message(appendLF = FALSE)
+  }
+  
+  if (progress) pb <- dplyr::progress_estimated(length(par_sets))
+  
+  soln <- suppressWarnings(
+    par_sets %>%
+      purrr::map_dfr(~{
+        
+        ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, quiet = TRUE,
+                     unitless)
+        if (progress) pb$tick()$print()
+        ret
+        
+      })
+  )
+  
+  soln
+  
+}
+
+find_tleaf <- function(leaf_par, enviro_par, constants, quiet, unitless) {
+  
+  # Balance energy fluxes -----
+  enviro_par$T_air %<>% set_units("K") # convert T_air to Kelvin before dropping units
+  init <- drop_units(enviro_par$T_air)
+  
+  if (!quiet) {
+    "\nSolving for T_leaf ..." %>%
+      crayon::green() %>%
+      message(appendLF = FALSE)
+  }
+  
+  .f <- function(T_leaf, ...) {
+    eb <- energy_balance(T_leaf, ...)
+    if (is(eb, "units")) eb %<>% drop_units()
+    eb
+  }
+  
+  fit <- tryCatch({
+    stats::uniroot(f = .f, leaf_par = leaf_par, enviro_par = enviro_par, 
+                   constants = constants, quiet = TRUE, unitless = unitless, 
+                   check = FALSE,
+                   lower = drop_units(enviro_par$T_air - set_units(30, "K")), 
+                   upper = drop_units(enviro_par$T_air + set_units(30, "K")))
+  }, finally = {
+    fit <- list(root = NA, f.root = NA, convergence = 1)
+  })
+  
+  soln <- data.frame(T_leaf = fit$root, value = fit$f.root, 
+                     convergence = dplyr::if_else(is.null(fit$convergence), 0, 1))
+  
+  if (!quiet) {
+    " done" %>%
+      crayon::green() %>%
+      message()
+  }
+  
+  soln
+  
+}
+  
+  

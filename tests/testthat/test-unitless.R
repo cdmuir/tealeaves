@@ -36,6 +36,14 @@ test_that("unitless values match unit-ed values", {
   dx2 <- .get_Dx(pars2$D_w0, drop_units(T_leaf), pars2$eT, pars2$P, unitless = TRUE)
   expect_equal(dx1, dx2)
   
+  E1 <- drop_units(
+    set_units(.get_gtw(T_leaf, pars1, unitless = FALSE) * 
+                .get_dwv(T_leaf, pars1, unitless = FALSE), "mol/m^2/s")
+  )
+  E2 <- .get_gtw(drop_units(T_leaf), pars2, unitless = TRUE) * 
+                .get_dwv(drop_units(T_leaf), pars2, unitless = TRUE)
+  expect_equal(E1, E2)
+  
   gbw1 <- drop_units(.get_gbw(T_leaf, "lower", pars1, unitless = FALSE))
   gbw2 <- .get_gbw(drop_units(T_leaf), "lower", pars2, unitless = TRUE)
   expect_equal(gbw1, gbw2)
@@ -107,6 +115,12 @@ test_that("unitless values match unit-ed values", {
   Sr1 <- drop_units(.get_Sr(T_leaf, pars1))
   Sr2 <- .get_Sr(drop_units(T_leaf), pars2)
   expect_equal(Sr1, Sr2)
+  
+  tv1 <- drop_units(.get_Tv(T_leaf, .get_ps(T_leaf, pars1$P, FALSE), 
+                            pars1$P, pars1$epsilon, FALSE))
+  tv2 <- .get_Tv(drop_units(T_leaf), .get_ps(drop_units(T_leaf), pars2$P, TRUE), 
+                            pars2$P, pars2$epsilon, TRUE)
+  expect_equal(tv1, tv2)
   
   eb <- energy_balance(T_leaf, lp, ep, cs, quiet = TRUE, components = FALSE, unitless = FALSE)
   eb <- energy_balance(T_leaf, lp, ep, cs, quiet = TRUE, components = TRUE, unitless = FALSE)
