@@ -128,7 +128,8 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
       dplyr::pull("T_leaf") %>%
       set_units("K") %>%
       energy_balance(leaf_par = leaf_par, enviro_par = enviro_par, 
-                     constants = constants, quiet = TRUE, components = TRUE) %>%
+                     constants = constants, quiet = TRUE, components = TRUE,
+                     unitless = FALSE) %>%
       magrittr::use_series("components")
   )
   
