@@ -44,6 +44,11 @@ test_that("unitless values match unit-ed values", {
                 .get_dwv(drop_units(T_leaf), pars2, unitless = TRUE)
   expect_equal(E1, E2)
   
+  E3 <- drop_units(E(T_leaf, pars1, unitless = FALSE))
+  E4 <- E(drop_units(T_leaf), pars2, unitless = TRUE)
+  expect_equal(E3, E4)
+  expect_equal(E1, E3)
+  
   gbw1 <- drop_units(.get_gbw(T_leaf, "lower", pars1, unitless = FALSE))
   gbw2 <- .get_gbw(drop_units(T_leaf), "lower", pars2, unitless = TRUE)
   expect_equal(gbw1, gbw2)

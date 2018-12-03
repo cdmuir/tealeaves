@@ -837,7 +837,6 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   
 }
 
-#' 
 #' h_vap: heat of vaporization (J / mol)
 #' 
 #' @inheritParams .get_H
@@ -1077,4 +1076,30 @@ find_tleaf <- function(leaf_par, enviro_par, constants, quiet, unitless) {
   
 }
   
+#' Evapotranspiration (mol / (m^2 s))
+#' 
+#' @inheritParams .get_Sr
+#' @inheritParams tleaves
+#' 
+#' @return 
+#' \code{unitless = TRUE}: A value in units of mol / (m ^ 2 / s) number of class \code{numeric} 
+#' \code{unitless = FALSE}: A value in units of mol / (m ^ 2 / s) of class \code{units} 
+#' 
+#' @details 
+#' The leaf evapotranspiration is the product of the total conductance to water vapour () and the water vapour gradient (mol / m^3):
+#' 
+#' \deqn{E = g_\mathrm{t}w D_\mathrm{wv}}{E = g_tw D_wv}
+#' 
+#' If \code{unitless = TRUE}, \code{T_leaf} is assumed in degrees K without checking.
+#' 
+#' @export
+
+E <- function(T_leaf, pars, unitless) {
   
+  if (unitless & is(T_leaf, "units")) T_leaf %<>% drop_units() 
+  if (!unitless) T_leaf %<>% set_units("K")
+  E <- .get_gtw(T_leaf, pars, unitless) * .get_dwv(T_leaf, pars, unitless)
+  if (!unitless) E %<>% set_units("mol/m^2/s")
+  E
+  
+}
