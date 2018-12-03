@@ -103,7 +103,7 @@ temperature in a single leaf using the `make_*()` functions and
 <td align="right">0</td>
 <td align="right">1600.25 [W/m^2]</td>
 <td align="right">943.9849 [W/m^2]</td>
-<td align="right">203.6401 [W/m^2]</td>
+<td align="right">203.6401 [J/m^2/s]</td>
 <td align="right">452.625 [W/m^2]</td>
 <td align="right">0.01035237 [mol/m^2/s]</td>
 </tr>
@@ -167,7 +167,7 @@ which to solve for leaf temperature.
 <td align="right">0</td>
 <td align="right">1600.25 [W/m^2]</td>
 <td align="right">954.5288 [W/m^2]</td>
-<td align="right">231.1993 [W/m^2]</td>
+<td align="right">231.1993 [J/m^2/s]</td>
 <td align="right">414.5218 [W/m^2]</td>
 <td align="right">0.009488798 [mol/m^2/s]</td>
 </tr>
@@ -225,22 +225,22 @@ leaf or environmental parameters and `tleaves` uses the
 <tr class="odd">
 <td align="right">293.15 [K]</td>
 <td align="right">2 [umol/m^2/Pa/s]</td>
-<td align="right">304.8484 [K]</td>
+<td align="right">304.8484</td>
 </tr>
 <tr class="even">
 <td align="right">298.15 [K]</td>
 <td align="right">2 [umol/m^2/Pa/s]</td>
-<td align="right">307.8130 [K]</td>
+<td align="right">307.8130</td>
 </tr>
 <tr class="odd">
 <td align="right">293.15 [K]</td>
 <td align="right">4 [umol/m^2/Pa/s]</td>
-<td align="right">302.3785 [K]</td>
+<td align="right">302.3785</td>
 </tr>
 <tr class="even">
 <td align="right">298.15 [K]</td>
 <td align="right">4 [umol/m^2/Pa/s]</td>
-<td align="right">305.2116 [K]</td>
+<td align="right">305.2116</td>
 </tr>
 </tbody>
 </table>
