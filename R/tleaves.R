@@ -11,7 +11,9 @@
 #' @param quiet Logical. Should messages be displayed?
 #'
 #' @param unitless Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.
-#'
+#' 
+#' @param parallel Logical. Should parallel processing be used via \code{\link[furrr]{future_map}}?
+#' 
 #' @return 
 #' 
 #' \code{tleaves}: \cr
@@ -79,7 +81,7 @@
 #'
 
 tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE, 
-                    quiet = FALSE, unitless = FALSE) {
+                    quiet = FALSE, unitless = FALSE, parallel = FALSE) {
   
   pars <- c(leaf_par, enviro_par)
   par_units <- purrr::map(pars, units) %>%
@@ -87,7 +89,7 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
   
   pars %<>% make_parameter_sets(par_units)
   
-  soln <- find_tleaves(pars, constants, progress, quiet, unitless)
+  soln <- find_tleaves(pars, constants, progress, quiet, unitless, parallel)
   
   pars %<>% purrr::map_dfr(purrr::flatten_dfr)
   
@@ -1006,8 +1008,7 @@ make_parameter_sets <- function(pars, par_units) {
   
 }
 
-find_tleaves <- function(par_sets, constants, progress = TRUE, quiet = FALSE, 
-                         unitless = FALSE) {
+find_tleaves <- function(par_sets, constants, progress, quiet, unitless, parallel) {
   
   if (!quiet) {
     glue::glue("\nSolving for T_leaf from {n} parameter set{s}...", 
@@ -1017,18 +1018,20 @@ find_tleaves <- function(par_sets, constants, progress = TRUE, quiet = FALSE,
       message(appendLF = FALSE)
   }
   
-  if (progress) pb <- dplyr::progress_estimated(length(par_sets))
+  if (parallel) future::plan("multiprocess")
+
+  if (progress & !parallel) pb <- dplyr::progress_estimated(length(par_sets))
   
   soln <- suppressWarnings(
     par_sets %>%
-      purrr::map_dfr(~{
+      furrr::future_map_dfr(~{
         
         ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, quiet = TRUE,
                      unitless)
-        if (progress) pb$tick()$print()
+        if (progress & !parallel) pb$tick()$print()
         ret
         
-      })
+      }, .progress = progress)
   )
   
   soln

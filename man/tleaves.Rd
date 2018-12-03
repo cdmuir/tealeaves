@@ -6,7 +6,7 @@
 \title{\code{tleaves}: find leaf temperatures for multiple parameter sets}
 \usage{
 tleaves(leaf_par, enviro_par, constants, progress = TRUE,
-  quiet = FALSE, unitless = FALSE)
+  quiet = FALSE, unitless = FALSE, parallel = FALSE)
 
 tleaf(leaf_par, enviro_par, constants, quiet = FALSE, unitless = FALSE)
 }
@@ -22,6 +22,8 @@ tleaf(leaf_par, enviro_par, constants, quiet = FALSE, unitless = FALSE)
 \item{quiet}{Logical. Should messages be displayed?}
 
 \item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
+
+\item{parallel}{Logical. Should parallel processing be used via \code{\link[furrr]{future_map}}?}
 }
 \value{
 \code{tleaves}: \cr
