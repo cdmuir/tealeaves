@@ -245,6 +245,49 @@ leaf or environmental parameters and `tleaves` uses the
 </tbody>
 </table>
 
+Parallel processing
+-------------------
+
+It can take a little while to model many different parameter sets. If
+you have multiple processors available, you can speed things up by
+running simulations in parallel. In the `tealeaves` function, simply use
+the `parallel = TRUE` argument to simulate in parallel. Here I'll
+provide an example looking at how leaf-to-air temperature differentials
+change with air temperature.
+
+
+    # We'll use the `replace` argument to enter multiple air temperatures and two light levels
+
+    leaf_par  <- make_leafpar()
+
+    enviro_par <- make_enviropar(
+      replace = list(
+        S_sw = set_units(c(300, 1000), "W/m^2"),
+        T_air = set_units(seq(273.15, 313.15, length.out = 10), "K")
+        )
+      )
+
+    constants  <- make_constants()
+
+    tl <- tleaves(leaf_par, enviro_par, constants, progress = FALSE, quiet = TRUE,
+                  parallel = TRUE)
+    tl$T_air %<>% drop_units() # for plotting
+    tl %<>% dplyr::mutate(Light = dplyr::case_when(
+     round(drop_units(S_sw), 0) == 300 ~ "Shade",
+     round(drop_units(S_sw), 0) == 1000 ~ "Sun"
+    ))
+
+    # Plot T_air versus T_leaf - T_air at different light levels
+    library(ggplot2)
+    ggplot(tl, aes(T_air, T_leaf - T_air, color = Light)) +
+      geom_line() +
+      xlab("Air Temperature [K]") +
+      ylab("Leaf - Air Temperature [K]") +
+      theme_minimal() +
+      NULL
+
+![](README_files/figure-markdown_strict/Parallel%20example-1.png)
+
 Contributors
 ------------
 

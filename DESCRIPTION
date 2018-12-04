@@ -1,6 +1,6 @@
 Package: tealeaves
-Version: 0.0.6
-Date: 2018-12-03
+Version: 0.0.7
+Date: 2018-12-04
 Title: Solve for leaf temperature using energy balance
 Authors@R: person("Chris", "Muir", role = c("aut", "cre"), email = "cdmuir@hawaii.edu")
 Depends: R (>= 3.5.0), units (>= 0.6.0)
