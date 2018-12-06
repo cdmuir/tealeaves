@@ -15,7 +15,6 @@ test_that("unitless values match unit-ed values", {
   ep <- enviro_par(list(
     P = set_units(101.3246, "kPa"),
     RH = set_units(runif(1)),
-    S_lw = set_units(runif(1, 0, 1000), "W/m^2"),
     S_sw = set_units(runif(1, 0, 2000), "W/m^2"),
     T_air = set_units(runif(1, 273.15, 313.15), "K"),
     wind = set_units(runif(1, 0, 20), "m/s")
@@ -101,8 +100,8 @@ test_that("unitless values match unit-ed values", {
   ps2 <- .get_ps(drop_units(T_leaf), pars2$P, unitless = TRUE)
   expect_equal(ps1, ps2)
   
-  Rabs1 <- drop_units(.get_Rabs(pars1))
-  Rabs2 <- .get_Rabs(pars2)
+  Rabs1 <- drop_units(.get_Rabs(pars1, unitless = FALSE))
+  Rabs2 <- .get_Rabs(pars2, unitless = TRUE)
   expect_equal(Rabs1, Rabs2)
   
   re1 <- drop_units(.get_re(T_leaf, pars1, unitless = FALSE))

@@ -98,14 +98,14 @@ temperature in a single leaf using the `make_*()` functions and
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">304.3652 [K]</td>
-<td align="right">-1e-07</td>
+<td align="right">301.9299 [K]</td>
 <td align="right">0</td>
-<td align="right">1600.25 [W/m^2]</td>
-<td align="right">943.9849 [W/m^2]</td>
-<td align="right">203.6401 [J/m^2/s]</td>
-<td align="right">452.625 [W/m^2]</td>
-<td align="right">0.01035237 [mol/m^2/s]</td>
+<td align="right">0</td>
+<td align="right">1403.813 [W/m^2]</td>
+<td align="right">914.1327 [W/m^2]</td>
+<td align="right">124.1127 [J/m^2/s]</td>
+<td align="right">365.5674 [W/m^2]</td>
+<td align="right">0.008341162 [mol/m^2/s]</td>
 </tr>
 </tbody>
 </table>
@@ -162,14 +162,14 @@ which to solve for leaf temperature.
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">305.2116 [K]</td>
+<td align="right">302.6489 [K]</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">1600.25 [W/m^2]</td>
-<td align="right">954.5288 [W/m^2]</td>
-<td align="right">231.1993 [J/m^2/s]</td>
-<td align="right">414.5218 [W/m^2]</td>
-<td align="right">0.009488798 [mol/m^2/s]</td>
+<td align="right">1403.813 [W/m^2]</td>
+<td align="right">922.8713 [W/m^2]</td>
+<td align="right">147.6273 [J/m^2/s]</td>
+<td align="right">333.3142 [W/m^2]</td>
+<td align="right">0.007610625 [mol/m^2/s]</td>
 </tr>
 </tbody>
 </table>
@@ -225,22 +225,22 @@ leaf or environmental parameters and `tleaves` uses the
 <tr class="odd">
 <td align="right">293.15 [K]</td>
 <td align="right">2 [umol/m^2/Pa/s]</td>
-<td align="right">304.8484</td>
+<td align="right">300.8826</td>
 </tr>
 <tr class="even">
 <td align="right">298.15 [K]</td>
 <td align="right">2 [umol/m^2/Pa/s]</td>
-<td align="right">307.8130</td>
+<td align="right">304.8308</td>
 </tr>
 <tr class="odd">
 <td align="right">293.15 [K]</td>
 <td align="right">4 [umol/m^2/Pa/s]</td>
-<td align="right">302.3785</td>
+<td align="right">298.9259</td>
 </tr>
 <tr class="even">
 <td align="right">298.15 [K]</td>
 <td align="right">4 [umol/m^2/Pa/s]</td>
-<td align="right">305.2116</td>
+<td align="right">302.6489</td>
 </tr>
 </tbody>
 </table>

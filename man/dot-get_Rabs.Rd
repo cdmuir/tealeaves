@@ -4,10 +4,12 @@
 \alias{.get_Rabs}
 \title{R_abs: total absorbed radiation (W / m^2)}
 \usage{
-.get_Rabs(pars)
+.get_Rabs(pars, unitless)
 }
 \arguments{
 \item{pars}{Concatenated parameters (\code{leaf_par}, \code{enviro_par}, and \code{constants})}
+
+\item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
 }
 \value{
 Value in W / m\eqn{^2} of class \code{units}
@@ -16,13 +18,26 @@ Value in W / m\eqn{^2} of class \code{units}
 R_abs: total absorbed radiation (W / m^2)
 }
 \details{
-\deqn{R_\mathrm{abs} = \alpha_\mathrm{s} S_\mathrm{sw} + \alpha_\mathrm{l} S_\mathrm{lw}}{R_abs = \alpha_s * S_sw + \alpha_l * S_lw}
+The following treatment follows Okajima et al. (2012):
+
+\deqn{R_\mathrm{abs} = \alpha_\mathrm{s} (1 - r) S_\mathrm{sw} + \alpha_\mathrm{l} \sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)}{R_abs = \alpha_s (1 - r) S_sw + \alpha_l \sigma (T_sky ^ 4 + T_air ^ 4)}
+
+The incidient longwave (aka thermal infrared) radiation is modeled from sky and air temperature \eqn{\sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)}{\sigma (T_sky ^ 4 + T_air ^ 4)} where \eqn{T_\mathrm{sky}}{T_sky} is function of the air temperature and incoming solar shortwave radiation:
+
+\deqn{T_\mathrm{sky} = T_\mathrm{air} - 20 S_\mathrm{sw} / 1000}{T_sky = T_air - 20 S_sw / 1000}
 
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 \eqn{\alpha_\mathrm{s}}{\alpha_s} \tab \code{abs_s} \tab absorbtivity of shortwave radiation (0.3 - 4 \eqn{\mu}m) \tab none \tab 0.80\cr
 \eqn{\alpha_\mathrm{l}}{\alpha_l} \tab \code{abs_l} \tab absorbtivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
-\eqn{S_\mathrm{sw}}{S_sw} \tab \code{S_sw} \tab incident short-wave (solar) radiation flux density \tab W / m\eqn{^2} \tab 1000\cr
-\eqn{S_\mathrm{lw}}{S_lw} \tab \code{S_lw} \tab incident long-wave radiation flux density \tab W / m\eqn{^2} \tab 825
+\eqn{r} \tab \code{r} \tab reflectance for shortwave irradiance (albedo) \tab none \tab 0.2 \cr
+\eqn{\sigma} \tab \code{s} \tab Stephan-Boltzmann constant \tab W / (m\eqn{^2} K\eqn{^4}) \tab 5.67e-08 \cr
+\eqn{S_\mathrm{sw}}{S_sw} \tab \code{S_sw} \tab incident short-wave (solar) radiation flux density \tab W / m\eqn{^2} \tab 1000 \cr
+\eqn{S_\mathrm{lw}}{S_lw} \tab \code{S_lw} \tab incident long-wave radiation flux density \tab W / m\eqn{^2} \tab calculated \cr
+\eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15 \cr
+\eqn{T_\mathrm{sky}}{T_sky} \tab \code{T_sky} \tab sky temperature \tab K \tab calculated
 }
+}
+\references{
+Okajima Y, H Taneda, K Noguchi, I Terashima. 2012. Optimum leaf size predicted by a novel leaf energy balance model incorporating dependencies of photosynthesis on light and temperature. Ecological Research 27: 333-46.
 }
