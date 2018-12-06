@@ -232,7 +232,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' The following treatment follows Okajima et al. (2012):
 #' 
-#' \deqn{R_\mathrm{abs} = \alpha_\mathrm{s} (1 - r) S_\mathrm{sw} + \alpha_\mathrm{l} \sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)}{R_abs = \alpha_s (1 - r) S_sw + \alpha_l \sigma (T_sky ^ 4 + T_air ^ 4)}
+#' \deqn{R_\mathrm{abs} = \alpha_\mathrm{s} (1 + r) S_\mathrm{sw} + \alpha_\mathrm{l} \sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)}{R_abs = \alpha_s (1 + r) S_sw + \alpha_l \sigma (T_sky ^ 4 + T_air ^ 4)}
 #' 
 #' The incidient longwave (aka thermal infrared) radiation is modeled from sky and air temperature \eqn{\sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)}{\sigma (T_sky ^ 4 + T_air ^ 4)} where \eqn{T_\mathrm{sky}}{T_sky} is function of the air temperature and incoming solar shortwave radiation:
 #' 
@@ -259,11 +259,11 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   
   if (unitless) {
     T_sky <- pars$T_air - 20 * pars$S_sw / 1000
-    R_abs <- pars$abs_s * (1 - pars$r) * pars$S_sw + pars$abs_l * pars$s * (T_sky ^ 4 + pars$T_air ^ 4)
+    R_abs <- pars$abs_s * (1 + pars$r) * pars$S_sw + pars$abs_l * pars$s * (T_sky ^ 4 + pars$T_air ^ 4)
     
   } else {
     T_sky <- pars$T_air - set_units(20, "K") * pars$S_sw / set_units(1000, "W/m^2")
-    R_abs <- pars$abs_s * (set_units(1) - pars$r) * pars$S_sw + pars$abs_l * pars$s * (T_sky ^ 4 + pars$T_air ^ 4)
+    R_abs <- pars$abs_s * (set_units(1) + pars$r) * pars$S_sw + pars$abs_l * pars$s * (T_sky ^ 4 + pars$T_air ^ 4)
     R_abs %<>% set_units("W/m^2")
   }
 
