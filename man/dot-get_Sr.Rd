@@ -20,7 +20,7 @@ S_r: longwave re-radiation (W / m^2)
 \details{
 \deqn{S_\mathrm{r} = 2 \sigma \alpha_\mathrm{l} T_\mathrm{air} ^ 4}{S_r = 2 \sigma \alpha_l T_air ^ 4 }
 
-The factor of 2 accounts for re-radiation from both leaf surfaces (Foster and Smith 1987). \cr
+The factor of 2 accounts for re-radiation from both leaf surfaces (Foster and Smith 1986). \cr
 \cr
 \tabular{lllll}{
 \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
@@ -32,5 +32,5 @@ The factor of 2 accounts for re-radiation from both leaf surfaces (Foster and Sm
 Note that leaf absorbtivity is the same value as leaf emissivity
 }
 \references{
-Foster JR, Smith WK. 1987. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell \& Environment 9: 751-9.
+Foster JR, Smith WK. 1986. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell \& Environment 9: 751-9.
 }

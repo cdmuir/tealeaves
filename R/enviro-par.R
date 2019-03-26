@@ -17,7 +17,13 @@ enviro_par <- function(.x) {
   
   stopifnot(is.list(.x))
   
-  stopifnot(all(nms %in% names(.x)))
+  if (!all(nms %in% names(.x))) {
+    nms[!(nms %in% names(.x))] %>%
+      stringr::str_c(collapse = ", ") %>%
+      glue::glue("{x} not in parameter names required for {which}",
+                 x = ., which = which) %>%
+      stop()
+  }
   
   .x %<>% magrittr::extract(nms)
   
@@ -28,6 +34,7 @@ enviro_par <- function(.x) {
   
   # Set units ----
   .x$P %<>% set_units("kPa")
+  .x$r %<>% set_units()
   .x$RH %<>% set_units()
   .x$S_sw %<>% set_units("W / m ^ 2")
   .x$T_air %<>% set_units("K")
@@ -35,6 +42,7 @@ enviro_par <- function(.x) {
   
   # Check values ----
   stopifnot(.x$P >= set_units(0, "kPa"))
+  stopifnot(.x$r >= set_units(0) & .x$r <= set_units(1))
   stopifnot(.x$RH >= set_units(0) & .x$RH <= set_units(1))
   stopifnot(.x$S_sw >= set_units(0, "W / m^2"))
   stopifnot(.x$T_air >= set_units(0, "K"))

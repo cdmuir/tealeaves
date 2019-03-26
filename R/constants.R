@@ -17,7 +17,13 @@ constants <- function(.x) {
   
   stopifnot(is.list(.x))
   
-  stopifnot(all(nms %in% names(.x)))
+  if (!all(nms %in% names(.x))) {
+    nms[!(nms %in% names(.x))] %>%
+      stringr::str_c(collapse = ", ") %>%
+      glue::glue("{x} not in parameter names required for {which}",
+                 x = ., which = which) %>%
+      stop()
+  }
   
   .x %<>% magrittr::extract(nms)
 
@@ -25,7 +31,7 @@ constants <- function(.x) {
     purrr::map(class) %>%
     magrittr::is_in(c("units", "function")) %>%
     stopifnot()
-    
+  
   # Set units ----
   .x$c_p %<>% set_units("J / (g * K)")
   .x$D_h0 %<>% set_units("m ^ 2 / s")
@@ -34,8 +40,6 @@ constants <- function(.x) {
   .x$epsilon %<>% set_units()
   .x$eT %<>% set_units()
   .x$G %<>% set_units("m / s ^ 2")
-  .x$phi %<>% set_units()
-  .x$r %<>% set_units()
   .x$R %<>% set_units("J / (mol * K)")
   .x$R_air %<>% set_units("J / (kg * K)")
   .x$s %<>% set_units("W / (m ^ 2 * K ^ 4)")
@@ -48,8 +52,6 @@ constants <- function(.x) {
   stopifnot(.x$epsilon >= set_units(0))
   stopifnot(.x$eT >= set_units(0))
   stopifnot(.x$G >= set_units(0, "m / s ^ 2"))
-  stopifnot(.x$phi >= set_units(0) & .x$phi <= set_units(1))
-  stopifnot(.x$r >= set_units(0) & .x$r <= set_units(1))
   stopifnot(.x$R >= set_units(0, "J / (mol * K)"))
   stopifnot(.x$R_air >= set_units(0, "J / (kg * K)"))
   stopifnot(.x$s >= set_units(0, "W / (m ^ 2 * K ^ 4)"))

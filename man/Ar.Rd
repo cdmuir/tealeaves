@@ -15,7 +15,8 @@ Ar(T_leaf, pars, unitless = FALSE)
 }
 \value{
 \code{unitless = TRUE}: A unitless number of class \code{numeric} 
-\code{unitless = FALSE}: A unitless number of class \code{units}
+\code{unitless = FALSE}: A unitless number of class \code{units} 
+Also returns Reynolds and Grashof numbers
 }
 \description{
 Ar: Archimedes number

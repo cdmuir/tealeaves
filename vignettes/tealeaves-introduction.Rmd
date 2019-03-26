@@ -142,6 +142,7 @@ constants  <- make_constants()
 tl <- tleaves(leaf_par, enviro_par, constants, progress = FALSE, quiet = TRUE,
               parallel = TRUE)
 tl$T_air %<>% drop_units() # for plotting
+tl$T_leaf %<>% drop_units() # for plotting
 tl %<>% dplyr::mutate(Light = dplyr::case_when(
  round(drop_units(S_sw), 0) == 300 ~ "Shade",
  round(drop_units(S_sw), 0) == 1000 ~ "Sun"

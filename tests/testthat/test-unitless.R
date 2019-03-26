@@ -15,6 +15,7 @@ test_that("unitless values match unit-ed values", {
   ep <- enviro_par(list(
     P = set_units(101.3246, "kPa"),
     RH = set_units(runif(1)),
+    r = set_units(0.2),
     S_sw = set_units(runif(1, 0, 2000), "W/m^2"),
     T_air = set_units(runif(1, 273.15, 313.15), "K"),
     wind = set_units(runif(1, 0, 20), "m/s")
@@ -23,8 +24,8 @@ test_that("unitless values match unit-ed values", {
   pars1 <- c(cs, lp, ep)
   pars2 <- purrr::map_if(pars1, function(x) is(x, "units"), drop_units)
 
-  ar1 <- drop_units(Ar(T_leaf, pars1, unitless = FALSE))
-  ar2 <- Ar(drop_units(T_leaf), pars2, unitless = TRUE)
+  ar1 <- drop_units(Ar(T_leaf, pars1, unitless = FALSE)$Ar)
+  ar2 <- Ar(drop_units(T_leaf), pars2, unitless = TRUE)$Ar
   expect_equal(ar1, ar2)
 
   dwv1 <- drop_units(.get_dwv(T_leaf, pars1, unitless = FALSE))

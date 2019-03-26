@@ -10,7 +10,6 @@
 #' @importFrom magrittr %>% %<>%
 #' @importFrom methods is
 #' @importFrom rlang .data
-#' @importFrom stats optim
 #' @importFrom units drop_units set_units
 NULL
 

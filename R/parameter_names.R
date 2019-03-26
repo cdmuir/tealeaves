@@ -14,10 +14,9 @@ parameter_names <- function(which) {
     match.arg(c("leaf", "enviro", "constants")) %>%
     switch(
          leaf = c("abs_l", "abs_s", "g_sw", "g_uw", "leafsize", "logit_sr"),
-         enviro = c("P", "RH", "S_sw", "T_air", "wind"),
-         constants = c("c_p","D_h0", "D_m0", "D_w0", "epsilon", "eT", "G", 
-                       "nu_constant", "phi", "r", "R", "R_air", "s", 
-                       "sh_constant")
-  )
+         enviro = c("P", "r", "RH", "S_sw", "T_air", "wind"),
+         constants = c("c_p","D_h0", "D_m0", "D_w0", "epsilon", "eT", "G", "nu_constant",
+                       "R", "R_air", "s", "sh_constant")
+    )
   
 }

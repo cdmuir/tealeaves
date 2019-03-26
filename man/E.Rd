@@ -2,7 +2,7 @@
 % Please edit documentation in R/tleaves.R
 \name{E}
 \alias{E}
-\title{Evapotranspiration (mol / (m^2 s))}
+\title{Evaporation (mol / (m^2 s))}
 \usage{
 E(T_leaf, pars, unitless)
 }
@@ -18,12 +18,12 @@ E(T_leaf, pars, unitless)
 \code{unitless = FALSE}: A value in units of mol / (m ^ 2 / s) of class \code{units}
 }
 \description{
-Evapotranspiration (mol / (m^2 s))
+Evaporation (mol / (m^2 s))
 }
 \details{
-The leaf evapotranspiration is the product of the total conductance to water vapour () and the water vapour gradient (mol / m^3):
+The leaf evaporation rate is the product of the total conductance to water vapour (m / s) and the water vapour gradient (mol / m^3):
 
-\deqn{E = g_\mathrm{t}w D_\mathrm{wv}}{E = g_tw D_wv}
+\deqn{E = g_\mathrm{tw} D_\mathrm{wv}}{E = g_tw D_wv}
 
 If \code{unitless = TRUE}, \code{T_leaf} is assumed in degrees K without checking.
 }

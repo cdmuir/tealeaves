@@ -6,6 +6,7 @@
 #' @return 
 #' \code{unitless = TRUE}: A unitless number of class \code{numeric} 
 #' \code{unitless = FALSE}: A unitless number of class \code{units} 
+#' Also returns Reynolds and Grashof numbers
 #' 
 #' @details 
 #' 
@@ -38,6 +39,6 @@ Ar <- function(T_leaf, pars, unitless = FALSE) {
   
   Ar <- Gr / Re ^ 2
 
-  Ar
+  data.frame(Ar = Ar, Gr = Gr, Re = Re) 
   
 }

@@ -99,7 +99,13 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
     eval()
   
   pars %<>% dplyr::bind_cols(soln)
-  
+  units(pars$T_leaf) <- "K"
+  units(pars$E) <- "mol/m^2/s"
+  units(pars$R_abs) <- "W/m^2"
+  units(pars$S_r) <- "W/m^2"
+  units(pars$H) <- "W/m^2"
+  units(pars$L) <- "W/m^2"
+
   pars
   
 }
@@ -126,18 +132,27 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
   
   # Energy balance components -----
   components <- suppressWarnings(
-    soln %>%
+    if (is.na(soln$T_leaf)) {
+      list(R_abs = NA, S_r = NA, H = NA, L = NA, E = NA)
+    } else {
+      soln %>%
       dplyr::pull("T_leaf") %>%
       set_units("K") %>%
       energy_balance(leaf_par = leaf_par, enviro_par = enviro_par, 
                      constants = constants, quiet = TRUE, components = TRUE,
                      unitless = FALSE) %>%
       magrittr::use_series("components")
+    }
   )
   
   soln %<>% dplyr::bind_cols(components)
   units(soln$T_leaf) <- "K"
-
+  if (is.na(soln$T_leaf)) {
+    soln %<>% dplyr::bind_cols(data.frame(Ar = NA, Gr = NA, Re = NA))
+  } else {
+    soln %<>% dplyr::bind_cols(Ar(soln$T_leaf, c(leaf_par, enviro_par, constants)))
+  }
+  
   # Return -----
   soln
   
@@ -282,7 +297,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' \deqn{S_\mathrm{r} = 2 \sigma \alpha_\mathrm{l} T_\mathrm{air} ^ 4}{S_r = 2 \sigma \alpha_l T_air ^ 4 }
 #' 
-#' The factor of 2 accounts for re-radiation from both leaf surfaces (Foster and Smith 1987). \cr
+#' The factor of 2 accounts for re-radiation from both leaf surfaces (Foster and Smith 1986). \cr
 #' \cr
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
@@ -295,7 +310,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @references 
 #' 
-#' Foster JR, Smith WK. 1987. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell \& Environment 9: 751-9.
+#' Foster JR, Smith WK. 1986. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell \& Environment 9: 751-9.
 #' 
 
 .get_Sr <- function(T_leaf, pars) 2 * pars$s * pars$abs_l * T_leaf ^ 4
@@ -1083,15 +1098,18 @@ find_tleaf <- function(leaf_par, enviro_par, constants, quiet, unitless) {
     eb
   }
   
-  fit <- tryCatch({
-    stats::uniroot(f = .f, leaf_par = leaf_par, enviro_par = enviro_par, 
-                   constants = constants, quiet = TRUE, unitless = unitless, 
-                   check = FALSE,
-                   lower = drop_units(enviro_par$T_air - set_units(30, "K")), 
-                   upper = drop_units(enviro_par$T_air + set_units(30, "K")))
-  }, finally = {
+  fit <- safely_uniroot(
+    f = .f, leaf_par = leaf_par, enviro_par = enviro_par, constants = constants, 
+    quiet = TRUE, unitless = unitless, check = FALSE,
+    lower = drop_units(enviro_par$T_air - set_units(30, "K")), 
+    upper = drop_units(enviro_par$T_air + set_units(30, "K"))
+  )
+  
+  if (is.null(fit$result)) {
     fit <- list(root = NA, f.root = NA, convergence = 1)
-  })
+  } else {
+    fit <- fit$result
+  }
   
   soln <- data.frame(T_leaf = fit$root, value = fit$f.root, 
                      convergence = dplyr::if_else(is.null(fit$convergence), 0, 1))
@@ -1105,8 +1123,10 @@ find_tleaf <- function(leaf_par, enviro_par, constants, quiet, unitless) {
   soln
   
 }
-  
-#' Evapotranspiration (mol / (m^2 s))
+
+safely_uniroot <- purrr::safely(uniroot)
+
+#' Evaporation (mol / (m^2 s))
 #' 
 #' @inheritParams .get_Sr
 #' @inheritParams tleaves
@@ -1116,9 +1136,9 @@ find_tleaf <- function(leaf_par, enviro_par, constants, quiet, unitless) {
 #' \code{unitless = FALSE}: A value in units of mol / (m ^ 2 / s) of class \code{units} 
 #' 
 #' @details 
-#' The leaf evapotranspiration is the product of the total conductance to water vapour () and the water vapour gradient (mol / m^3):
+#' The leaf evaporation rate is the product of the total conductance to water vapour (m / s) and the water vapour gradient (mol / m^3):
 #' 
-#' \deqn{E = g_\mathrm{t}w D_\mathrm{wv}}{E = g_tw D_wv}
+#' \deqn{E = g_\mathrm{tw} D_\mathrm{wv}}{E = g_tw D_wv}
 #' 
 #' If \code{unitless = TRUE}, \code{T_leaf} is assumed in degrees K without checking.
 #' 
