@@ -10,7 +10,7 @@
 #' 
 #' @param quiet Logical. Should messages be displayed?
 #'
-#' @param unitless Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.
+#' @param set_units Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.
 #' 
 #' @param parallel Logical. Should parallel processing be used via \code{\link[furrr]{future_map}}?
 #' 
@@ -81,7 +81,11 @@
 #'
 
 tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE, 
-                    quiet = FALSE, unitless = FALSE, parallel = FALSE) {
+                    quiet = FALSE, set_units = TRUE, parallel = FALSE) {
+  
+  if (set_units) {
+    
+  }
   
   pars <- c(leaf_par, enviro_par)
   par_units <- purrr::map(pars, units) %>%
@@ -89,7 +93,8 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
   
   pars %<>% make_parameter_sets(par_units)
   
-  soln <- find_tleaves(pars, constants, progress, quiet, unitless, parallel)
+  soln <- find_tleaves(pars, constants, progress, quiet, set_units = FALSE,
+                       parallel)
   
   pars %<>% purrr::map_dfr(purrr::flatten_dfr)
   
@@ -1069,7 +1074,7 @@ find_tleaves <- function(par_sets, constants, progress, quiet, unitless, paralle
       furrr::future_map_dfr(~{
         
         ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, quiet = TRUE,
-                     unitless)
+                     set_units = FALSE)
         if (progress & !parallel) pb$tick()$print()
         ret
         
