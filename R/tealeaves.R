@@ -17,4 +17,5 @@ NULL
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 
 ## quiets concerns of R CMD check re: units
-utils::globalVariables(c("K"))
+utils::globalVariables(c("g", "hPa", "J", "K", "kg", "kPa", "m", "mol", "Pa", 
+                         "s", "umol", "W"))

@@ -36,12 +36,12 @@ fit <- lm(h_vap ~ T_K)
 coef(fit) 
 
 T_leaf <- 298.15
-h_vap <- set_units(56847.68250, "J / mol") - 
-           set_units(43.12514, "J / mol / K") * set_units(T_leaf, "K")
+h_vap <- set_units(56847.68250, J / mol) - 
+           set_units(43.12514, J / mol / K) * set_units(T_leaf, K)
 
 ## h_vap at 298.15 K is 43989.92 [J/mol]
 
-set_units(h_vap, "J / mol")
+set_units(h_vap, J / mol)
 
 }
 \references{

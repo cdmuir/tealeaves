@@ -33,20 +33,20 @@ enviro_par <- function(.x) {
     stopifnot()
   
   # Set units ----
-  .x$P %<>% set_units("kPa")
+  .x$P %<>% set_units(kPa)
   .x$r %<>% set_units()
   .x$RH %<>% set_units()
-  .x$S_sw %<>% set_units("W / m ^ 2")
-  .x$T_air %<>% set_units("K")
-  .x$wind %<>% set_units("m / s")
+  .x$S_sw %<>% set_units(W / m ^ 2)
+  .x$T_air %<>% set_units(K)
+  .x$wind %<>% set_units(m / s)
   
   # Check values ----
-  stopifnot(.x$P >= set_units(0, "kPa"))
+  stopifnot(.x$P >= set_units(0, kPa))
   stopifnot(.x$r >= set_units(0) & .x$r <= set_units(1))
   stopifnot(.x$RH >= set_units(0) & .x$RH <= set_units(1))
-  stopifnot(.x$S_sw >= set_units(0, "W / m^2"))
-  stopifnot(.x$T_air >= set_units(0, "K"))
-  stopifnot(.x$wind >= set_units(0, "m / s"))
+  stopifnot(.x$S_sw >= set_units(0, W / m ^ 2))
+  stopifnot(.x$T_air >= set_units(0, K))
+  stopifnot(.x$wind >= set_units(0, m / s))
 
   structure(.x, class = c(stringr::str_c(which, "_par"), "list"))
   

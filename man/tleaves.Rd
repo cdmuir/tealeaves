@@ -87,7 +87,7 @@ tleaf(leaf_par, enviro_par, constants)
 
 enviro_par <- make_enviropar(
   replace = list(
-    T_air = set_units(c(293.15, 298.15), "K")
+    T_air = set_units(c(293.15, 298.15), K)
   )
 )
 tleaves(leaf_par, enviro_par, constants)

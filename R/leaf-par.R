@@ -35,17 +35,17 @@ leaf_par <- function(.x) {
   # Set units ----
   .x$abs_l %<>% set_units()
   .x$abs_s %<>% set_units()
-  .x$g_sw %<>% set_units("umol / (m^2 * s * Pa)")
-  .x$g_uw %<>% set_units("umol / (m^2 * s * Pa)")
+  .x$g_sw %<>% set_units(umol / (m^2 * s * Pa))
+  .x$g_uw %<>% set_units(umol / (m^2 * s * Pa))
   .x$leafsize %<>% set_units("m")
   .x$logit_sr %<>% set_units()
   
   # Check values ----
   stopifnot(.x$abs_l >= set_units(0) & .x$abs_l <= set_units(1))
   stopifnot(.x$abs_s >= set_units(0) & .x$abs_s <= set_units(1))
-  stopifnot(.x$g_sw >= set_units(0, "umol / (m^2 * s * Pa)"))
-  stopifnot(.x$g_uw >= set_units(0, "umol / (m^2 * s * Pa)"))
-  stopifnot(.x$leafsize >= set_units(0, "m"))
+  stopifnot(.x$g_sw >= set_units(0, umol / (m^2 * s * Pa)))
+  stopifnot(.x$g_uw >= set_units(0, umol / (m^2 * s * Pa)))
+  stopifnot(.x$leafsize >= set_units(0, m))
   
   structure(.x, class = c(stringr::str_c(which, "_par"), "list"))
   

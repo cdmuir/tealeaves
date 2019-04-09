@@ -55,23 +55,23 @@ leaf_par <- make_leafpar(replace = list(logit_sr = set_units(-Inf)))
 enviro_par <- make_enviropar()
 constants <- make_constants()
 pars <- c(leaf_par, enviro_par, constants)
-T_leaf <- set_units(300, "K")
+T_leaf <- set_units(300, K)
 
 ## Fixing boundary layer conductance rather than calculating
-gbw_lower <- set_units(0.1, "m/s")
-gbw_upper <- set_units(0.1, "m/s")
+gbw_lower <- set_units(0.1, m / s)
+gbw_upper <- set_units(0.1, m / s)
 
 # Lower surface ----
 ## Note that pars$logit_sr is logit-transformed! Use stats::plogis() to convert to proportion.
 gsw_lower <- set_units(pars$g_sw * (set_units(1) - stats::plogis(pars$logit_sr)) * pars$R * 
                          ((T_leaf + pars$T_air) / 2), "m / s")
-guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), m / s)
 gtw_lower <- 1 / (1 / (gsw_lower + guw_lower) + 1 / gbw_lower)
 
 # Upper surface ----
 gsw_upper <- set_units(pars$g_sw * stats::plogis(pars$logit_sr) * pars$R * 
-                         ((T_leaf + pars$T_air) / 2), "m / s")
-guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+                         ((T_leaf + pars$T_air) / 2), m / s)
+guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), m / s)
 gtw_upper <- 1 / (1 / (gsw_upper + guw_upper) + 1 / gbw_upper)
 
 ## Lower and upper surface are in parallel

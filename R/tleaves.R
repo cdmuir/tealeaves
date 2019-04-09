@@ -72,7 +72,7 @@
 #' 
 #' enviro_par <- make_enviropar(
 #'   replace = list(
-#'     T_air = set_units(c(293.15, 298.15), "K")
+#'     T_air = set_units(c(293.15, 298.15), K)
 #'   )
 #' )
 #' tleaves(leaf_par, enviro_par, constants)
@@ -109,12 +109,12 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
     eval()
   
   pars %<>% dplyr::bind_cols(soln)
-  units(pars$T_leaf) <- "K"
-  units(pars$E) <- "mol/m^2/s"
-  units(pars$R_abs) <- "W/m^2"
-  units(pars$S_r) <- "W/m^2"
-  units(pars$H) <- "W/m^2"
-  units(pars$L) <- "W/m^2"
+  pars$T_leaf %<>% set_units(K)
+  pars$E %<>% set_units(mol / m ^ 2 / s)
+  pars$R_abs %<>% set_units(W / m ^ 2)
+  pars$S_r %<>% set_units(W / m ^ 2)
+  pars$H %<>% set_units(W / m ^ 2)
+  pars$L %<>% set_units(W / m ^ 2)
 
   pars
   
@@ -169,7 +169,7 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
     soln %<>% dplyr::bind_cols(Ar(soln$T_leaf, c(ulp, uep, ucs), 
                                   unitless = TRUE))
   }
-  units(soln$T_leaf) <- "K"
+  soln$T_leaf %<>% set_units(K)
   
   # Return -----
   soln
@@ -230,12 +230,12 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
       energy_balance = R_abs - (S_r + H + L),
       components = list(R_abs = R_abs, S_r = S_r, H = H, L = L, E = E)
     )
-    units(ret$energy_balance) <- "W/m^2"
-    units(ret$components$R_abs) <- "W/m^2"
-    units(ret$components$S_r) <- "W/m^2"
-    units(ret$components$H) <- "W/m^2"
-    units(ret$components$L) <- "W/m^2"
-    units(ret$components$E) <- "mol/m^2/s"
+    ret$energy_balance %<>% set_units(W / m ^ 2)
+    ret$components$R_abs %<>% set_units(W / m ^ 2)
+    ret$components$S_r %<>% set_units(W / m ^ 2)
+    ret$components$H %<>% set_units(W / m ^ 2)
+    ret$components$L %<>% set_units(W / m ^ 2)
+    ret$components$E %<>% set_units(mol / m ^ 2 / s)
     
     return(ret)
     
@@ -289,9 +289,10 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
     R_abs <- pars$abs_s * (1 + pars$r) * pars$S_sw + pars$abs_l * pars$s * (T_sky ^ 4 + pars$T_air ^ 4)
     
   } else {
-    T_sky <- pars$T_air - set_units(20, "K") * pars$S_sw / set_units(1000, "W/m^2")
+    T_sky <- pars$T_air - set_units(20, K) * 
+      pars$S_sw / set_units(1000, W / m ^ 2)
     R_abs <- pars$abs_s * (set_units(1) + pars$r) * pars$S_sw + pars$abs_l * pars$s * (T_sky ^ 4 + pars$T_air ^ 4)
-    R_abs %<>% set_units("W/m^2")
+    R_abs %<>% set_units(W / m ^ 2)
   }
 
   R_abs
@@ -390,7 +391,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   if (unitless) {
     P_a %<>% magrittr::multiply_by(1e6)
   } else {
-    P_a %<>% set_units("g / m^3")
+    P_a %<>% set_units(g / m ^ 3)
   }
   
   P_a
@@ -462,8 +463,8 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   } else {
     
     Dx <- D_0 * 
-      drop_units((set_units(Temp, "K") / set_units(273.15, "K"))) ^ drop_units(eT) * 
-      drop_units((set_units(101.3246, "kPa") / set_units(P, "kPa")))
+      drop_units((set_units(Temp, K) / set_units(273.15, K))) ^ drop_units(eT) * 
+      drop_units((set_units(101.3246, kPa) / set_units(P, kPa)))
     
   }
   
@@ -552,9 +553,9 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
     
   } else {
     
-    Tv <- set_units(Temp, "K") / 
+    Tv <- set_units(Temp, K) / 
       (set_units(1) - (set_units(1) - epsilon) * 
-         (set_units(p, "kPa") / set_units(P, "kPa")))
+         (set_units(p, kPa) / set_units(P, kPa)))
     
   }
   
@@ -585,8 +586,8 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   if (unitless) {
     P %<>% magrittr::multiply_by(10)
   } else {
-    Temp %<>% set_units("K") %>% drop_units()
-    P %<>% set_units("hPa") %>% drop_units()
+    Temp %<>% set_units(K) %>% drop_units()
+    P %<>% set_units(hPa) %>% drop_units()
   }
   
   p_s <- 10 ^ (-7.90298 * (373.16 / Temp - 1) +
@@ -600,8 +601,8 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
     p_s %<>% magrittr::multiply_by(0.1)
   } else {
     p_s %<>% 
-      set_units("hPa") %>%
-      set_units("kPa")
+      set_units(hPa) %>%
+      set_units(kPa)
   }
   
   p_s
@@ -713,7 +714,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   d_wv <- .get_dwv(T_leaf, pars, unitless)
     
   L <- h_vap * g_tw * d_wv
-  if (!unitless) L %<>% set_units("W / m ^ 2")
+  if (!unitless) L %<>% set_units(W / m ^ 2)
   L
 
 }
@@ -750,10 +751,10 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' enviro_par <- make_enviropar()
 #' constants <- make_constants()
 #' pars <- c(leaf_par, enviro_par, constants)
-#' T_leaf <- set_units(300, "K")
-#' T_air <- set_units(298.15, "K")
-#' p_leaf <- set_units(35.31683, "kPa")
-#' p_air <- set_units(31.65367, "kPa")
+#' T_leaf <- set_units(300, K)
+#' T_air <- set_units(298.15, K)
+#' p_leaf <- set_units(35.31683, kPa)
+#' p_air <- set_units(31.65367, kPa)
 #' 
 #' d_wv <- p_leaf / (pars$R * T_leaf) - pars$RH * p_air / (pars$R * T_air)
 #' 
@@ -767,7 +768,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   if (unitless) {
     d_wv %<>% magrittr::multiply_by(1e3)
   } else {
-    d_wv %<>% set_units("mol / m ^ 3")
+    d_wv %<>% set_units(mol / m ^ 3)
   }
   
   d_wv
@@ -817,23 +818,23 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' enviro_par <- make_enviropar()
 #' constants <- make_constants()
 #' pars <- c(leaf_par, enviro_par, constants)
-#' T_leaf <- set_units(300, "K")
+#' T_leaf <- set_units(300, K)
 #' 
 #' ## Fixing boundary layer conductance rather than calculating
-#' gbw_lower <- set_units(0.1, "m/s")
-#' gbw_upper <- set_units(0.1, "m/s")
+#' gbw_lower <- set_units(0.1, m / s)
+#' gbw_upper <- set_units(0.1, m / s)
 #' 
 #' # Lower surface ----
 #' ## Note that pars$logit_sr is logit-transformed! Use stats::plogis() to convert to proportion.
 #' gsw_lower <- set_units(pars$g_sw * (set_units(1) - stats::plogis(pars$logit_sr)) * pars$R * 
 #'                          ((T_leaf + pars$T_air) / 2), "m / s")
-#' guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+#' guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), m / s)
 #' gtw_lower <- 1 / (1 / (gsw_lower + guw_lower) + 1 / gbw_lower)
 #' 
 #' # Upper surface ----
 #' gsw_upper <- set_units(pars$g_sw * stats::plogis(pars$logit_sr) * pars$R * 
-#'                          ((T_leaf + pars$T_air) / 2), "m / s")
-#' guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+#'                          ((T_leaf + pars$T_air) / 2), m / s)
+#' guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), m / s)
 #' gtw_upper <- 1 / (1 / (gsw_upper + guw_upper) + 1 / gbw_upper)
 #' 
 #' ## Lower and upper surface are in parallel
@@ -858,8 +859,8 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   } else {
     
     gsw_lower <- set_units(pars$g_sw * (set_units(1) - stats::plogis(pars$logit_sr)) *
-                             pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
-    guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+                             pars$R * ((T_leaf + pars$T_air) / 2), m / s)
+    guw_lower <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), m / s)
     
   }
   
@@ -881,8 +882,8 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   } else {
     
     gsw_upper <- set_units(pars$g_sw * stats::plogis(pars$logit_sr) * pars$R * 
-                             ((T_leaf + pars$T_air) / 2), "m / s")
-    guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), "m / s")
+                             ((T_leaf + pars$T_air) / 2), m / s)
+    guw_upper <- set_units(pars$g_uw * 0.5 * pars$R * ((T_leaf + pars$T_air) / 2), m / s)
     
   }
   
@@ -921,12 +922,12 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' coef(fit) 
 #' 
 #' T_leaf <- 298.15
-#' h_vap <- set_units(56847.68250, "J / mol") - 
-#'            set_units(43.12514, "J / mol / K") * set_units(T_leaf, "K")
+#' h_vap <- set_units(56847.68250, J / mol) - 
+#'            set_units(43.12514, J / mol / K) * set_units(T_leaf, K)
 #'
 #' ## h_vap at 298.15 K is 43989.92 [J/mol]
 #' 
-#' set_units(h_vap, "J / mol")
+#' set_units(h_vap, J / mol)
 #' 
 #' @references Nobel PS. 2009. Physicochemical and Environmental Plant Physiology. 4th Edition. Academic Press.
 #' 
@@ -942,9 +943,9 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   if (unitless) {
     h_vap <- 56847.68250 - 43.12514 * T_leaf
   } else {
-    h_vap <- set_units(56847.68250, "J / mol") - 
-      set_units(43.12514, "J / mol / K") * set_units(T_leaf, "K")
-    h_vap %<>% set_units("J / mol")
+    h_vap <- set_units(56847.68250, J / mol) - 
+      set_units(43.12514, J / mol / K) * set_units(T_leaf, K)
+    h_vap %<>% set_units(J / mol)
   }
   
   h_vap
@@ -1154,9 +1155,9 @@ find_tleaf <- function(leaf_par, enviro_par, constants, quiet) {
 E <- function(T_leaf, pars, unitless) {
   
   if (unitless & is(T_leaf, "units")) T_leaf %<>% drop_units() 
-  if (!unitless) T_leaf %<>% set_units("K")
+  if (!unitless) T_leaf %<>% set_units(K)
   E <- .get_gtw(T_leaf, pars, unitless) * .get_dwv(T_leaf, pars, unitless)
-  if (!unitless) E %<>% set_units("mol/m^2/s")
+  if (!unitless) E %<>% set_units(mol / m ^ 2 / s)
   E
   
 }

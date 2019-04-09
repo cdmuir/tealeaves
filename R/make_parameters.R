@@ -70,9 +70,9 @@ make_leafpar <- function(replace = NULL) {
   obj <- list(
     abs_s = set_units(0.8),
     abs_l = set_units(0.97),
-    g_sw = set_units(5, "umol / (m^2 * s * Pa)"),
-    g_uw = set_units(0.1, "umol / (m^2 * s * Pa)"),
-    leafsize = set_units(0.1, "m"),
+    g_sw = set_units(5, umol / (m^2 * s * Pa)),
+    g_uw = set_units(0.1, umol / (m^2 * s * Pa)),
+    leafsize = set_units(0.1, m),
     logit_sr = set_units(0)
   )
   
@@ -94,12 +94,12 @@ make_enviropar <- function(replace = NULL) {
 
   # Default parameters -----
   obj <- list(
-    P = set_units(101.3246, "kPa"),
+    P = set_units(101.3246, kPa),
     RH = set_units(0.50),
     r = set_units(0.2),
-    S_sw = set_units(1000, "W / m^2"),
-    T_air = set_units(298.15, "K"),
-    wind = set_units(2, "m / s")
+    S_sw = set_units(1000, W / m ^ 2),
+    T_air = set_units(298.15, K),
+    wind = set_units(2, m / s)
   ) 
   
   # Replace defaults -----
@@ -121,13 +121,13 @@ make_constants <- function(replace = NULL) {
 
   # Defaults parameters -----
   obj <- list(
-    c_p = set_units(1.01, "J / (g * K)"),
-    D_h0 = set_units(1.9e-5, "m ^ 2 / s"),
-    D_m0 = set_units(13.3e-6, "m ^ 2 / s"),
-    D_w0 = set_units(21.2e-6, "m ^ 2 / s"),
+    c_p = set_units(1.01, J / (g * K)),
+    D_h0 = set_units(1.9e-5, m ^ 2 / s),
+    D_m0 = set_units(13.3e-6, m ^ 2 / s),
+    D_w0 = set_units(21.2e-6, m ^ 2 / s),
     epsilon = set_units(0.622),
     eT = set_units(1.75),
-    G = set_units(9.8, "m / s ^ 2"),
+    G = set_units(9.8, m / s ^ 2),
     nu_constant = function(Re, type, T_air, T_leaf, surface, unitless) {
       
       if (!unitless) {
@@ -166,9 +166,9 @@ make_constants <- function(replace = NULL) {
       }
       
     },
-    R = set_units(8.3144598, "J / (mol * K)"),
-    R_air = set_units(287.058, "J / (kg * K)"),
-    s = set_units(5.67e-08, "W / (m ^ 2 * K ^ 4)"),
+    R = set_units(8.3144598, J / (mol * K)),
+    R_air = set_units(287.058, J / (kg * K)),
+    s = set_units(5.67e-08, W / (m ^ 2 * K ^ 4)),
     sh_constant = function(type, unitless) {
       
       type %>%
