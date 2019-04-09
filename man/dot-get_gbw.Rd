@@ -13,7 +13,7 @@
 
 \item{pars}{Concatenated parameters (\code{leaf_par}, \code{enviro_par}, and \code{constants})}
 
-\item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
+\item{unitless}{Logical. Should function use parameters with \code{units}? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
 }
 \value{
 Value in m / s of class \code{units}

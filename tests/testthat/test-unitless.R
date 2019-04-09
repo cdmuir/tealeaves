@@ -127,9 +127,6 @@ test_that("unitless values match unit-ed values", {
                             pars2$P, pars2$epsilon, TRUE)
   expect_equal(tv1, tv2)
   
-  eb <- energy_balance(T_leaf, lp, ep, cs, quiet = TRUE, components = FALSE, unitless = FALSE)
-  eb <- energy_balance(T_leaf, lp, ep, cs, quiet = TRUE, components = TRUE, unitless = FALSE)
-  
   tl1 <- tleaf(lp, ep, cs, TRUE, FALSE)
   tl2 <- tleaf(lp, ep, cs, TRUE, TRUE)
   expect_equal(tl1$T_leaf, tl2$T_leaf)

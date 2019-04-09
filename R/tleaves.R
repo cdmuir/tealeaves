@@ -84,17 +84,22 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
                     quiet = FALSE, set_units = TRUE, parallel = FALSE) {
   
   if (set_units) {
-    
+    leaf_par %<>% leaf_par()
+    enviro_par %<>% enviro_par()
+    constants %<>% constants()
+  } else {
+    if (!quiet) warning("tleaves: units have not been checked prior to solving")
   }
   
   pars <- c(leaf_par, enviro_par)
   par_units <- purrr::map(pars, units) %>%
     magrittr::set_names(names(pars))
   
-  pars %<>% make_parameter_sets(par_units)
+  pars %<>% 
+    purrr::map_if(~ inherits(.x, "units"), drop_units) %>%
+    make_parameter_sets()
   
-  soln <- find_tleaves(pars, constants, progress, quiet, set_units = FALSE,
-                       parallel)
+  soln <- find_tleaves(pars, constants, progress, quiet, parallel)
   
   pars %<>% purrr::map_dfr(purrr::flatten_dfr)
   
@@ -120,13 +125,22 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
 #' @export
 
 tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE, 
-                  unitless = FALSE) {
+                  set_units = TRUE) {
   
-  leaf_par %<>% leaf_par()
-  enviro_par %<>% enviro_par()
-  constants %<>% constants()
+  if (set_units) {
+    leaf_par %<>% leaf_par()
+    enviro_par %<>% enviro_par()
+    constants %<>% constants()
+  } else {
+    if (!quiet) warning("tleaf: units have not been checked prior to solving")
+  }
   
-  soln <- find_tleaf(leaf_par, enviro_par, constants, quiet, unitless)
+  # Drop units for solving
+  ulp <- purrr::map_if(leaf_par, ~ inherits(.x, "units"), drop_units)
+  uep <- purrr::map_if(enviro_par, ~ inherits(.x, "units"), drop_units)
+  ucs <- purrr::map_if(constants, ~ inherits(.x, "units"), drop_units)
+
+  soln <- find_tleaf(ulp, uep, ucs, quiet)
   
   # Check results -----
   if (soln$convergence == 1) {
@@ -140,23 +154,22 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
     if (is.na(soln$T_leaf)) {
       list(R_abs = NA, S_r = NA, H = NA, L = NA, E = NA)
     } else {
-      soln %>%
-      dplyr::pull("T_leaf") %>%
-      set_units("K") %>%
-      energy_balance(leaf_par = leaf_par, enviro_par = enviro_par, 
-                     constants = constants, quiet = TRUE, components = TRUE,
-                     unitless = FALSE) %>%
-      magrittr::use_series("components")
+      soln$T_leaf %>%
+        energy_balance(leaf_par = ulp, enviro_par = uep, 
+                       constants = ucs, quiet = TRUE, components = TRUE,
+                       set_units = FALSE) %>%
+        magrittr::use_series("components")
     }
   )
   
   soln %<>% dplyr::bind_cols(components)
-  units(soln$T_leaf) <- "K"
   if (is.na(soln$T_leaf)) {
     soln %<>% dplyr::bind_cols(data.frame(Ar = NA, Gr = NA, Re = NA))
   } else {
-    soln %<>% dplyr::bind_cols(Ar(soln$T_leaf, c(leaf_par, enviro_par, constants)))
+    soln %<>% dplyr::bind_cols(Ar(soln$T_leaf, c(ulp, uep, ucs), 
+                                  unitless = TRUE))
   }
+  units(soln$T_leaf) <- "K"
   
   # Return -----
   soln
@@ -173,66 +186,57 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
 #'
 #' @param components Logical. Should leaf energy components be returned? Transpiration (in mol / (m^2 s)) also returned.
 #' 
-#' @param check Logical. Should all parameter sets be checked? TRUE is safer, but FALSE is faster.
-#' 
 #' @return A numeric value in W / m^2. Optionally, a named list of energy balance components in W / m^2 and transpiration in mol / (m^2 s).
 #' 
 #' @export
 #'
 
 energy_balance <- function(tleaf, leaf_par, enviro_par, constants, 
-                           quiet = FALSE, components = FALSE, unitless = FALSE,
-                           check = TRUE) {
+                           quiet = FALSE, components = FALSE, set_units = FALSE) {
 
   # Checks -----
-  if (check) {
+  stopifnot(length(set_units) == 1L & is.logical(set_units))
+  if (set_units) {
+    tleaf %<>% set_units(K)
     leaf_par %<>% leaf_par()
     enviro_par %<>% enviro_par()
     constants %<>% constants()
   }
   stopifnot(length(quiet) == 1L & is.logical(quiet))
   stopifnot(length(components) == 1L & is.logical(components))
-  stopifnot(length(unitless) == 1L & is.logical(unitless))
   
-  ## Convert tleaf to units and message
-  if (!is(tleaf, "units") & !unitless) {
-    if (!quiet) {
-      glue::glue("tleaf converted from numeric to {X} K", X = tleaf) %>%
-        message()
-    }
-    tleaf %<>% set_units("K")
-  }
-  
-  pars <- c(leaf_par, enviro_par, constants)
-
-  if (unitless) pars %<>% purrr::map_if(function(x) is(x, "units"), drop_units)
+  pars <- c(leaf_par, enviro_par, constants) %>%
+    purrr::map_if(~ inherits(.x, "units"), drop_units)
   
   # R_abs: total absorbed radiation (W m^-2) -----
-  R_abs <- .get_Rabs(pars, unitless)
+  R_abs <- .get_Rabs(pars, unitless = TRUE)
 
   # S_r: longwave re-radiation (W m^-2) -----
   S_r <- .get_Sr(tleaf, pars)
 
   # H: sensible heat flux density (W m^-2) -----
-  H <- .get_H(tleaf, pars, unitless)
+  H <- .get_H(tleaf, pars, unitless = TRUE)
 
   # L: latent heat flux density (W m^-2) -----
-  L <- .get_L(tleaf, pars, unitless)
+  L <- .get_L(tleaf, pars, unitless = TRUE)
   
   # Return -----
   if (components) {
     
     # E: transpiration (mol / (m^2 s))
-    pars %<>% purrr::map_if(function(x) is(x, "units"), drop_units)
-    if (is(tleaf, "units")) tleaf %<>% drop_units()
-
     E <- .get_gtw(tleaf, pars, unitless = TRUE) * 
       .get_dwv(tleaf, pars, unitless = TRUE)
-    E %<>% set_units("mol/m^2/s")
     ret <- list(
       energy_balance = R_abs - (S_r + H + L),
       components = list(R_abs = R_abs, S_r = S_r, H = H, L = L, E = E)
-      )
+    )
+    units(ret$energy_balance) <- "W/m^2"
+    units(ret$components$R_abs) <- "W/m^2"
+    units(ret$components$S_r) <- "W/m^2"
+    units(ret$components$H) <- "W/m^2"
+    units(ret$components$L) <- "W/m^2"
+    units(ret$components$E) <- "mol/m^2/s"
+    
     return(ret)
     
   }
@@ -244,6 +248,9 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' R_abs: total absorbed radiation (W / m^2)
 #'
 #' @param pars Concatenated parameters (\code{leaf_par}, \code{enviro_par}, and \code{constants})
+#' 
+#' @param unitless Logical. Should function use parameters with \code{units}? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.
+#'
 #' @inheritParams tleaves
 #' 
 #' @return Value in W / m\eqn{^2} of class \code{units}
@@ -323,6 +330,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' H: sensible heat flux density (W / m^2)
 #'
 #' @inheritParams tleaves
+#' @inheritParams .get_Rabs
 #' @inheritParams .get_Sr
 #' 
 #' @return Value in W / m\eqn{^2} of class \code{units}
@@ -428,6 +436,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' @param Temp Temperature in Kelvin
 #' @param eT Exponent for temperature dependence of diffusion
 #' @param P Atmospheric pressure in kPa
+#' @inheritParams .get_Rabs
 #' @inheritParams tleaves
 #' 
 #' @return Value in m\eqn{^2}/s of class \code{units}
@@ -1032,7 +1041,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 
 }
 
-make_parameter_sets <- function(pars, par_units) {
+make_parameter_sets <- function(pars) {
   
   pars %<>%
     names() %>%
@@ -1043,19 +1052,14 @@ make_parameter_sets <- function(pars, par_units) {
     eval() %>%
     purrr::transpose()
   
-  tidyr::crossing(i = seq_len(length(pars)),
-                  par = names(pars[[1]])) %>%
-    dplyr::transmute(ex = glue::glue("units(pars[[{i}]]${par}) <<- par_units${par}", 
-                                     i = .data$i, par = .data$par)) %>%
-    dplyr::pull("ex") %>%
-    parse(text = .) %>%
-    eval()
-  
   pars
   
 }
 
-find_tleaves <- function(par_sets, constants, progress, quiet, unitless, parallel) {
+find_tleaves <- function(par_sets, constants, progress, quiet, parallel) {
+  
+  # This function is not intended to be called directly by users.
+  # It assumes all parameters have correct units
   
   if (!quiet) {
     glue::glue("\nSolving for T_leaf from {n} parameter set{s}...", 
@@ -1073,8 +1077,7 @@ find_tleaves <- function(par_sets, constants, progress, quiet, unitless, paralle
     par_sets %>%
       furrr::future_map_dfr(~{
         
-        ret <- tleaf(leaf_par(.x), enviro_par(.x), constants, quiet = TRUE,
-                     set_units = FALSE)
+        ret <- tleaf(.x, .x, constants, quiet = TRUE, set_units = FALSE)
         if (progress & !parallel) pb$tick()$print()
         ret
         
@@ -1085,12 +1088,12 @@ find_tleaves <- function(par_sets, constants, progress, quiet, unitless, paralle
   
 }
 
-find_tleaf <- function(leaf_par, enviro_par, constants, quiet, unitless) {
+find_tleaf <- function(leaf_par, enviro_par, constants, quiet) {
+  
+  # This function is not intended to be called directly by users.
+  # It assumes all parameters have correct units
   
   # Balance energy fluxes -----
-  enviro_par$T_air %<>% set_units("K") # convert T_air to Kelvin before dropping units
-  init <- drop_units(enviro_par$T_air)
-  
   if (!quiet) {
     "\nSolving for T_leaf ..." %>%
       crayon::green() %>%
@@ -1099,15 +1102,15 @@ find_tleaf <- function(leaf_par, enviro_par, constants, quiet, unitless) {
   
   .f <- function(T_leaf, ...) {
     eb <- energy_balance(T_leaf, ...)
-    if (is(eb, "units")) eb %<>% drop_units()
     eb
   }
   
   fit <- safely_uniroot(
-    f = .f, leaf_par = leaf_par, enviro_par = enviro_par, constants = constants, 
-    quiet = TRUE, unitless = unitless, check = FALSE,
-    lower = drop_units(enviro_par$T_air - set_units(30, "K")), 
-    upper = drop_units(enviro_par$T_air + set_units(30, "K"))
+    f = .f, 
+    leaf_par = leaf_par, enviro_par = enviro_par, constants = constants, 
+    quiet = TRUE, set_units = FALSE,
+    lower = enviro_par$T_air - 30, 
+    upper = enviro_par$T_air + 30
   )
   
   if (is.null(fit$result)) {
@@ -1129,10 +1132,9 @@ find_tleaf <- function(leaf_par, enviro_par, constants, quiet, unitless) {
   
 }
 
-safely_uniroot <- purrr::safely(uniroot)
-
 #' Evaporation (mol / (m^2 s))
 #' 
+#' @inheritParams .get_Rabs
 #' @inheritParams .get_Sr
 #' @inheritParams tleaves
 #' 

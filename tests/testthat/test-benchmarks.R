@@ -8,7 +8,7 @@ test_that("benchmarks haven't changed", {
   lp <- make_leafpar()
   ep <- make_enviropar()
 
-  tl <- tleaf(lp, ep, cs, unitless = TRUE)
+  tl <- tleaf(lp, ep, cs, set_units = TRUE)
   expect_equal(round(tl$T_leaf, 4), set_units(305.8332, K))
   
   p <- tidyr::crossing(
@@ -34,7 +34,7 @@ test_that("benchmarks haven't changed", {
   for (i in sample(nrow(p), 5)) { # 1:nrow(p)) {
     lp$g_sw <- set_units(p$g_sw[i], umol/m^2/s/Pa)
     ep$T_air <- set_units(p$T_air[i], K)
-    tl <- tleaf(lp, ep, cs, unitless = TRUE)
+    tl <- tleaf(lp, ep, cs, set_units = TRUE)
     expect_equal(round(tl$T_leaf, 3), set_units(round(p$T_leaf[i], 3), K))
   }
   

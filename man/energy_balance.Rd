@@ -5,7 +5,7 @@
 \title{Calculate leaf energy balance}
 \usage{
 energy_balance(tleaf, leaf_par, enviro_par, constants, quiet = FALSE,
-  components = FALSE, unitless = FALSE, check = TRUE)
+  components = FALSE, set_units = FALSE)
 }
 \arguments{
 \item{tleaf}{Leaf temperature in Kelvin. If input is numeric, it will be automatically converted to \code{units}.}
@@ -20,9 +20,7 @@ energy_balance(tleaf, leaf_par, enviro_par, constants, quiet = FALSE,
 
 \item{components}{Logical. Should leaf energy components be returned? Transpiration (in mol / (m^2 s)) also returned.}
 
-\item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
-
-\item{check}{Logical. Should all parameter sets be checked? TRUE is safer, but FALSE is faster.}
+\item{set_units}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
 }
 \value{
 A numeric value in W / m^2. Optionally, a named list of energy balance components in W / m^2 and transpiration in mol / (m^2 s).

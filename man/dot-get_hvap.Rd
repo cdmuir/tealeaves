@@ -9,7 +9,7 @@
 \arguments{
 \item{T_leaf}{Leaf temperature in Kelvin}
 
-\item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
+\item{unitless}{Logical. Should function use parameters with \code{units}? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
 }
 \value{
 Value in J/mol of class \code{units}

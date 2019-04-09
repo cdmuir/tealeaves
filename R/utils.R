@@ -1,3 +1,5 @@
+safely_uniroot <- purrr::safely(uniroot)
+
 #' Convert conductance units
 #' 
 #' @param .g Conductance in class units. Units must convertible to one of "m/s", "umol/m^2/s/Pa", or "mol/m^2/s"

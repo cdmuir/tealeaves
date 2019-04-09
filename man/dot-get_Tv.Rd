@@ -15,7 +15,7 @@
 
 \item{epsilon}{ratio of water to air molar masses (unitless)}
 
-\item{unitless}{Logical. Should \code{units} be set? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
+\item{unitless}{Logical. Should function use parameters with \code{units}? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.}
 }
 \value{
 Value in K of class \code{units}
