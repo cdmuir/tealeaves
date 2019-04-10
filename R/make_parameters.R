@@ -68,7 +68,7 @@ make_leafpar <- function(replace = NULL) {
 
   # Default parameters -----
   obj <- list(
-    abs_s = set_units(0.8),
+    abs_s = set_units(0.5),
     abs_l = set_units(0.97),
     g_sw = set_units(5, umol / (m^2 * s * Pa)),
     g_uw = set_units(0.1, umol / (m^2 * s * Pa)),

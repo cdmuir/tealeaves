@@ -5,13 +5,14 @@ library(tealeaves)
 test_that("benchmarks haven't changed", {
   
   cs <- make_constants()
-  lp <- make_leafpar()
+  lp <- make_leafpar(replace = list(abs_s = set_units(0.8)))
   ep <- make_enviropar()
 
   tl <- tleaf(lp, ep, cs, set_units = TRUE)
   expect_equal(round(tl$T_leaf, 4), set_units(305.8332, K))
   
   p <- tidyr::crossing(
+    abs_s = set_units(0.5),
     g_sw = set_units(c(0.1, 1, 10), umol/m^2/s/Pa),
     leafsize = set_units(c(0.004, 0.04, 0.4), m),
     logit_sr = set_units(c(-10, 0, 10)),
