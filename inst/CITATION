@@ -1,0 +1,13 @@
+citHeader("To cite tealeaves in publications please use this.")
+
+citEntry(entry = "Misc", 
+         title = "tealeaves: an {R} package for modelling leaf temperature using energy budgets",
+         author = c(person("Christopher", "Muir", "D")),
+         note = "R package version 0.0.9",
+         year = "2019",
+         url = "https://doi.org/10.1101/529487",
+         textVersion =
+           paste("Muir CD. (2019).",
+                 title = "tealeaves: an R package for modelling leaf temperature using energy budgets. R package version 0.0.9.",
+                 "https://doi.org/10.1101/529487.")
+)
