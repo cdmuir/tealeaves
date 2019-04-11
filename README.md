@@ -79,7 +79,7 @@ temperature in a single leaf using the `make_*()` functions and
     enviro_par <- make_enviropar() # environmental parameters
     constants  <- make_constants() # physical constants
 
-    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, set_units = FALSE)
+    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
 
     T_leaf %>% knitr::kable()
 
@@ -149,7 +149,7 @@ which to solve for leaf temperature.
     # that's why we call them 'constants'!
     constants  <- make_constants()
 
-    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, set_units = FALSE)
+    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
 
     T_leaf %>% knitr::kable()
 
