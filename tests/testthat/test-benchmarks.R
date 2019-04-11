@@ -31,7 +31,7 @@ test_that("benchmarks haven't changed", {
   # }
   # readr::write_csv(p, "tests/testthat/benchmarks.csv")
 
-  p <- readr::read_csv("benchmarks.csv")
+  p <- read.csv("benchmarks.csv")
   for (i in sample(nrow(p), 5)) { # 1:nrow(p)) {
     lp$g_sw <- set_units(p$g_sw[i], umol/m^2/s/Pa)
     ep$T_air <- set_units(p$T_air[i], K)
