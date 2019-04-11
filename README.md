@@ -19,7 +19,7 @@ leaf energy balance. It uses the R package
 ensure that parameters are properly specified and transformed before
 calculations. It allows separate lower and upper surface conductances to
 heat and water vapour, so sensible and latent heat loss are calculated
-for each surface separately. It's straightforward to model leaf
+for each surface separately. It’s straightforward to model leaf
 temperature over environmental gradients such as light, air temperature,
 humidity, and wind, or trait gradients such as leaf size or stomatal
 conductance.
@@ -56,7 +56,7 @@ budget. There are two main steps to using {tealeaves}:
     (`tleaf` and `tleaves` for single and multiple parameter sets,
     respectively).
 
-In this vignette, I'll show you how to:
+In this vignette, I’ll show you how to:
 
 -   run a minimum worked example using default parameters
 -   replace default parameters
@@ -79,33 +79,39 @@ temperature in a single leaf using the `make_*()` functions and
     enviro_par <- make_enviropar() # environmental parameters
     constants  <- make_constants() # physical constants
 
-    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, unitless = FALSE)
+    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, set_units = FALSE)
 
     T_leaf %>% knitr::kable()
 
 <table>
 <thead>
 <tr class="header">
-<th align="right">T_leaf</th>
-<th align="right">value</th>
-<th align="right">convergence</th>
-<th align="right">R_abs</th>
-<th align="right">S_r</th>
-<th align="right">H</th>
-<th align="right">L</th>
-<th align="right">E</th>
+<th style="text-align: right;">T_leaf</th>
+<th style="text-align: right;">value</th>
+<th style="text-align: right;">convergence</th>
+<th style="text-align: right;">R_abs</th>
+<th style="text-align: right;">S_r</th>
+<th style="text-align: right;">H</th>
+<th style="text-align: right;">L</th>
+<th style="text-align: right;">E</th>
+<th style="text-align: right;">Ar</th>
+<th style="text-align: right;">Gr</th>
+<th style="text-align: right;">Re</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">305.8332 [K]</td>
-<td align="right">-1e-07</td>
-<td align="right">0</td>
-<td align="right">1723.813 [W/m^2]</td>
-<td align="right">962.3284 [W/m^2]</td>
-<td align="right">251.413 [J/m^2/s]</td>
-<td align="right">510.0715 [W/m^2]</td>
-<td align="right">0.01168319 [mol/m^2/s]</td>
+<td style="text-align: right;">301.4181 [K]</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1363.813 [W/m^2]</td>
+<td style="text-align: right;">907.9499 [W/m^2]</td>
+<td style="text-align: right;">107.3552 [W/m^2]</td>
+<td style="text-align: right;">348.5078 [W/m^2]</td>
+<td style="text-align: right;">0.00794791 [mol/m^2/s]</td>
+<td style="text-align: right;">0.0048272</td>
+<td style="text-align: right;">788182.4</td>
+<td style="text-align: right;">12778.08</td>
 </tr>
 </tbody>
 </table>
@@ -116,8 +122,8 @@ Replace default parameters
 You can look at default parameters settings in the manual (run
 `?make_parameters`). These defaults are reasonable, but of course you
 will probably want to use different choices and allow some parameters to
-vary. Here, I'll demonstrate how to replace a default. In the next
-section, I'll show you how to set up a gradient of parameter values over
+vary. Here, I’ll demonstrate how to replace a default. In the next
+section, I’ll show you how to set up a gradient of parameter values over
 which to solve for leaf temperature.
 
 
@@ -143,33 +149,39 @@ which to solve for leaf temperature.
     # that's why we call them 'constants'!
     constants  <- make_constants()
 
-    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, unitless = FALSE)
+    T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE, set_units = FALSE)
 
     T_leaf %>% knitr::kable()
 
 <table>
 <thead>
 <tr class="header">
-<th align="right">T_leaf</th>
-<th align="right">value</th>
-<th align="right">convergence</th>
-<th align="right">R_abs</th>
-<th align="right">S_r</th>
-<th align="right">H</th>
-<th align="right">L</th>
-<th align="right">E</th>
+<th style="text-align: right;">T_leaf</th>
+<th style="text-align: right;">value</th>
+<th style="text-align: right;">convergence</th>
+<th style="text-align: right;">R_abs</th>
+<th style="text-align: right;">S_r</th>
+<th style="text-align: right;">H</th>
+<th style="text-align: right;">L</th>
+<th style="text-align: right;">E</th>
+<th style="text-align: right;">Ar</th>
+<th style="text-align: right;">Gr</th>
+<th style="text-align: right;">Re</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">306.7574 [K]</td>
-<td align="right">1.66e-05</td>
-<td align="right">0</td>
-<td align="right">1723.813 [W/m^2]</td>
-<td align="right">974.014 [W/m^2]</td>
-<td align="right">281.4289 [J/m^2/s]</td>
-<td align="right">468.3699 [W/m^2]</td>
-<td align="right">0.01073782 [mol/m^2/s]</td>
+<td style="text-align: right;">302.1106 [K]</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1363.813 [W/m^2]</td>
+<td style="text-align: right;">916.3234 [W/m^2]</td>
+<td style="text-align: right;">130.0263 [W/m^2]</td>
+<td style="text-align: right;">317.4631 [W/m^2]</td>
+<td style="text-align: right;">0.007244854 [mol/m^2/s]</td>
+<td style="text-align: right;">0.0055546</td>
+<td style="text-align: right;">903289.3</td>
+<td style="text-align: right;">12752.29</td>
 </tr>
 </tbody>
 </table>
@@ -178,7 +190,7 @@ Environmental gradients
 -----------------------
 
 In the previous two examples, I used the `tleaf` function to solve for a
-single parameter set. In most cases, you'll want to solve for many
+single parameter set. In most cases, you’ll want to solve for many
 parameter sets. The function `tleaves` generalizes `tleaf` and makes it
 easy to solve for multiple parameter sets using the same argument
 structure. All you need to do is specify multiple values for one or more
@@ -207,7 +219,7 @@ leaf or environmental parameters and `tleaves` uses the
 
     # Now there should be 4 combinations (high and low g_sw crossed with high and low T_air)
     T_leaves <- tleaves(leaf_par, enviro_par, constants, progress = FALSE, 
-                        quiet = TRUE, unitless = FALSE)
+                        quiet = TRUE, set_units = FALSE)
 
     T_leaves %>% 
       dplyr::select(T_air, g_sw, T_leaf) %>%
@@ -216,31 +228,31 @@ leaf or environmental parameters and `tleaves` uses the
 <table>
 <thead>
 <tr class="header">
-<th align="right">T_air</th>
-<th align="right">g_sw</th>
-<th align="right">T_leaf</th>
+<th style="text-align: right;">T_air</th>
+<th style="text-align: right;">g_sw</th>
+<th style="text-align: right;">T_leaf</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">293.15 [K]</td>
-<td align="right">2 [umol/m^2/Pa/s]</td>
-<td align="right">305.9599</td>
+<td style="text-align: right;">293.15 [K]</td>
+<td style="text-align: right;">2 [umol/m^2/Pa/s]</td>
+<td style="text-align: right;">300.2217 [K]</td>
 </tr>
 <tr class="even">
-<td align="right">298.15 [K]</td>
-<td align="right">2 [umol/m^2/Pa/s]</td>
-<td align="right">309.6194</td>
+<td style="text-align: right;">298.15 [K]</td>
+<td style="text-align: right;">2 [umol/m^2/Pa/s]</td>
+<td style="text-align: right;">304.2065 [K]</td>
 </tr>
 <tr class="odd">
-<td align="right">293.15 [K]</td>
-<td align="right">4 [umol/m^2/Pa/s]</td>
-<td align="right">303.3411</td>
+<td style="text-align: right;">293.15 [K]</td>
+<td style="text-align: right;">4 [umol/m^2/Pa/s]</td>
+<td style="text-align: right;">298.3474 [K]</td>
 </tr>
 <tr class="even">
-<td align="right">298.15 [K]</td>
-<td align="right">4 [umol/m^2/Pa/s]</td>
-<td align="right">306.7574</td>
+<td style="text-align: right;">298.15 [K]</td>
+<td style="text-align: right;">4 [umol/m^2/Pa/s]</td>
+<td style="text-align: right;">302.1106 [K]</td>
 </tr>
 </tbody>
 </table>
@@ -251,7 +263,7 @@ Parallel processing
 It can take a little while to model many different parameter sets. If
 you have multiple processors available, you can speed things up by
 running simulations in parallel. In the `tealeaves` function, simply use
-the `parallel = TRUE` argument to simulate in parallel. Here I'll
+the `parallel = TRUE` argument to simulate in parallel. Here I’ll
 provide an example looking at how leaf-to-air temperature differentials
 change with air temperature.
 
@@ -272,6 +284,7 @@ change with air temperature.
     tl <- tleaves(leaf_par, enviro_par, constants, progress = FALSE, quiet = TRUE,
                   parallel = TRUE)
     tl$T_air %<>% drop_units() # for plotting
+    tl$T_leaf %<>% drop_units() # for plotting
     tl %<>% dplyr::mutate(Light = dplyr::case_when(
      round(drop_units(S_sw), 0) == 300 ~ "Shade",
      round(drop_units(S_sw), 0) == 1000 ~ "Sun"
@@ -300,7 +313,7 @@ I welcome comments, criticisms, and especially contributions! GitHub
 issues are the preferred way to report bugs, ask questions, or request
 new features. You can submit issues here:
 
-<https://github.com/cdmuir/tealeaves/issues>
+<a href="https://github.com/cdmuir/tealeaves/issues" class="uri">https://github.com/cdmuir/tealeaves/issues</a>
 
 Meta
 ----
