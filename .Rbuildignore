@@ -11,3 +11,4 @@ README_files/*
 hex-sticker/*
 ^cran-comments\.md$
 ^README\.Rmd$
+^CRAN-RELEASE$
