@@ -1,6 +1,6 @@
 #' \code{tealeaves} package
 #'
-#' Solve for leaf temperature using energy balance
+#' Solve for Leaf Temperature Using Energy Balance
 #'
 #' See the README on
 #' \href{https://github.com/cdmuir/tealeaves}{GitHub}

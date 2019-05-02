@@ -6,7 +6,7 @@
 \alias{tealeaves-package}
 \title{\code{tealeaves} package}
 \description{
-Solve for leaf temperature using energy balance
+Solve for Leaf Temperature Using Energy Balance
 }
 \details{
 See the README on

@@ -1,8 +1,8 @@
 Package: tealeaves
-Version: 0.0.9
-Date: 2019-04-11
-Title: Solve for leaf temperature using energy balance
-Authors@R: person("Chris", "Muir", role = c("aut", "cre"), email = "cdmuir@hawaii.edu")
+Version: 1.0.0
+Date: 2019-05-01
+Title: Solve for Leaf Temperature Using Energy Balance
+Authors@R: person("Chris", "Muir", role = c("aut", "cre"), email = "cdmuir@hawaii.edu", comment = c(ORCID = "0000-0003-2555-3878"))
 Depends: R (>= 3.5.0), units (>= 0.6.0)
 Imports: crayon (>= 1.3.0),
          dplyr (>= 0.8.0),
@@ -20,7 +20,7 @@ Suggests:
     testthat,
     knitr,
     rmarkdown
-Description: tealeaves is a lightweight R package to model leaf temperature using leaf energy balance. It uses the R package units to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind, or trait gradients such as leaf size or stomatal conductance. 
+Description: Implements models of leaf temperature using energy balance. It uses units to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind, or trait gradients such as leaf size or stomatal conductance. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

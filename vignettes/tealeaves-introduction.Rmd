@@ -34,7 +34,7 @@ In this vignette, I'll show you how to:
 
 You can use the default parameter settings and solve for leaf temperature in a single leaf using the `make_*()` functions and `tleaf()`.
 
-```{r, Minimum worked example}
+```{r, mwe}
 
 library(magrittr)
 library(tealeaves)
@@ -55,7 +55,7 @@ T_leaf %>% knitr::kable()
 
 You can look at default parameters settings in the manual (run `?make_parameters`). These defaults are reasonable, but of course you will probably want to use different choices and allow some parameters to vary. Here, I'll demonstrate how to replace a default. In the next section, I'll show you how to set up a gradient of parameter values over which to solve for leaf temperature.
 
-```{r, Replace default parameters}
+```{r, replace-defaults}
 
 # Use the `replace` argument to replace defaults. This must be a named list, and
 # each named element must have the proper units specified. See `?make_parameters`
@@ -89,7 +89,7 @@ T_leaf %>% knitr::kable()
 
 In the previous two examples, I used the `tleaf` function to solve for a single parameter set. In most cases, you'll want to solve for many parameter sets. The function `tleaves` generalizes `tleaf` and makes it easy to solve for multiple parameter sets using the same argument structure. All you need to do is specify multiple values for one or more leaf or environmental parameters and `tleaves` uses the `tidyr::crossing` function to fit all combinations^[Since optimization is somewhat time-consuming, be careful about crossing too many combinations. Use `progress = TRUE` to show progress bar with estimated time remaining.].
 
-```{r, Environmental gradients}
+```{r, environmental-gradients}
 
 # As before, use the `replace` argument to replace defaults, but this time we
 # enter multiple values
@@ -124,7 +124,7 @@ T_leaves %>%
 
 It can take a little while to model many different parameter sets. If you have multiple processors available, you can speed things up by running simulations in parallel. In the `tealeaves` function, simply use the `parallel = TRUE` argument to simulate in parallel. Here I'll provide an example looking at how leaf-to-air temperature differentials change with air temperature.
 
-```{r, Parallel example}
+```{r, parallel-example}
 
 # We'll use the `replace` argument to enter multiple air temperatures and two light levels
 
