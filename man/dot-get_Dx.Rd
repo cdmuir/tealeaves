@@ -28,6 +28,17 @@ D_x: Calculate diffusion coefficient for a given temperature and pressure
 \cr
 According to Montieth & Unger (2013), eT is generally between 1.5 and 2. Their data in Appendix 3 indicate \eqn{eT = 1.75} is reasonble for environmental physics.
 }
+\examples{
+
+tealeaves:::.get_Dx(
+  D_0 = set_units(2.12e-05, m^2/s),
+  Temp = set_units(298.15, K),
+  eT = set_units(1.75),
+  P = set_units(101.3246, kPa),
+  unitless = FALSE
+)
+
+}
 \references{
 Monteith JL, Unsworth MH. 2013. Principles of Environmental Physics. 4th edition. Academic Press, London.
 }

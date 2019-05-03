@@ -31,6 +31,19 @@ H: sensible heat flux density (W / m^2)
 \eqn{T_\mathrm{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
 }
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+T_leaf <- set_units(298.15, K)
+
+tealeaves:::.get_H(T_leaf, c(cs, ep, lp), FALSE)
+
+}
 \seealso{
 \code{\link{.get_gh}}, \code{\link{.get_Pa}}
 }

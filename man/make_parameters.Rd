@@ -73,3 +73,27 @@ make_constants
 \eqn{Sh} \tab \code{Sh} \tab Sherwood number \tab none \tab \link[=.get_sh]{calculated}
 }
 }
+\examples{
+
+library(tealeaves)
+
+# Use defaults
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+# Replace defaults
+
+ep <- make_enviropar(
+  replace = list(
+    T_air = set_units(300, K)
+  )
+)
+
+lp <- make_leafpar(
+  replace = list(
+    leafsize = set_units(c(0.1, 0.2), m)
+  )
+)
+
+}

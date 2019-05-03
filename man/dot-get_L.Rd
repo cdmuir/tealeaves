@@ -29,3 +29,16 @@ L: Latent heat flux density (W / m^2)
 \eqn{g_\mathrm{tw}}{g_tw} \tab \code{g_tw} \tab total conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab \link[=.get_gtw]{calculated}
 }
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+T_leaf <- set_units(298.15, K)
+
+tealeaves:::.get_L(T_leaf, c(cs, ep, lp), FALSE)
+
+}

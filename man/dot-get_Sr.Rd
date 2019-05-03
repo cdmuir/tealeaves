@@ -31,6 +31,19 @@ The factor of 2 accounts for re-radiation from both leaf surfaces (Foster and Sm
 
 Note that leaf absorbtivity is the same value as leaf emissivity
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+T_leaf <- set_units(298.15, K)
+
+tealeaves:::.get_Sr(T_leaf, c(cs, ep, lp))
+
+}
 \references{
 Foster JR, Smith WK. 1986. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell \& Environment 9: 751-9.
 }

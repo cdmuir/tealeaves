@@ -29,3 +29,16 @@ Re: Reynolds number
 \eqn{u} \tab \code{wind} \tab windspeed \tab m / s \tab 2
 }
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+T_leaf <- set_units(298.15, K)
+
+tealeaves:::.get_re(T_leaf, c(cs, ep, lp), FALSE)
+
+}

@@ -1,6 +1,6 @@
 Package: tealeaves
 Version: 1.0.0
-Date: 2019-05-01
+Date: 2019-05-03
 Title: Solve for Leaf Temperature Using Energy Balance
 Authors@R: person("Chris", "Muir", role = c("aut", "cre"), email = "cdmuir@hawaii.edu", comment = c(ORCID = "0000-0003-2555-3878"))
 Depends: R (>= 3.5.0), units (>= 0.6.0)
@@ -20,7 +20,7 @@ Suggests:
     testthat,
     knitr,
     rmarkdown
-Description: Implements models of leaf temperature using energy balance. It uses units to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind, or trait gradients such as leaf size or stomatal conductance. 
+Description: Implements models of leaf temperature using energy balance. It uses units to ensure that parameters are properly specified and transformed before calculations. It allows separate lower and upper surface conductances to heat and water vapour, so sensible and latent heat loss are calculated for each surface separately  as in Foster and Smith (1986) <doi:10.1111/j.1365-3040.1986.tb02108.x>. It's straightforward to model leaf temperature over environmental gradients such as light, air temperature, humidity, and wind. It can also model leaf temperature over trait gradients such as leaf size or stomatal conductance. Other references are Monteith and Unsworth (2013) <ISBN:9780123869104>, Nobel (2009) <ISBN:9780123741431>, and Okajima et al. (2012) <doi:10.1007/s11284-011-0905-5>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

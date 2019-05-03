@@ -38,6 +38,17 @@ The incidient longwave (aka thermal infrared) radiation is modeled from sky and 
 \eqn{T_\mathrm{sky}}{T_sky} \tab \code{T_sky} \tab sky temperature \tab K \tab calculated
 }
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+tealeaves:::.get_Rabs(c(cs, ep, lp), FALSE)
+
+}
 \references{
 Okajima Y, H Taneda, K Noguchi, I Terashima. 2012. Optimum leaf size predicted by a novel leaf energy balance model incorporating dependencies of photosynthesis on light and temperature. Ecological Research 27: 333-46.
 }

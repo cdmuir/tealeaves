@@ -24,6 +24,13 @@ Goff-Gratch equation (see http://cires1.colorado.edu/~voemel/vp.html) \cr
 \cr
 This equation assumes P = 1 atm = 101.3246 kPa, otherwise boiling temperature needs to change \cr
 }
+\examples{
+
+T_leaf <- set_units(298.15, K)
+P <- set_units(101.3246, kPa)
+tealeaves:::.get_ps(T_leaf, P, FALSE)
+
+}
 \references{
 \url{http://cires1.colorado.edu/~voemel/vp.html}
 }

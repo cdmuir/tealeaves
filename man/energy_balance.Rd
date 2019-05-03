@@ -28,3 +28,16 @@ A numeric value in W / m^2. Optionally, a named list of energy balance component
 \description{
 Calculate leaf energy balance
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+T_leaf <- set_units(298.15, K)
+
+energy_balance(T_leaf, lp, ep, cs, FALSE, TRUE, TRUE)
+
+}

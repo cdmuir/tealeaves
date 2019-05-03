@@ -33,3 +33,16 @@ The Sherwood number depends on a combination how much free or forced convection 
 \eqn{Re} \tab \code{Re} \tab Reynolds number \tab none \tab \link[=.get_re]{calculated}
 }
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+T_leaf <- set_units(298.15, K)
+
+tealeaves:::.get_sh(T_leaf, "lower", c(cs, ep, lp), FALSE)
+
+}

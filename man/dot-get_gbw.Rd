@@ -31,3 +31,16 @@ g_bw: Boundary layer conductance to water vapour (m / s)
 \eqn{Sh} \tab \code{Sh} \tab Sherwood number \tab none \tab \link[=.get_sh]{calculated}
 }
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+T_leaf <- set_units(298.15, K)
+
+tealeaves:::.get_gbw(T_leaf, "lower", c(cs, ep, lp), FALSE)
+
+}

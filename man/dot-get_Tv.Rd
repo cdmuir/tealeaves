@@ -35,6 +35,19 @@ Eq. 2.35 in Monteith & Unsworth (2013) \cr
 \eqn{P} \tab \code{P} \tab atmospheric pressure \tab kPa \tab 101.3246
 }
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+T_leaf <- set_units(298.15, K)
+p <- ep$RH * tealeaves:::.get_ps(T_leaf, ep$P, FALSE)
+tealeaves:::.get_Tv(T_leaf, p, ep$P, cs$epsilon, FALSE)
+
+}
 \references{
 Monteith JL, Unsworth MH. 2013. Principles of Environmental Physics. 4th edition. Academic Press, London.
 }

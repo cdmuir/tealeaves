@@ -188,6 +188,18 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
 #' 
 #' @return A numeric value in W / m^2. Optionally, a named list of energy balance components in W / m^2 and transpiration in mol / (m^2 s).
 #' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' energy_balance(T_leaf, lp, ep, cs, FALSE, TRUE, TRUE)
+#' 
 #' @export
 #'
 
@@ -197,7 +209,9 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
   # Checks -----
   stopifnot(length(set_units) == 1L & is.logical(set_units))
   if (set_units) {
-    tleaf %<>% set_units(K)
+    tleaf %<>% 
+      set_units(K) %>%
+      drop_units()
     leaf_par %<>% leaf_par()
     enviro_par %<>% enviro_par()
     constants %<>% constants()
@@ -281,6 +295,16 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' Okajima Y, H Taneda, K Noguchi, I Terashima. 2012. Optimum leaf size predicted by a novel leaf energy balance model incorporating dependencies of photosynthesis on light and temperature. Ecological Research 27: 333-46.
 #' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' tealeaves:::.get_Rabs(c(cs, ep, lp), FALSE)
+#' 
 
 .get_Rabs <- function(pars, unitless) {
   
@@ -325,6 +349,18 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' Foster JR, Smith WK. 1986. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell \& Environment 9: 751-9.
 #' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' tealeaves:::.get_Sr(T_leaf, c(cs, ep, lp))
+#' 
 
 .get_Sr <- function(T_leaf, pars) 2 * pars$s * pars$abs_l * T_leaf ^ 4
 
@@ -350,6 +386,19 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' }
 #' 
 #' @seealso \code{\link{.get_gh}}, \code{\link{.get_Pa}} 
+#' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' tealeaves:::.get_H(T_leaf, c(cs, ep, lp), FALSE)
+#' 
 
 .get_H <- function(T_leaf, pars, unitless) {
 
@@ -382,6 +431,18 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
 #' \eqn{T_\mathrm{leaf}}{T_leaf} \tab \code{T_leaf} \tab leaf temperature \tab K \tab input
 #' }
+#' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' tealeaves:::.get_Pa(T_leaf, c(cs, ep, lp), FALSE)
 #' 
 
 .get_Pa <- function(T_leaf, pars, unitless) {
@@ -416,6 +477,19 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{Nu} \tab \code{Nu} \tab Nusselt number \tab none \tab \link[=.get_nu]{calculated}
 #' }
 #' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' tealeaves:::.get_gh(T_leaf, "lower", c(cs, ep, lp), FALSE)
+#' 
+
 
 .get_gh <- function(T_leaf, surface, pars, unitless) {
 
@@ -451,6 +525,16 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' @references 
 #' 
 #' Monteith JL, Unsworth MH. 2013. Principles of Environmental Physics. 4th edition. Academic Press, London.
+#' 
+#' @examples 
+#' 
+#' tealeaves:::.get_Dx(
+#'   D_0 = set_units(2.12e-05, m^2/s),
+#'   Temp = set_units(298.15, K),
+#'   eT = set_units(1.75),
+#'   P = set_units(101.3246, kPa),
+#'   unitless = FALSE
+#' )
 #' 
 
 .get_Dx <- function(D_0, Temp, eT, P, unitless) {
@@ -492,6 +576,18 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{T_\mathrm{v,air}}{Tv_air} \tab \code{Tv_air} \tab virtual air temperature \tab K \tab \link[=.get_Tv]{calculated}\cr
 #' \eqn{T_\mathrm{v,leaf}}{Tv_leaf} \tab \code{Tv_leaf} \tab virtual leaf temperature \tab K \tab \link[=.get_Tv]{calculated}
 #' }
+#' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' tealeaves:::.get_gr(T_leaf, c(cs, ep, lp), FALSE)
 #' 
 
 .get_gr <- function(T_leaf, pars, unitless) {
@@ -544,6 +640,18 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' Monteith JL, Unsworth MH. 2013. Principles of Environmental Physics. 4th edition. Academic Press, London.
 #' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' p <- ep$RH * tealeaves:::.get_ps(T_leaf, ep$P, FALSE)
+#' tealeaves:::.get_Tv(T_leaf, p, ep$P, cs$epsilon, FALSE)
+#' 
 
 .get_Tv <- function(Temp, p, P, epsilon, unitless) {
 
@@ -576,6 +684,12 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' This equation assumes P = 1 atm = 101.3246 kPa, otherwise boiling temperature needs to change \cr
 #' 
 #' @references \url{http://cires1.colorado.edu/~voemel/vp.html}
+#' 
+#' @examples 
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' P <- set_units(101.3246, kPa)
+#' tealeaves:::.get_ps(T_leaf, P, FALSE)
 #' 
 
 .get_ps <- function(Temp, P, unitless) {
@@ -627,6 +741,18 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{u} \tab \code{wind} \tab windspeed \tab m / s \tab 2
 #' }
 #' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' tealeaves:::.get_re(T_leaf, c(cs, ep, lp), FALSE)
+#' 
 
 .get_re <- function(T_leaf, pars, unitless) {
 
@@ -656,6 +782,18 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{Gr} \tab \code{Gr} \tab Grashof number \tab none \tab \link[=.get_gr]{calculated}\cr
 #' \eqn{Re} \tab \code{Re} \tab Reynolds number \tab none \tab \link[=.get_re]{calculated}
 #' }
+#' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' tealeaves:::.get_nu(T_leaf, "lower", c(cs, ep, lp), FALSE)
 #' 
 
 .get_nu <- function(T_leaf, surface, pars, unitless) {
@@ -706,6 +844,18 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{g_\mathrm{tw}}{g_tw} \tab \code{g_tw} \tab total conductance to H2O \tab (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) \tab \link[=.get_gtw]{calculated}
 #' }
 #'
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' tealeaves:::.get_L(T_leaf, c(cs, ep, lp), FALSE)
+#' 
 
 .get_L <- function(T_leaf, pars, unitless) {
 
@@ -929,6 +1079,8 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' set_units(h_vap, J / mol)
 #' 
+#' tealeaves:::.get_hvap(set_units(298.15, K), FALSE)
+#' 
 #' @references Nobel PS. 2009. Physicochemical and Environmental Plant Physiology. 4th Edition. Academic Press.
 #' 
 
@@ -970,6 +1122,20 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{Sh} \tab \code{Sh} \tab Sherwood number \tab none \tab \link[=.get_sh]{calculated}
 #' }
 #' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' tealeaves:::.get_gbw(T_leaf, "lower", c(cs, ep, lp), FALSE)
+#' 
+
+
 .get_gbw <- function(T_leaf, surface, pars, unitless) {
 
   surface %<>% match.arg(c("lower", "upper"))
@@ -1002,6 +1168,18 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{Gr} \tab \code{Gr} \tab Grashof number \tab none \tab \link[=.get_gr]{calculated}\cr
 #' \eqn{Re} \tab \code{Re} \tab Reynolds number \tab none \tab \link[=.get_re]{calculated}
 #' }
+#' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' tealeaves:::.get_sh(T_leaf, "lower", c(cs, ep, lp), FALSE)
 #' 
 
 .get_sh <- function(T_leaf, surface, pars, unitless) {
@@ -1150,7 +1328,20 @@ find_tleaf <- function(leaf_par, enviro_par, constants, quiet) {
 #' 
 #' If \code{unitless = TRUE}, \code{T_leaf} is assumed in degrees K without checking.
 #' 
+#' @examples 
+#' 
+#' library(tealeaves)
+#' 
+#' cs <- make_constants()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
+#' 
+#' T_leaf <- set_units(298.15, K)
+#' 
+#' E(T_leaf, c(cs, ep, lp), FALSE)
+#' 
 #' @export
+#' 
 
 E <- function(T_leaf, pars, unitless) {
   

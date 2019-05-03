@@ -32,3 +32,16 @@ Gr: Grashof number
 \eqn{T_\mathrm{v,leaf}}{Tv_leaf} \tab \code{Tv_leaf} \tab virtual leaf temperature \tab K \tab \link[=.get_Tv]{calculated}
 }
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+T_leaf <- set_units(298.15, K)
+
+tealeaves:::.get_gr(T_leaf, c(cs, ep, lp), FALSE)
+
+}

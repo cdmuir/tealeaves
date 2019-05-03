@@ -27,3 +27,16 @@ The leaf evaporation rate is the product of the total conductance to water vapou
 
 If \code{unitless = TRUE}, \code{T_leaf} is assumed in degrees K without checking.
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+T_leaf <- set_units(298.15, K)
+
+E(T_leaf, c(cs, ep, lp), FALSE)
+
+}

@@ -43,6 +43,8 @@ h_vap <- set_units(56847.68250, J / mol) -
 
 set_units(h_vap, J / mol)
 
+tealeaves:::.get_hvap(set_units(298.15, K), FALSE)
+
 }
 \references{
 Nobel PS. 2009. Physicochemical and Environmental Plant Physiology. 4th Edition. Academic Press.

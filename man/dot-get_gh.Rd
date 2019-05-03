@@ -31,3 +31,16 @@ g_h: boundary layer conductance to heat (m / s)
 \eqn{Nu} \tab \code{Nu} \tab Nusselt number \tab none \tab \link[=.get_nu]{calculated}
 }
 }
+\examples{
+
+library(tealeaves)
+
+cs <- make_constants()
+ep <- make_enviropar()
+lp <- make_leafpar()
+
+T_leaf <- set_units(298.15, K)
+
+tealeaves:::.get_gh(T_leaf, "lower", c(cs, ep, lp), FALSE)
+
+}
