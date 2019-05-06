@@ -13,7 +13,7 @@
 constants <- function(.x) {
   
   which <- "constants"
-  nms <- parameter_names(which)
+  nms <- tealeaves::parameter_names(which)
   
   stopifnot(is.list(.x))
   

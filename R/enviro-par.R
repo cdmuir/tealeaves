@@ -13,7 +13,7 @@
 enviro_par <- function(.x) {
   
   which <- "enviro"
-  nms <- parameter_names(which)
+  nms <- tealeaves::parameter_names(which)
   
   stopifnot(is.list(.x))
   

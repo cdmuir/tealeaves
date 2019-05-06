@@ -13,7 +13,7 @@
 leaf_par <- function(.x) {
   
   which <- "leaf"
-  nms <- parameter_names(which)
+  nms <- tealeaves::parameter_names(which)
   
   stopifnot(is.list(.x))
   
