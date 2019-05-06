@@ -84,9 +84,9 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
                     quiet = FALSE, set_units = TRUE, parallel = FALSE) {
   
   if (set_units) {
-    leaf_par %<>% leaf_par()
-    enviro_par %<>% enviro_par()
-    constants %<>% constants()
+    leaf_par %<>% tealeaves::leaf_par()
+    enviro_par %<>% tealeaves::enviro_par()
+    constants %<>% tealeaves::constants()
   } else {
     if (!quiet) warning("tleaves: units have not been checked prior to solving")
   }
@@ -128,9 +128,9 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
                   set_units = TRUE) {
   
   if (set_units) {
-    leaf_par %<>% leaf_par()
-    enviro_par %<>% enviro_par()
-    constants %<>% constants()
+    leaf_par %<>% tealeaves::leaf_par()
+    enviro_par %<>% tealeaves::enviro_par()
+    constants %<>% tealeaves::constants()
   } else {
     if (!quiet) warning("tleaf: units have not been checked prior to solving")
   }
@@ -212,9 +212,9 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
     tleaf %<>% 
       set_units(K) %>%
       drop_units()
-    leaf_par %<>% leaf_par()
-    enviro_par %<>% enviro_par()
-    constants %<>% constants()
+    leaf_par %<>% tealeaves::leaf_par()
+    enviro_par %<>% tealeaves::enviro_par()
+    constants %<>% tealeaves::constants()
   }
   stopifnot(length(quiet) == 1L & is.logical(quiet))
   stopifnot(length(components) == 1L & is.logical(components))
