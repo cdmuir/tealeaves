@@ -31,13 +31,13 @@ knitr::opts_chunk$set(
 
 ## Get tealeaves
 
-<!--- From CRAN
+From CRAN
 
 ```r
 install.packages("tealeaves")
 ```
 
-or from -->GitHub
+or from GitHub
 
 ```r
 install.packages("devtools")

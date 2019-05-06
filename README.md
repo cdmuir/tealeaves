@@ -29,15 +29,13 @@ wind, or trait gradients such as leaf size or stomatal conductance.
 
 ## Get tealeaves
 
-<!--- From CRAN
+From CRAN
 
-```r
+``` r
 install.packages("tealeaves")
 ```
 
-or from -->
-
-GitHub
+or from GitHub
 
 ``` r
 install.packages("devtools")
