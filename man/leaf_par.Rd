@@ -7,7 +7,7 @@
 leaf_par(.x)
 }
 \arguments{
-\item{.x}{A list to be constructed into \strong{leaf_par}.}
+\item{.x}{A list to be constructed into \strong{leaf_par}. If units are not provided, they will be set without conversion. If units are provided, they will be checked and converted to units that tealeaves uses.}
 }
 \description{
 Constructor function for leaf_par class. This function ensures that leaf parameter inputs are properly formatted.

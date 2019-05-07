@@ -2,7 +2,7 @@
 #' @exportClass leaf_par
 #
 
-#' @param .x A list to be constructed into \strong{leaf_par}.
+#' @param .x A list to be constructed into \strong{leaf_par}. If units are not provided, they will be set without conversion. If units are provided, they will be checked and converted to units that tealeaves uses.
 #' 
 #' @description 
 #' 
@@ -27,11 +27,6 @@ leaf_par <- function(.x) {
   
   .x %<>% magrittr::extract(nms)
 
-  .x %>%
-    purrr::map(class) %>%
-    magrittr::equals("units") %>%
-    stopifnot()
-    
   # Set units ----
   .x$abs_l %<>% set_units()
   .x$abs_s %<>% set_units()

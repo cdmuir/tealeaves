@@ -7,7 +7,7 @@
 constants(.x)
 }
 \arguments{
-\item{.x}{A list to be constructed into \strong{constants}.}
+\item{.x}{A list to be constructed into \strong{constants}. If units are not provided, they will be set without conversion. If units are provided, they will be checked and converted to units that tealeaves uses.}
 }
 \description{
 Constructor function for constants class. This function ensures that physical constant inputs are properly formatted.

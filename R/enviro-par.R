@@ -2,7 +2,7 @@
 #' @exportClass enviro_par
 #
 
-#' @param .x A list to be constructed into \strong{enviro_par}.
+#' @param .x A list to be constructed into \strong{enviro_par}. If units are not provided, they will be set without conversion. If units are provided, they will be checked and converted to units that tealeaves uses.
 #' 
 #' @description 
 #' 
@@ -26,11 +26,6 @@ enviro_par <- function(.x) {
   }
   
   .x %<>% magrittr::extract(nms)
-  
-  .x %>%
-    purrr::map(class) %>%
-    magrittr::equals("units") %>%
-    stopifnot()
   
   # Set units ----
   .x$P %<>% set_units(kPa)
