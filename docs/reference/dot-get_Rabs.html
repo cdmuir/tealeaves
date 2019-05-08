@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -65,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tealeaves</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9002</span>
       </span>
     </div>
 
@@ -73,7 +74,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -94,6 +95,9 @@
       <a href="../articles/tealeaves-introduction.html">Introduction to the {tealeaves} package</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -148,26 +152,15 @@
 <p>The incidient longwave (aka thermal infrared) radiation is modeled from sky and air temperature \(\sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)\) where \(T_\mathrm{sky}\) is function of the air temperature and incoming solar shortwave radiation:</p>
 <p>$$T_\mathrm{sky} = T_\mathrm{air} - 20 S_\mathrm{sw} / 1000$$</p>
 <table class='table'>
-<tr><td></td><td><em>Symbol</em></td><td></td><td></td><td><em>R</em></td></tr>
-<tr><td></td><td></td><td><em>Description</em></td><td></td><td></td></tr>
-<tr><td><em>Units</em></td><td></td><td></td><td><em>Default</em></td><td></td></tr>
-<tr><td></td><td>\(\alpha_\mathrm{s}\)</td><td></td><td></td><td><code>abs_s</code></td></tr>
-<tr><td></td><td>absorbtivity of shortwave radiation (0.3 - 4</td><td>\(\mu\)</td><td>m)</td><td>none</td></tr>
-<tr><td>0.80</td><td></td><td>\(\alpha_\mathrm{l}\)</td><td></td><td></td></tr>
-<tr><td><code>abs_l</code></td><td></td><td>absorbtivity of longwave radiation (4 - 80</td><td>\(\mu\)</td><td>m)</td></tr>
-<tr><td>none</td><td>0.97</td><td></td><td>\(r\)</td><td></td></tr>
-<tr><td></td><td><code>r</code></td><td></td><td>reflectance for shortwave irradiance (albedo)</td><td>none</td></tr>
-<tr><td>0.2</td><td></td><td>\(\sigma\)</td><td></td><td></td></tr>
-<tr><td><code>s</code></td><td></td><td>Stephan-Boltzmann constant</td><td>W / (m</td><td>\(^2\)</td></tr>
-<tr><td>K</td><td>\(^4\)</td><td>)</td><td>5.67e-08</td><td></td></tr>
-<tr><td>\(S_\mathrm{sw}\)</td><td></td><td></td><td><code>S_sw</code></td><td></td></tr>
-<tr><td>incident short-wave (solar) radiation flux density</td><td>W / m</td><td>\(^2\)</td><td></td><td>1000</td></tr>
-<tr><td></td><td>\(S_\mathrm{lw}\)</td><td></td><td></td><td><code>S_lw</code></td></tr>
-<tr><td></td><td>incident long-wave radiation flux density</td><td>W / m</td><td>\(^2\)</td><td></td></tr>
-<tr><td>calculated</td><td></td><td>\(T_\mathrm{air}\)</td><td></td><td></td></tr>
-<tr><td><code>T_air</code></td><td></td><td>air temperature</td><td>K</td><td>298.15</td></tr>
-<tr><td></td><td>\(T_\mathrm{sky}\)</td><td></td><td></td><td><code>T_sky</code></td></tr>
-<tr><td></td><td>sky temperature</td><td>K</td><td>calculated</td><td></td></tr>
+<tr><td><em>Symbol</em></td><td><em>R</em></td><td><em>Description</em></td><td><em>Units</em></td><td><em>Default</em></td></tr>
+<tr><td>\(\alpha_\mathrm{s}\)</td><td><code>abs_s</code></td><td>absorbtivity of shortwave radiation (0.3 - 4 \(\mu\)m)</td><td>none</td><td>0.80</td></tr>
+<tr><td>\(\alpha_\mathrm{l}\)</td><td><code>abs_l</code></td><td>absorbtivity of longwave radiation (4 - 80 \(\mu\)m)</td><td>none</td><td>0.97</td></tr>
+<tr><td>\(r\)</td><td><code>r</code></td><td>reflectance for shortwave irradiance (albedo)</td><td>none</td><td>0.2</td></tr>
+<tr><td>\(\sigma\)</td><td><code>s</code></td><td>Stephan-Boltzmann constant</td><td>W / (m\(^2\) K\(^4\))</td><td>5.67e-08</td></tr>
+<tr><td>\(S_\mathrm{sw}\)</td><td><code>S_sw</code></td><td>incident short-wave (solar) radiation flux density</td><td>W / m\(^2\)</td><td>1000</td></tr>
+<tr><td>\(S_\mathrm{lw}\)</td><td><code>S_lw</code></td><td>incident long-wave radiation flux density</td><td>W / m\(^2\)</td><td>calculated</td></tr>
+<tr><td>\(T_\mathrm{air}\)</td><td><code>T_air</code></td><td>air temperature</td><td>K</td><td>298.15</td></tr>
+<tr><td>\(T_\mathrm{sky}\)</td><td><code>T_sky</code></td><td>sky temperature</td><td>K</td><td>calculated</td></tr>
 </table>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -177,13 +170,13 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tealeaves</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tealeaves</span>)
 
 <span class='no'>cs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_constants</a></span>()
 <span class='no'>ep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_enviropar</a></span>()
 <span class='no'>lp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_leafpar</a></span>()
 
-<span class='kw pkg'>tealeaves</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/tealeaves/topics/dot-get_Rabs'>.get_Rabs</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>cs</span>, <span class='no'>ep</span>, <span class='no'>lp</span>), <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; 1363.813 [W/m^2]</div><div class='input'>
+<span class='kw pkg'>tealeaves</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/tealeaves/man/dot-get_Rabs.html'>.get_Rabs</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>cs</span>, <span class='no'>ep</span>, <span class='no'>lp</span>), <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; 1363.813 [W/m^2]</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -209,7 +202,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
    </div>

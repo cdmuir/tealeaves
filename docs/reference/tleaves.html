@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -66,7 +67,7 @@ tleaf: find leaf temperatures for a single parameter set" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tealeaves</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9002</span>
       </span>
     </div>
 
@@ -74,7 +75,7 @@ tleaf: find leaf temperatures for a single parameter set" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -95,6 +96,9 @@ tleaf: find leaf temperatures for a single parameter set" />
       <a href="../articles/tealeaves-introduction.html">Introduction to the {tealeaves} package</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -158,7 +162,7 @@ tleaf: find leaf temperatures for a single parameter set" />
     </tr>
     <tr>
       <th>parallel</th>
-      <td><p>Logical. Should parallel processing be used via <code><a href='https://www.rdocumentation.org/packages/furrr/topics/future_map'>future_map</a></code>?</p></td>
+      <td><p>Logical. Should parallel processing be used via <code><a href='https://rdrr.io/pkg/furrr/man/future_map.html'>future_map</a></code>?</p></td>
     </tr>
     </table>
     
@@ -168,57 +172,28 @@ tleaf: find leaf temperatures for a single parameter set" />
 <br />
 A tibble with the following <code>units</code> columns <br /></p>
 <table class='table'>
-<tr><td></td><td><b>Input:</b></td></tr>
-<tr><td></td><td></td></tr>
-<tr><td></td><td><code>abs_l</code></td></tr>
-<tr><td></td><td>Absorbtivity of longwave radiation (unitless)</td></tr>
-<tr><td></td><td><code>abs_s</code></td></tr>
-<tr><td></td><td>Absorbtivity of shortwave radiation (unitless)</td></tr>
-<tr><td></td><td><code>g_sw</code></td></tr>
-<tr><td></td><td>Stomatal conductance to H2O (</td></tr>
-<tr><td>\(\mu\)</td><td>mol H2O / (m^2 s Pa))</td></tr>
-<tr><td></td><td><code>g_uw</code></td></tr>
-<tr><td></td><td>Cuticular conductance to H2O (</td></tr>
-<tr><td>\(\mu\)</td><td>mol H2O / (m^2 s Pa))</td></tr>
-<tr><td></td><td><code>leafsize</code></td></tr>
-<tr><td>Leaf characteristic dimension</td><td>(m)</td></tr>
-<tr><td></td><td><code>logit_sr</code></td></tr>
-<tr><td></td><td>Stomatal ratio (logit transformed; unitless)</td></tr>
-<tr><td></td><td><code>P</code></td></tr>
-<tr><td></td><td>Atmospheric pressure (kPa)</td></tr>
-<tr><td></td><td><code>RH</code></td></tr>
-<tr><td></td><td>Relative humidity (unitless)</td></tr>
-<tr><td></td><td><code>S_lw</code></td></tr>
-<tr><td></td><td>incident long-wave radiation flux density (W / m^2)</td></tr>
-<tr><td></td><td><code>S_sw</code></td></tr>
-<tr><td></td><td>incident short-wave (solar) radiation flux density (W / m^2)</td></tr>
-<tr><td></td><td><code>T_air</code></td></tr>
-<tr><td></td><td>Air temperature (K)</td></tr>
-<tr><td></td><td><code>wind</code></td></tr>
-<tr><td></td><td>Wind speed (m / s)</td></tr>
-<tr><td></td><td><b>Output:</b></td></tr>
-<tr><td></td><td></td></tr>
-<tr><td></td><td><code>T_leaf</code></td></tr>
-<tr><td></td><td>Equilibrium leaf tempearture (K)</td></tr>
-<tr><td></td><td><code>value</code></td></tr>
-<tr><td></td><td>Leaf energy balance (W / m^2) at</td></tr>
-<tr><td><code>tleaf</code></td><td></td></tr>
-<tr><td></td><td><code>convergence</code></td></tr>
-<tr><td></td><td>Convergence code (0 = converged)</td></tr>
-<tr><td></td><td><code>R_abs</code></td></tr>
-<tr><td></td><td>Total absorbed radiation (W / m^2; see</td></tr>
-<tr><td><code><a href='dot-get_Rabs.html'>.get_Rabs</a></code></td><td>)</td></tr>
-<tr><td></td><td><code>S_r</code></td></tr>
-<tr><td></td><td>Longwave re-radiation (W / m^2; see</td></tr>
-<tr><td><code><a href='dot-get_Sr.html'>.get_Sr</a></code></td><td>)</td></tr>
-<tr><td></td><td><code>H</code></td></tr>
-<tr><td></td><td>Sensible heat flux density (W / m^2; see</td></tr>
-<tr><td><code><a href='dot-get_H.html'>.get_H</a></code></td><td>)</td></tr>
-<tr><td></td><td><code>L</code></td></tr>
-<tr><td></td><td>Latent heat flux density (W / m^2; see</td></tr>
-<tr><td><code><a href='dot-get_L.html'>.get_L</a></code></td><td>)</td></tr>
-<tr><td></td><td><code>E</code></td></tr>
-<tr><td></td><td>Evapotranspiration (mol H2O/ (m^2 s))</td></tr>
+<tr><td><b>Input:</b></td><td></td></tr>
+<tr><td><code>abs_l</code></td><td>Absorbtivity of longwave radiation (unitless)</td></tr>
+<tr><td><code>abs_s</code></td><td>Absorbtivity of shortwave radiation (unitless)</td></tr>
+<tr><td><code>g_sw</code></td><td>Stomatal conductance to H2O (\(\mu\)mol H2O / (m^2 s Pa))</td></tr>
+<tr><td><code>g_uw</code></td><td>Cuticular conductance to H2O (\(\mu\)mol H2O / (m^2 s Pa))</td></tr>
+<tr><td><code>leafsize</code> Leaf characteristic dimension</td><td>(m)</td></tr>
+<tr><td><code>logit_sr</code></td><td>Stomatal ratio (logit transformed; unitless)</td></tr>
+<tr><td><code>P</code></td><td>Atmospheric pressure (kPa)</td></tr>
+<tr><td><code>RH</code></td><td>Relative humidity (unitless)</td></tr>
+<tr><td><code>S_lw</code></td><td>incident long-wave radiation flux density (W / m^2)</td></tr>
+<tr><td><code>S_sw</code></td><td>incident short-wave (solar) radiation flux density (W / m^2)</td></tr>
+<tr><td><code>T_air</code></td><td>Air temperature (K)</td></tr>
+<tr><td><code>wind</code></td><td>Wind speed (m / s)</td></tr>
+<tr><td><b>Output:</b></td><td></td></tr>
+<tr><td><code>T_leaf</code></td><td>Equilibrium leaf tempearture (K)</td></tr>
+<tr><td><code>value</code></td><td>Leaf energy balance (W / m^2) at <code>tleaf</code></td></tr>
+<tr><td><code>convergence</code></td><td>Convergence code (0 = converged)</td></tr>
+<tr><td><code>R_abs</code></td><td>Total absorbed radiation (W / m^2; see <code><a href='dot-get_Rabs.html'>.get_Rabs</a></code>)</td></tr>
+<tr><td><code>S_r</code></td><td>Longwave re-radiation (W / m^2; see <code><a href='dot-get_Sr.html'>.get_Sr</a></code>)</td></tr>
+<tr><td><code>H</code></td><td>Sensible heat flux density (W / m^2; see <code><a href='dot-get_H.html'>.get_H</a></code>)</td></tr>
+<tr><td><code>L</code></td><td>Latent heat flux density (W / m^2; see <code><a href='dot-get_L.html'>.get_L</a></code>)</td></tr>
+<tr><td><code>E</code></td><td>Evapotranspiration (mol H2O/ (m^2 s))</td></tr>
 </table>
 
 
@@ -226,27 +201,14 @@ A tibble with the following <code>units</code> columns <br /></p>
 <br />
 A data.frame with the following numeric columns: <br /></p>
 <table class='table'>
-<tr><td></td><td><code>T_leaf</code></td></tr>
-<tr><td></td><td>Equilibrium leaf tempearture (K)</td></tr>
-<tr><td></td><td><code>value</code></td></tr>
-<tr><td></td><td>Leaf energy balance (W / m^2) at</td></tr>
-<tr><td><code>tleaf</code></td><td></td></tr>
-<tr><td></td><td><code>convergence</code></td></tr>
-<tr><td></td><td>Convergence code (0 = converged)</td></tr>
-<tr><td></td><td><code>R_abs</code></td></tr>
-<tr><td></td><td>Total absorbed radiation (W / m^2; see</td></tr>
-<tr><td><code><a href='dot-get_Rabs.html'>.get_Rabs</a></code></td><td>)</td></tr>
-<tr><td></td><td><code>S_r</code></td></tr>
-<tr><td></td><td>Longwave re-radiation (W / m^2; see</td></tr>
-<tr><td><code><a href='dot-get_Sr.html'>.get_Sr</a></code></td><td>)</td></tr>
-<tr><td></td><td><code>H</code></td></tr>
-<tr><td></td><td>Sensible heat flux density (W / m^2; see</td></tr>
-<tr><td><code><a href='dot-get_H.html'>.get_H</a></code></td><td>)</td></tr>
-<tr><td></td><td><code>L</code></td></tr>
-<tr><td></td><td>Latent heat flux density (W / m^2; see</td></tr>
-<tr><td><code><a href='dot-get_L.html'>.get_L</a></code></td><td>)</td></tr>
-<tr><td></td><td><code>E</code></td></tr>
-<tr><td></td><td>Evapotranspiration (mol H2O/ (m^2 s))</td></tr>
+<tr><td><code>T_leaf</code></td><td>Equilibrium leaf tempearture (K)</td></tr>
+<tr><td><code>value</code></td><td>Leaf energy balance (W / m^2) at <code>tleaf</code></td></tr>
+<tr><td><code>convergence</code></td><td>Convergence code (0 = converged)</td></tr>
+<tr><td><code>R_abs</code></td><td>Total absorbed radiation (W / m^2; see <code><a href='dot-get_Rabs.html'>.get_Rabs</a></code>)</td></tr>
+<tr><td><code>S_r</code></td><td>Longwave re-radiation (W / m^2; see <code><a href='dot-get_Sr.html'>.get_Sr</a></code>)</td></tr>
+<tr><td><code>H</code></td><td>Sensible heat flux density (W / m^2; see <code><a href='dot-get_H.html'>.get_H</a></code>)</td></tr>
+<tr><td><code>L</code></td><td>Latent heat flux density (W / m^2; see <code><a href='dot-get_L.html'>.get_L</a></code>)</td></tr>
+<tr><td><code>E</code></td><td>Evapotranspiration (mol H2O/ (m^2 s))</td></tr>
 </table>
 
 
@@ -268,8 +230,8 @@ A data.frame with the following numeric columns: <br /></p>
 <span class='co'># tleaves for multiple parameter set:</span>
 
 <span class='no'>enviro_par</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_enviropar</a></span>(
-  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
-    <span class='kw'>T_air</span> <span class='kw'>=</span> <span class='fu'>set_units</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>293.15</span>, <span class='fl'>298.15</span>), <span class='no'>K</span>)
+  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+    <span class='kw'>T_air</span> <span class='kw'>=</span> <span class='fu'>set_units</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>293.15</span>, <span class='fl'>298.15</span>), <span class='no'>K</span>)
   )
 )
 <span class='fu'>tleaves</span>(<span class='no'>leaf_par</span>, <span class='no'>enviro_par</span>, <span class='no'>constants</span>)</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>Solving for T_leaf from 2 parameter sets...</span><span></span></div><div class='output co'>#&gt; <span class='message'></span>
@@ -304,7 +266,7 @@ A data.frame with the following numeric columns: <br /></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
    </div>

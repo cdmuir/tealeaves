@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -65,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tealeaves</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9002</span>
       </span>
     </div>
 
@@ -73,7 +74,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -94,6 +95,9 @@
       <a href="../articles/tealeaves-introduction.html">Introduction to the {tealeaves} package</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -149,23 +153,16 @@
 
     <p>$$L = h_\mathrm{vap} g_\mathrm{tw} d_\mathrm{wv}$$</p>
 <table class='table'>
-<tr><td></td><td><em>Symbol</em></td><td></td><td></td><td><em>R</em></td></tr>
-<tr><td></td><td></td><td><em>Description</em></td><td></td><td></td></tr>
-<tr><td><em>Units</em></td><td></td><td></td><td><em>Default</em></td><td></td></tr>
-<tr><td></td><td>\(d_\mathrm{wv}\)</td><td></td><td></td><td><code>d_wv</code></td></tr>
-<tr><td></td><td>water vapour gradient</td><td>mol / m ^ 3</td><td></td><td><a href='dot-get_dwv.html'>calculated</a></td></tr>
-<tr><td></td><td></td><td>\(h_\mathrm{vap}\)</td><td></td><td></td></tr>
-<tr><td><code>h_vap</code></td><td></td><td>latent heat of vaporization</td><td>J / mol</td><td></td></tr>
-<tr><td><a href='dot-get_hvap.html'>calculated</a></td><td></td><td></td><td>\(g_\mathrm{tw}\)</td><td></td></tr>
-<tr><td></td><td><code>g_tw</code></td><td></td><td>total conductance to H2O</td><td>(</td></tr>
-<tr><td>\(\mu\)</td><td>mol H2O) / (m</td><td>\(^2\)</td><td>s Pa)</td><td></td></tr>
-<tr><td><a href='dot-get_gtw.html'>calculated</a></td><td></td><td></td><td><em>Symbol</em></td><td></td></tr>
+<tr><td><em>Symbol</em></td><td><em>R</em></td><td><em>Description</em></td><td><em>Units</em></td><td><em>Default</em></td></tr>
+<tr><td>\(d_\mathrm{wv}\)</td><td><code>d_wv</code></td><td>water vapour gradient</td><td>mol / m ^ 3</td><td><a href='dot-get_dwv.html'>calculated</a></td></tr>
+<tr><td>\(h_\mathrm{vap}\)</td><td><code>h_vap</code></td><td>latent heat of vaporization</td><td>J / mol</td><td><a href='dot-get_hvap.html'>calculated</a></td></tr>
+<tr><td>\(g_\mathrm{tw}\)</td><td><code>g_tw</code></td><td>total conductance to H2O</td><td>(\(\mu\)mol H2O) / (m\(^2\) s Pa)</td><td><a href='dot-get_gtw.html'>calculated</a></td></tr>
 </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tealeaves</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tealeaves</span>)
 
 <span class='no'>cs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_constants</a></span>()
 <span class='no'>ep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_enviropar</a></span>()
@@ -173,7 +170,7 @@
 
 <span class='no'>T_leaf</span> <span class='kw'>&lt;-</span> <span class='fu'>set_units</span>(<span class='fl'>298.15</span>, <span class='no'>K</span>)
 
-<span class='kw pkg'>tealeaves</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/tealeaves/topics/dot-get_L'>.get_L</a></span>(<span class='no'>T_leaf</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>cs</span>, <span class='no'>ep</span>, <span class='no'>lp</span>), <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; 248.9066 [W/m^2]</div><div class='input'>
+<span class='kw pkg'>tealeaves</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/tealeaves/man/dot-get_L.html'>.get_L</a></span>(<span class='no'>T_leaf</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>cs</span>, <span class='no'>ep</span>, <span class='no'>lp</span>), <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; 248.9066 [W/m^2]</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -197,7 +194,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
    </div>

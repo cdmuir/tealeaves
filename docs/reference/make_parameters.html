@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -68,7 +69,7 @@ make_constants" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tealeaves</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9002</span>
       </span>
     </div>
 
@@ -76,7 +77,7 @@ make_constants" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -97,6 +98,9 @@ make_constants" />
       <a href="../articles/tealeaves-introduction.html">Introduction to the {tealeaves} package</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -153,79 +157,45 @@ make_constants" />
 
     <p><b>Leaf parameters:</b></p>
 <table class='table'>
-<tr><td></td><td><em>Symbol</em></td><td></td><td></td><td><em>R</em></td></tr>
-<tr><td></td><td></td><td><em>Description</em></td><td></td><td></td></tr>
-<tr><td><em>Units</em></td><td></td><td></td><td><em>Default</em></td><td></td></tr>
-<tr><td></td><td>\(d\)</td><td></td><td></td><td><code>leafsize</code></td></tr>
-<tr><td></td><td>Leaf characteristic dimension</td><td>m</td><td>0.1</td><td></td></tr>
-<tr><td>\(\alpha_\mathrm{s}\)</td><td></td><td></td><td><code>abs_s</code></td><td></td></tr>
-<tr><td>absorbtivity of shortwave radiation (0.3 - 4</td><td>\(\mu\)</td><td>m)</td><td>none</td><td>0.50</td></tr>
-<tr><td></td><td>\(\alpha_\mathrm{l}\)</td><td></td><td></td><td><code>abs_l</code></td></tr>
-<tr><td></td><td>absorbtivity of longwave radiation (4 - 80</td><td>\(\mu\)</td><td>m)</td><td>none</td></tr>
-<tr><td>0.97</td><td></td><td>\(g_\mathrm{sw}\)</td><td></td><td></td></tr>
-<tr><td><code>g_sw</code></td><td></td><td>stomatal conductance to H2O</td><td>(</td><td>\(\mu\)</td></tr>
-<tr><td>mol H2O) / (m</td><td>\(^2\)</td><td>s Pa)</td><td>5</td><td></td></tr>
-<tr><td>\(g_\mathrm{uw}\)</td><td></td><td></td><td><code>g_uw</code></td><td></td></tr>
-<tr><td>cuticular conductance to H2O</td><td>(</td><td>\(\mu\)</td><td>mol H2O) / (m</td><td>\(^2\)</td></tr>
-<tr><td>s Pa)</td><td>0.1</td><td></td><td>\(\mathrm{logit}(sr)\)</td><td></td></tr>
-<tr><td></td><td><code>logit_sr</code></td><td></td><td>stomatal ratio (logit transformed)</td><td>none</td></tr>
-<tr><td>0 = logit(0.5)</td><td></td><td><em>Symbol</em></td><td></td><td></td></tr>
+<tr><td><em>Symbol</em></td><td><em>R</em></td><td><em>Description</em></td><td><em>Units</em></td><td><em>Default</em></td></tr>
+<tr><td>\(d\)</td><td><code>leafsize</code></td><td>Leaf characteristic dimension</td><td>m</td><td>0.1</td></tr>
+<tr><td>\(\alpha_\mathrm{l}\)</td><td><code>abs_l</code></td><td>absorbtivity of longwave radiation (4 - 80 \(\mu\)m)</td><td>none</td><td>0.97</td></tr>
+<tr><td>\(\alpha_\mathrm{s}\)</td><td><code>abs_s</code></td><td>absorbtivity of shortwave radiation (0.3 - 4 \(\mu\)m)</td><td>none</td><td>0.50</td></tr>
+<tr><td>\(g_\mathrm{sw}\)</td><td><code>g_sw</code></td><td>stomatal conductance to H2O</td><td>(\(\mu\)mol H2O) / (m\(^2\) s Pa)</td><td>5</td></tr>
+<tr><td>\(g_\mathrm{uw}\)</td><td><code>g_uw</code></td><td>cuticular conductance to H2O</td><td>(\(\mu\)mol H2O) / (m\(^2\) s Pa)</td><td>0.1</td></tr>
+<tr><td>\(\mathrm{logit}(sr)\)</td><td><code>logit_sr</code></td><td>stomatal ratio (logit transformed)</td><td>none</td><td>0 = logit(0.5)</td></tr>
 </table>
     <p><b>Environment parameters:</b></p>
 <table class='table'>
-<tr><td></td><td><em>Symbol</em></td><td></td><td></td><td><em>R</em></td></tr>
-<tr><td></td><td></td><td><em>Description</em></td><td></td><td></td></tr>
-<tr><td><em>Units</em></td><td></td><td></td><td><em>Default</em></td><td></td></tr>
-<tr><td></td><td>\(P\)</td><td></td><td></td><td><code>P</code></td></tr>
-<tr><td></td><td>atmospheric pressure</td><td>kPa</td><td>101.3246</td><td></td></tr>
-<tr><td>\(r\)</td><td></td><td></td><td><code>r</code></td><td></td></tr>
-<tr><td>reflectance for shortwave irradiance (albedo)</td><td>none</td><td>0.2</td><td></td><td>\(\mathrm{RH}\)</td></tr>
-<tr><td></td><td></td><td><code>RH</code></td><td></td><td>relative humidity</td></tr>
-<tr><td>none</td><td>0.50</td><td></td><td>\(S_\mathrm{sw}\)</td><td></td></tr>
-<tr><td></td><td><code>S_sw</code></td><td></td><td>incident short-wave (solar) radiation flux density</td><td>W / m</td></tr>
-<tr><td>\(^2\)</td><td></td><td>1000</td><td></td><td>\(S_\mathrm{lw}\)</td></tr>
-<tr><td></td><td></td><td><code>S_lw</code></td><td></td><td>incident long-wave radiation flux density</td></tr>
-<tr><td>W / m</td><td>\(^2\)</td><td></td><td></td><td><a href='dot-get_Rabs.html'>calculated</a></td></tr>
-<tr><td></td><td></td><td>\(T_\mathrm{air}\)</td><td></td><td></td></tr>
-<tr><td><code>T_air</code></td><td></td><td>air temperature</td><td>K</td><td>298.15</td></tr>
-<tr><td></td><td>\(u\)</td><td></td><td></td><td><code>wind</code></td></tr>
-<tr><td></td><td>windspeed</td><td>m / s</td><td>2</td><td></td></tr>
+<tr><td><em>Symbol</em></td><td><em>R</em></td><td><em>Description</em></td><td><em>Units</em></td><td><em>Default</em></td></tr>
+<tr><td>\(P\)</td><td><code>P</code></td><td>atmospheric pressure</td><td>kPa</td><td>101.3246</td></tr>
+<tr><td>\(r\)</td><td><code>r</code></td><td>reflectance for shortwave irradiance (albedo)</td><td>none</td><td>0.2</td></tr>
+<tr><td>\(\mathrm{RH}\)</td><td><code>RH</code></td><td>relative humidity</td><td>none</td><td>0.50</td></tr>
+<tr><td>\(S_\mathrm{sw}\)</td><td><code>S_sw</code></td><td>incident short-wave (solar) radiation flux density</td><td>W / m\(^2\)</td><td>1000</td></tr>
+<tr><td>\(S_\mathrm{lw}\)</td><td><code>S_lw</code></td><td>incident long-wave radiation flux density</td><td>W / m\(^2\)</td><td><a href='dot-get_Rabs.html'>calculated</a></td></tr>
+<tr><td>\(T_\mathrm{air}\)</td><td><code>T_air</code></td><td>air temperature</td><td>K</td><td>298.15</td></tr>
+<tr><td>\(u\)</td><td><code>wind</code></td><td>windspeed</td><td>m / s</td><td>2</td></tr>
 </table>
     <p><b>Constants:</b></p><table class='table'>
-<tr><td></td><td><em>Symbol</em></td><td></td><td></td><td><em>R</em></td></tr>
-<tr><td></td><td></td><td><em>Description</em></td><td></td><td></td></tr>
-<tr><td><em>Units</em></td><td></td><td></td><td><em>Default</em></td><td></td></tr>
-<tr><td></td><td>\(c_p\)</td><td></td><td></td><td><code>c_p</code></td></tr>
-<tr><td></td><td>heat capacity of air</td><td>J / (g K)</td><td>1.01</td><td></td></tr>
-<tr><td>\(D_{h,0}\)</td><td></td><td></td><td><code>D_h0</code></td><td></td></tr>
-<tr><td>diffusion coefficient for heat in air at 0 °C</td><td>m</td><td>\(^2\)</td><td>/ s</td><td>19.0e-06</td></tr>
-<tr><td></td><td>\(D_{m,0}\)</td><td></td><td></td><td><code>D_m0</code></td></tr>
-<tr><td></td><td>diffusion coefficient for momentum in air at 0 °C</td><td>m</td><td>\(^2\)</td><td>/ s</td></tr>
-<tr><td>13.3e-06</td><td></td><td>\(D_{w,0}\)</td><td></td><td></td></tr>
-<tr><td><code>D_w0</code></td><td></td><td>diffusion coefficient for water vapour in air at 0 C</td><td>m</td><td>\(^2\)</td></tr>
-<tr><td>/ s</td><td>21.2e-06</td><td></td><td>\(\epsilon\)</td><td></td></tr>
-<tr><td></td><td><code>epsilon</code></td><td></td><td>ratio of water to air molar masses</td><td>none</td></tr>
-<tr><td>0.622</td><td></td><td>\(eT\)</td><td></td><td></td></tr>
-<tr><td><code>eT</code></td><td></td><td>exponent for temperature dependence of diffusion</td><td>none</td><td>1.75</td></tr>
-<tr><td></td><td>\(G\)</td><td></td><td></td><td><code>G</code></td></tr>
-<tr><td></td><td>gravitational acceleration</td><td>m / s</td><td>\(^2\)</td><td></td></tr>
-<tr><td>9.8</td><td></td><td>\(Nu\)</td><td></td><td></td></tr>
-<tr><td><code>Nu</code></td><td></td><td>Nusselt number</td><td>none</td><td></td></tr>
-<tr><td><a href='dot-get_nu.html'>calculated</a></td><td></td><td></td><td>\(R\)</td><td></td></tr>
-<tr><td></td><td><code>R</code></td><td></td><td>ideal gas constant</td><td>J / (mol K)</td></tr>
-<tr><td>8.3144598</td><td></td><td>\(R_\mathrm{air}\)</td><td></td><td></td></tr>
-<tr><td><code>R_air</code></td><td></td><td>specific gas constant for dry air</td><td>J / (kg K)</td><td>287.058</td></tr>
-<tr><td></td><td>\(\sigma\)</td><td></td><td></td><td><code>s</code></td></tr>
-<tr><td></td><td>Stephan-Boltzmann constant</td><td>W / (m</td><td>\(^2\)</td><td>K</td></tr>
-<tr><td>\(^4\)</td><td>)</td><td>5.67e-08</td><td></td><td>\(Sh\)</td></tr>
-<tr><td></td><td></td><td><code>Sh</code></td><td></td><td>Sherwood number</td></tr>
-<tr><td>none</td><td></td><td><a href='dot-get_sh.html'>calculated</a></td><td></td><td></td></tr>
+<tr><td><em>Symbol</em></td><td><em>R</em></td><td><em>Description</em></td><td><em>Units</em></td><td><em>Default</em></td></tr>
+<tr><td>\(c_p\)</td><td><code>c_p</code></td><td>heat capacity of air</td><td>J / (g K)</td><td>1.01</td></tr>
+<tr><td>\(D_{h,0}\)</td><td><code>D_h0</code></td><td>diffusion coefficient for heat in air at 0 °C</td><td>m\(^2\) / s</td><td>19.0e-06</td></tr>
+<tr><td>\(D_{m,0}\)</td><td><code>D_m0</code></td><td>diffusion coefficient for momentum in air at 0 °C</td><td>m\(^2\) / s</td><td>13.3e-06</td></tr>
+<tr><td>\(D_{w,0}\)</td><td><code>D_w0</code></td><td>diffusion coefficient for water vapour in air at 0 C</td><td>m\(^2\) / s</td><td>21.2e-06</td></tr>
+<tr><td>\(\epsilon\)</td><td><code>epsilon</code></td><td>ratio of water to air molar masses</td><td>none</td><td>0.622</td></tr>
+<tr><td>\(eT\)</td><td><code>eT</code></td><td>exponent for temperature dependence of diffusion</td><td>none</td><td>1.75</td></tr>
+<tr><td>\(G\)</td><td><code>G</code></td><td>gravitational acceleration</td><td>m / s\(^2\)</td><td>9.8</td></tr>
+<tr><td>\(Nu\)</td><td><code>Nu</code></td><td>Nusselt number</td><td>none</td><td><a href='dot-get_nu.html'>calculated</a></td></tr>
+<tr><td>\(R\)</td><td><code>R</code></td><td>ideal gas constant</td><td>J / (mol K)</td><td>8.3144598</td></tr>
+<tr><td>\(R_\mathrm{air}\)</td><td><code>R_air</code></td><td>specific gas constant for dry air</td><td>J / (kg K)</td><td>287.058</td></tr>
+<tr><td>\(\sigma\)</td><td><code>s</code></td><td>Stephan-Boltzmann constant</td><td>W / (m\(^2\) K\(^4\))</td><td>5.67e-08</td></tr>
+<tr><td>\(Sh\)</td><td><code>Sh</code></td><td>Sherwood number</td><td>none</td><td><a href='dot-get_sh.html'>calculated</a></td></tr>
 </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tealeaves</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tealeaves</span>)
 
 <span class='co'># Use defaults</span>
 <span class='no'>cs</span> <span class='kw'>&lt;-</span> <span class='fu'>make_constants</span>()
@@ -235,14 +205,14 @@ make_constants" />
 <span class='co'># Replace defaults</span>
 
 <span class='no'>ep</span> <span class='kw'>&lt;-</span> <span class='fu'>make_enviropar</span>(
-  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
+  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
     <span class='kw'>T_air</span> <span class='kw'>=</span> <span class='fu'>set_units</span>(<span class='fl'>300</span>, <span class='no'>K</span>)
   )
 )
 
 <span class='no'>lp</span> <span class='kw'>&lt;-</span> <span class='fu'>make_leafpar</span>(
-  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
-    <span class='kw'>leafsize</span> <span class='kw'>=</span> <span class='fu'>set_units</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>), <span class='no'>m</span>)
+  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+    <span class='kw'>leafsize</span> <span class='kw'>=</span> <span class='fu'>set_units</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>), <span class='no'>m</span>)
   )
 )</div></pre>
   </div>
@@ -267,7 +237,7 @@ make_constants" />
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
    </div>
