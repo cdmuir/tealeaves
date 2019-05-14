@@ -1,4 +1,4 @@
-# tealeaves (development version)
+# tealeaves 1.0.1
 
 * `constants()`, `enviro_par()`, and `leaf_par()` no longer require values be provided with units. If values are provided without units, they are assigned proper units, but no unit conversion is performed. If values have units, these functions check whether units are correct and convert them to units used in the package.
 
