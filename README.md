@@ -9,7 +9,7 @@
 status](https://www.r-pkg.org/badges/version/tealeaves)](https://cran.r-project.org/package=tealeaves)
 [![Build
 Status](https://travis-ci.org/cdmuir/tealeaves.svg?branch=master)](https://travis-ci.org/cdmuir/tealeaves)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2669578.svg)](https://doi.org/10.5281/zenodo.2669578)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2808079.svg)](https://doi.org/10.5281/zenodo.2808079)
 [![](https://cranlogs.r-pkg.org/badges/tealeaves)](https://cran.r-project.org/package=tealeaves)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
