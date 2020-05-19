@@ -12,3 +12,4 @@ README_files/*
 ^cran-comments\.md$
 ^README\.Rmd$
 ^CRAN-RELEASE$
+^R/scratch\.R$
