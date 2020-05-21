@@ -50,10 +50,6 @@ pars <- c(lp, ep, cs) %>%
   
 }
 
-P_a <- tealeaves:::.get_Pa(pars$T_air, pars, TRUE)
-g_h <- sum(tealeaves:::.get_gh(pars$T_air, "lower", pars, TRUE), tealeaves:::.get_gh(pars$T_air, "upper", pars, TRUE))
-P_a * pars$c_p * g_h
-.get_ch(pars)
 
 .get_ce <- function(pars) {
   
@@ -108,6 +104,11 @@ P_a * pars$c_p * g_h
   c_E
   
 }
+
+P_a <- tealeaves:::.get_Pa(pars$T_air, pars, TRUE)
+g_h <- sum(tealeaves:::.get_gh(pars$T_air, "lower", pars, TRUE), tealeaves:::.get_gh(pars$T_air, "upper", pars, TRUE))
+P_a * pars$c_p * g_h
+.get_ch(pars)
 
 eq27 <- function(pars) {
 
