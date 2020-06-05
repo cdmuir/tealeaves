@@ -148,7 +148,7 @@ so17_eqn27 <- function(leaf_par, enviro_par, constants, progress = TRUE,
   # Assumes T_air in K
   D_h <- 1.32e-7 * pars$T_air - 1.73e-5
   
-  # D_hw = D_va: Binary diffusion coefficient of water vapor in air (m^2/s). Eqn B16
+  # D_w = D_va: Binary diffusion coefficient of water vapor in air (m^2/s). Eqn B16
   # basically equivalent to .get_Dx, but not adjusted for P and linear rather than exponential
   # tealeaves:::.get_Dx(pars$D_w0, pars$T_air, pars$eT, pars$P, TRUE)
   # Assumes T_air in K
