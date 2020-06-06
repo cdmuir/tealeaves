@@ -1,6 +1,6 @@
 #' Get vector of parameter names
 #' 
-#' @param which A character string indicating which parameter names to retreive, "constants", "enviro", or "leaf". Partial matching allowed.
+#' @param which A character string indicating which parameter names to retrieve, "constants", "enviro", or "leaf". Partial matching allowed.
 #' 
 #' @examples 
 #' parameter_names("leaf")

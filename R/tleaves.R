@@ -296,7 +296,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' \deqn{R_\mathrm{abs} = \alpha_\mathrm{s} (1 + r) S_\mathrm{sw} + \alpha_\mathrm{l} \sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)}{R_abs = \alpha_s (1 + r) S_sw + \alpha_l \sigma (T_sky ^ 4 + T_air ^ 4)}
 #' 
-#' The incidient longwave (aka thermal infrared) radiation is modeled from sky and air temperature \eqn{\sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)}{\sigma (T_sky ^ 4 + T_air ^ 4)} where \eqn{T_\mathrm{sky}}{T_sky} is function of the air temperature and incoming solar shortwave radiation:
+#' The incident longwave (aka thermal infrared) radiation is modeled from sky and air temperature \eqn{\sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)}{\sigma (T_sky ^ 4 + T_air ^ 4)} where \eqn{T_\mathrm{sky}}{T_sky} is function of the air temperature and incoming solar shortwave radiation:
 #' 
 #' \deqn{T_\mathrm{sky} = T_\mathrm{air} - 20 S_\mathrm{sw} / 1000}{T_sky = T_air - 20 S_sw / 1000}
 #' 
@@ -541,7 +541,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' \deqn{D = D_\mathrm{0} (T / 273.15) ^ {eT} (101.3246 / P)}{D = D_0 [(T / 273.15) ^ eT] (101.3246 / P)}
 #' \cr
-#' According to Montieth & Unger (2013), eT is generally between 1.5 and 2. Their data in Appendix 3 indicate \eqn{eT = 1.75} is reasonble for environmental physics.
+#' According to Montieth & Unger (2013), eT is generally between 1.5 and 2. Their data in Appendix 3 indicate \eqn{eT = 1.75} is reasonable for environmental physics.
 #' 
 #' @references 
 #' 
@@ -968,7 +968,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \deqn{g_\mathrm{sw,upper} = g_\mathrm{sw} sr R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{gsw_upper = g_sw sr R (T_leaf + T_air) / 2}
 #' \deqn{g_\mathrm{uw,upper} = g_\mathrm{uw} / 2 R (T_\mathrm{leaf} + T_\mathrm{air}) / 2}{guw_upper = g_uw / 2 R (T_leaf + T_air) / 2}
 #' \cr
-#' Note that the stomatal and cuticular conductances are given in units of (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomtal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
+#' Note that the stomatal and cuticular conductances are given in units of (\eqn{\mu}mol H2O) / (m\eqn{^2} s Pa) (see \code{\link{make_leafpar}}) and converted to m/s using the ideal gas law. The total leaf stomatal (\eqn{g_\mathrm{sw}}{g_sw}) and cuticular (\eqn{g_\mathrm{uw}}{g_uw}) conductances are partitioned across lower and upper surfaces. The stomatal conductance on each surface depends on stomatal ratio (sr); the cuticular conductance is assumed identical on both surfaces. 
 #'
 #' \tabular{lllll}{
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr

@@ -7,7 +7,7 @@
 parameter_names(which)
 }
 \arguments{
-\item{which}{A character string indicating which parameter names to retreive, "constants", "enviro", or "leaf". Partial matching allowed.}
+\item{which}{A character string indicating which parameter names to retrieve, "constants", "enviro", or "leaf". Partial matching allowed.}
 }
 \description{
 Get vector of parameter names
