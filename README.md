@@ -68,6 +68,11 @@ In this vignette, I’ll show you how to:
   - replace default parameters
   - solve for leaf temperature along an environmental gradient
 
+Note that my examples use a lot tidyverse syntax, especially the pipe
+operator `%>%`. These are not required to use {tealeaves}, but you can
+learn more about the the tidyverse [here](https://www.tidyverse.org) and
+the `%>%` more specifically [here](https://magrittr.tidyverse.org/).
+
 ## Minimum worked example
 
 You can use the default parameter settings and solve for leaf
@@ -179,8 +184,12 @@ T_leaves %>%
 |       T\_air |               g\_sw |        T\_leaf |
 | -----------: | ------------------: | -------------: |
 | 293.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 300.2217 \[K\] |
+| 293.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 300.2217 \[K\] |
+| 298.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 304.2065 \[K\] |
 | 298.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 304.2065 \[K\] |
 | 293.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 298.3474 \[K\] |
+| 293.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 298.3474 \[K\] |
+| 298.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 302.1106 \[K\] |
 | 298.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 302.1106 \[K\] |
 
 ## Parallel processing
@@ -245,7 +254,8 @@ new features. You can submit issues here:
   - Please [report any issues or
     bugs](https://github.com/cdmuir/tealeaves/issues).
   - License: MIT
-    <!--- * Get citation information for `tealeaves` in R doing `citation(package = 'tealeaves')` -->
+  - Get citation information for `tealeaves` in R doing
+    `citation(package = 'tealeaves')`
   - Please note that this project is released with a [Contributor Code
     of Conduct](CONDUCT.md). By participating in this project you agree
     to abide by its terms.

@@ -14,7 +14,7 @@
 
 * Release to be archived with revision of "Is amphistomy an adaptation to high light? Optimality models of stomatal traits along light gradients."
 
-* [Blog post.](http://cdmuir.netlify.com/post/2019-11-21-phyteclub/)
+* [Blog post.](https://cdmuir.netlify.app/post/2019-05-21-phyteclub/)
 
 # tealeaves 1.0.0
 

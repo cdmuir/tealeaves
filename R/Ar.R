@@ -22,8 +22,8 @@
 #' 
 #' @examples 
 #' cs <- make_constants()
-#' lp <- make_enviropar()
-#' ep <- make_leafpar()
+#' ep <- make_enviropar()
+#' lp <- make_leafpar()
 #' pars <- c(cs, lp, ep)
 #' T_leaf <- set_units(298.15, "K")
 #' 

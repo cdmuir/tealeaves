@@ -45,7 +45,7 @@ enviro_par <- function(.x) {
 
   # T_sky can be set or provided as a function ----
   if (is.null(.x$T_sky)) {
-    warning(
+    message(
       '\ntealeaves (>= 1.0.2) will require users provide a T_sky value or function\nto calculate T_sky from other parameters.\n\nFor back-compatibility, if T_sky is not provided, this warning will appear\nand the default function used in tealeaves (< 1.0.2) will be applied.\n\nSee more details in vignette("parameter-functions")'
     )
     

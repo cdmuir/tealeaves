@@ -1,19 +1,19 @@
 ## Resubmission
 This is a resubmission. In this version I have:
+* Added citation to published paper. See `citation(package = "tealeaves")`.
+* In `enviro_par()`, "sky" temperature (`T_sky`) can now be provided directly as a values (in K) or as a function (the default).
+* If `parallel = TRUE` in `tleaves()`, **future** uses `plan("multisession")` rather than `plan("multiprocess")`.
+* New vignette on making parameters functions of other parameters.
 
-* Omitted extra commas in the Description field of the DESCRIPTION file.
-
-* Added references to the Description field of the DESCRIPTION file in the form authors (year) <doi:...>, authors (year) <arXiv:...>, or authors (year, ISBN:...) with no space after 'doi:', 'arXiv:' and angle brackets for auto-linking.
-
-* Provided small executable examples in all of my Rd-files.
-  
 ## Test environments
-* local OS X install, R 3.6.0
-* ubuntu 14.04 (on travis-ci), R 3.6.0
-* win-builder (devel and release)
+* local R installation, R 4.0.0
+* ubuntu 16.04 (on travis-ci), R 4.0.0
+* win-builder (devel)
 
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note
 
-* This is a new release.
+* checking top-level files ... NOTE
+  Non-standard file/directory found at top level:
+    ‘news.md’
