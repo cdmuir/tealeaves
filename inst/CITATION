@@ -11,7 +11,7 @@ citEntry(
   month = "12",
   issn = "2041-2851",
   doi = "10.1093/aobpla/plz054",
-  url = "https://doi.org/10.1093/aobpla/plz054",
+  url = "https://academic.oup.com/aobpla/article/11/6/plz054/5666155",
   note = "plz054",
   textVersion = paste(
     "Muir CD. (2019).",
