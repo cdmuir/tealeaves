@@ -171,6 +171,24 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
   }
   soln$T_leaf %<>% set_units(K)
   
+  # Adding g_bw to output 
+  if (is.na(soln$T_leaf)) {
+    soln$g_bw <- NA
+  } else {
+    soln$g_bw <- .get_gbw(
+      T_leaf = drop_units(soln$T_leaf), 
+      surface = "lower", 
+      pars = c(ulp, uep, ucs), 
+      unitless = TRUE
+    ) + 
+      .get_gbw(
+        T_leaf = drop_units(soln$T_leaf), 
+        surface = "upper", 
+        pars = c(ulp, uep, ucs), 
+        unitless = TRUE
+      )
+  }
+  
   # Return -----
   soln
   
