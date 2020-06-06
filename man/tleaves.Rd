@@ -5,8 +5,15 @@
 \alias{tleaf}
 \title{\code{tleaves}: find leaf temperatures for multiple parameter sets}
 \usage{
-tleaves(leaf_par, enviro_par, constants, progress = TRUE,
-  quiet = FALSE, set_units = TRUE, parallel = FALSE)
+tleaves(
+  leaf_par,
+  enviro_par,
+  constants,
+  progress = TRUE,
+  quiet = FALSE,
+  set_units = TRUE,
+  parallel = FALSE
+)
 
 tleaf(leaf_par, enviro_par, constants, quiet = FALSE, set_units = TRUE)
 }
@@ -49,7 +56,7 @@ A tibble with the following \code{units} columns \cr
 \code{value} \tab Leaf energy balance (W / m^2) at \code{tleaf} \cr
 \code{convergence} \tab Convergence code (0 = converged) \cr
 \code{R_abs} \tab Total absorbed radiation (W / m^2; see \code{\link{.get_Rabs}}) \cr
-\code{S_r} \tab Longwave re-radiation (W / m^2; see \code{\link{.get_Sr}}) \cr
+\code{S_r} \tab Thermal infrared radiation loss (W / m^2; see \code{\link{.get_Sr}}) \cr
 \code{H} \tab Sensible heat flux density (W / m^2; see \code{\link{.get_H}}) \cr
 \code{L} \tab Latent heat flux density (W / m^2; see \code{\link{.get_L}}) \cr
 \code{E} \tab Evapotranspiration (mol H2O/ (m^2 s))
@@ -60,7 +67,7 @@ A tibble with the following \code{units} columns \cr
 A data.frame with the following numeric columns: \cr
 
 \tabular{ll}{
-\code{T_leaf} \tab Equilibrium leaf tempearture (K) \cr
+\code{T_leaf} \tab Equilibrium leaf temperature (K) \cr
 \code{value} \tab Leaf energy balance (W / m^2) at \code{tleaf} \cr
 \code{convergence} \tab Convergence code (0 = converged) \cr
 \code{R_abs} \tab Total absorbed radiation (W / m^2; see \code{\link{.get_Rabs}}) \cr

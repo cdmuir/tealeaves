@@ -1,10 +1,10 @@
 ---
-title: "Introduction to the {tealeaves} package"
+title: "Introduction to the tealeaves package"
 author: "Chris Muir"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{tealeaves: Introduction}
+  %\VignetteIndexEntry{Introduction to the tealeaves package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -29,6 +29,8 @@ In this vignette, I'll show you how to:
 - run a minimum worked example using default parameters
 - replace default parameters
 - solve for leaf temperature along an environmental gradient
+
+Note that my examples use a lot tidyverse syntax, especially the pipe operator `%>%`. These are not required to use {tealeaves}, but you can learn more about the the tidyverse [here](https://www.tidyverse.org) and the `%>%` more specifically [here](https://magrittr.tidyverse.org/).
 
 ## Minimum worked example
 

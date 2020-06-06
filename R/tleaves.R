@@ -39,7 +39,7 @@
 #' \code{value} \tab Leaf energy balance (W / m^2) at \code{tleaf} \cr
 #' \code{convergence} \tab Convergence code (0 = converged) \cr
 #' \code{R_abs} \tab Total absorbed radiation (W / m^2; see \code{\link{.get_Rabs}}) \cr
-#' \code{S_r} \tab Longwave re-radiation (W / m^2; see \code{\link{.get_Sr}}) \cr
+#' \code{S_r} \tab Thermal infrared radiation loss (W / m^2; see \code{\link{.get_Sr}}) \cr
 #' \code{H} \tab Sensible heat flux density (W / m^2; see \code{\link{.get_H}}) \cr
 #' \code{L} \tab Latent heat flux density (W / m^2; see \code{\link{.get_L}}) \cr
 #' \code{E} \tab Evapotranspiration (mol H2O/ (m^2 s))
@@ -50,7 +50,7 @@
 #' A data.frame with the following numeric columns: \cr
 #' 
 #' \tabular{ll}{
-#' \code{T_leaf} \tab Equilibrium leaf tempearture (K) \cr
+#' \code{T_leaf} \tab Equilibrium leaf temperature (K) \cr
 #' \code{value} \tab Leaf energy balance (W / m^2) at \code{tleaf} \cr
 #' \code{convergence} \tab Convergence code (0 = converged) \cr
 #' \code{R_abs} \tab Total absorbed radiation (W / m^2; see \code{\link{.get_Rabs}}) \cr
@@ -92,6 +92,9 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
   }
   
   pars <- c(leaf_par, enviro_par)
+  if (is.function(pars$T_sky)) {
+    pars$T_sky <- pars$T_sky(pars)
+  }
   par_units <- purrr::map(pars, units) %>%
     magrittr::set_names(names(pars))
   
@@ -284,7 +287,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \eqn{\alpha_\mathrm{s}}{\alpha_s} \tab \code{abs_s} \tab absorbtivity of shortwave radiation (0.3 - 4 \eqn{\mu}m) \tab none \tab 0.80\cr
 #' \eqn{\alpha_\mathrm{l}}{\alpha_l} \tab \code{abs_l} \tab absorbtivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
 #' \eqn{r} \tab \code{r} \tab reflectance for shortwave irradiance (albedo) \tab none \tab 0.2 \cr
-#' \eqn{\sigma} \tab \code{s} \tab Stephan-Boltzmann constant \tab W / (m\eqn{^2} K\eqn{^4}) \tab 5.67e-08 \cr
+#' \eqn{\sigma} \tab \code{s} \tab Stefan-Boltzmann constant \tab W / (m\eqn{^2} K\eqn{^4}) \tab 5.67e-08 \cr
 #' \eqn{S_\mathrm{sw}}{S_sw} \tab \code{S_sw} \tab incident short-wave (solar) radiation flux density \tab W / m\eqn{^2} \tab 1000 \cr
 #' \eqn{S_\mathrm{lw}}{S_lw} \tab \code{S_lw} \tab incident long-wave radiation flux density \tab W / m\eqn{^2} \tab calculated \cr
 #' \eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15 \cr
@@ -340,7 +343,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' \emph{Symbol} \tab \emph{R} \tab \emph{Description} \tab \emph{Units} \tab \emph{Default}\cr
 #' \eqn{\alpha_\mathrm{l}}{\alpha_l} \tab \code{abs_l} \tab absorbtivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
 #' \eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15\cr
-#' \eqn{\sigma} \tab \code{s} \tab Stephan-Boltzmann constant \tab W / (m\eqn{^2} K\eqn{^4}) \tab 5.67e-08
+#' \eqn{\sigma} \tab \code{s} \tab Stefan-Boltzmann constant \tab W / (m\eqn{^2} K\eqn{^4}) \tab 5.67e-08
 #' }
 #' 
 #' Note that leaf absorbtivity is the same value as leaf emissivity
@@ -1248,7 +1251,7 @@ find_tleaves <- function(par_sets, constants, progress, quiet, parallel) {
       message(appendLF = FALSE)
   }
   
-  if (parallel) future::plan("multiprocess")
+  if (parallel) future::plan("multisession")
 
   if (progress & !parallel) pb <- dplyr::progress_estimated(length(par_sets))
   

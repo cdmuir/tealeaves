@@ -3,7 +3,6 @@
 \docType{package}
 \name{tealeaves}
 \alias{tealeaves}
-\alias{tealeaves-package}
 \title{\code{tealeaves} package}
 \description{
 Solve for Leaf Temperature Using Energy Balance

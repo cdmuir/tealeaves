@@ -1,5 +1,5 @@
 ---
-title: "{tealeaves} for Intermediate Users"
+title: "tealeaves: Intermediate Users"
 author: "Chris Mur"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
