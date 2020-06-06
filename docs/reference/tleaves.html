@@ -8,22 +8,36 @@
 
 <title><code>tleaves</code>: find leaf temperatures for multiple parameter sets — tleaves • tealeaves</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -31,13 +45,12 @@
 
 
 
-<meta property="og:title" content="<code>tleaves</code>: find leaf temperatures for multiple parameter sets — tleaves" />
 
+<meta property="og:title" content="<code>tleaves</code>: find leaf temperatures for multiple parameter sets — tleaves" />
 <meta property="og:description" content="tleaves: find leaf temperatures for multiple parameter sets
 tleaf: find leaf temperatures for a single parameter set" />
-
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -51,9 +64,10 @@ tleaf: find leaf temperatures for a single parameter set" />
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -67,7 +81,7 @@ tleaf: find leaf temperatures for a single parameter set" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tealeaves</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9002</span>
       </span>
     </div>
 
@@ -90,10 +104,13 @@ tleaf: find leaf temperatures for a single parameter set" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/tealeaves-intermediate.html">{tealeaves} for Intermediate Users</a>
+      <a href="../articles/parameter-functions.html">Defining parameters as functions of other parameters</a>
     </li>
     <li>
-      <a href="../articles/tealeaves-introduction.html">Introduction to the {tealeaves} package</a>
+      <a href="../articles/tealeaves-intermediate.html">tealeaves: Intermediate Users</a>
+    </li>
+    <li>
+      <a href="../articles/tealeaves-introduction.html">Introduction to the tealeaves package</a>
     </li>
   </ul>
 </li>
@@ -101,7 +118,6 @@ tleaf: find leaf temperatures for a single parameter set" />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -111,6 +127,7 @@ tleaf: find leaf temperatures for a single parameter set" />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -122,17 +139,22 @@ tleaf: find leaf temperatures for a single parameter set" />
     </div>
 
     <div class="ref-description">
-    
     <p><code>tleaves</code>: find leaf temperatures for multiple parameter sets</p>
 <p><code>tleaf</code>: find leaf temperatures for a single parameter set</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>tleaves</span>(<span class='no'>leaf_par</span>, <span class='no'>enviro_par</span>, <span class='no'>constants</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>set_units</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>tleaves</span>(
+  <span class='no'>leaf_par</span>,
+  <span class='no'>enviro_par</span>,
+  <span class='no'>constants</span>,
+  <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>set_units</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
 <span class='fu'>tleaf</span>(<span class='no'>leaf_par</span>, <span class='no'>enviro_par</span>, <span class='no'>constants</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>set_units</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -165,7 +187,7 @@ tleaf: find leaf temperatures for a single parameter set" />
       <td><p>Logical. Should parallel processing be used via <code><a href='https://rdrr.io/pkg/furrr/man/future_map.html'>future_map</a></code>?</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>tleaves</code>: <br />
@@ -190,7 +212,7 @@ A tibble with the following <code>units</code> columns <br /></p>
 <tr><td><code>value</code></td><td>Leaf energy balance (W / m^2) at <code>tleaf</code></td></tr>
 <tr><td><code>convergence</code></td><td>Convergence code (0 = converged)</td></tr>
 <tr><td><code>R_abs</code></td><td>Total absorbed radiation (W / m^2; see <code><a href='dot-get_Rabs.html'>.get_Rabs</a></code>)</td></tr>
-<tr><td><code>S_r</code></td><td>Longwave re-radiation (W / m^2; see <code><a href='dot-get_Sr.html'>.get_Sr</a></code>)</td></tr>
+<tr><td><code>S_r</code></td><td>Thermal infrared radiation loss (W / m^2; see <code><a href='dot-get_Sr.html'>.get_Sr</a></code>)</td></tr>
 <tr><td><code>H</code></td><td>Sensible heat flux density (W / m^2; see <code><a href='dot-get_H.html'>.get_H</a></code>)</td></tr>
 <tr><td><code>L</code></td><td>Latent heat flux density (W / m^2; see <code><a href='dot-get_L.html'>.get_L</a></code>)</td></tr>
 <tr><td><code>E</code></td><td>Evapotranspiration (mol H2O/ (m^2 s))</td></tr>
@@ -201,7 +223,7 @@ A tibble with the following <code>units</code> columns <br /></p>
 <br />
 A data.frame with the following numeric columns: <br /></p>
 <table class='table'>
-<tr><td><code>T_leaf</code></td><td>Equilibrium leaf tempearture (K)</td></tr>
+<tr><td><code>T_leaf</code></td><td>Equilibrium leaf temperature (K)</td></tr>
 <tr><td><code>value</code></td><td>Leaf energy balance (W / m^2) at <code>tleaf</code></td></tr>
 <tr><td><code>convergence</code></td><td>Convergence code (0 = converged)</td></tr>
 <tr><td><code>R_abs</code></td><td>Total absorbed radiation (W / m^2; see <code><a href='dot-get_Rabs.html'>.get_Rabs</a></code>)</td></tr>
@@ -212,7 +234,6 @@ A data.frame with the following numeric columns: <br /></p>
 </table>
 
 
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># tleaf for single parameter set:</span>
@@ -234,31 +255,26 @@ A data.frame with the following numeric columns: <br /></p>
     <span class='kw'>T_air</span> <span class='kw'>=</span> <span class='fu'>set_units</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>293.15</span>, <span class='fl'>298.15</span>), <span class='no'>K</span>)
   )
 )
-<span class='fu'>tleaves</span>(<span class='no'>leaf_par</span>, <span class='no'>enviro_par</span>, <span class='no'>constants</span>)</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>Solving for T_leaf from 2 parameter sets...</span><span></span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘purrr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    is_null</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 2 x 23</span><span>
+<span class='fu'>tleaves</span>(<span class='no'>leaf_par</span>, <span class='no'>enviro_par</span>, <span class='no'>constants</span>)</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>Solving for T_leaf from 4 parameter sets...</span><span></span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 24</span><span>
 #&gt;      abs_l    abs_s     g_sw     g_uw leafsize logit_sr        P        r
 #&gt;        </span><span style='color: #555555;'>[1]</span><span>      </span><span style='color: #555555;'>[1]</span><span> </span><span style='color: #555555;'>[umol/m^</span><span> </span><span style='color: #555555;'>[umol/m^</span><span>      </span><span style='color: #555555;'>[m]</span><span>      </span><span style='color: #555555;'>[1]</span><span>    </span><span style='color: #555555;'>[kPa]</span><span>      </span><span style='color: #555555;'>[1]</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span>     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
 #&gt; </span><span style='color: #555555;'>2</span><span>     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
-#&gt; </span><span style='color: #555555;'># … with 15 more variables: RH [1], S_sw [W/m^2], T_air [K], wind [m/s],
-#&gt; #   T_leaf [K], value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, convergence </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, R_abs [W/m^2], S_r [W/m^2],
-#&gt; #   H [W/m^2], L [W/m^2], E [mol/m^2/s], Ar </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, Gr </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, Re </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'>3</span><span>     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
+#&gt; </span><span style='color: #555555;'>4</span><span>     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
+#&gt; </span><span style='color: #555555;'># … with 16 more variables: RH [1], S_sw [W/m^2], T_air [K], T_sky [K],</span><span>
+#&gt; </span><span style='color: #555555;'>#   wind [m/s], T_leaf [K], value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, convergence </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, R_abs [W/m^2],</span><span>
+#&gt; </span><span style='color: #555555;'>#   S_r [W/m^2], H [W/m^2], L [W/m^2], E [mol/m^2/s], Ar </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, Gr </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   Re </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 </div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -266,13 +282,16 @@ A data.frame with the following numeric columns: <br /></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

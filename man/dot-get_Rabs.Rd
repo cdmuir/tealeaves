@@ -31,7 +31,7 @@ The incidient longwave (aka thermal infrared) radiation is modeled from sky and 
 \eqn{\alpha_\mathrm{s}}{\alpha_s} \tab \code{abs_s} \tab absorbtivity of shortwave radiation (0.3 - 4 \eqn{\mu}m) \tab none \tab 0.80\cr
 \eqn{\alpha_\mathrm{l}}{\alpha_l} \tab \code{abs_l} \tab absorbtivity of longwave radiation (4 - 80 \eqn{\mu}m) \tab none \tab 0.97\cr
 \eqn{r} \tab \code{r} \tab reflectance for shortwave irradiance (albedo) \tab none \tab 0.2 \cr
-\eqn{\sigma} \tab \code{s} \tab Stephan-Boltzmann constant \tab W / (m\eqn{^2} K\eqn{^4}) \tab 5.67e-08 \cr
+\eqn{\sigma} \tab \code{s} \tab Stefan-Boltzmann constant \tab W / (m\eqn{^2} K\eqn{^4}) \tab 5.67e-08 \cr
 \eqn{S_\mathrm{sw}}{S_sw} \tab \code{S_sw} \tab incident short-wave (solar) radiation flux density \tab W / m\eqn{^2} \tab 1000 \cr
 \eqn{S_\mathrm{lw}}{S_lw} \tab \code{S_lw} \tab incident long-wave radiation flux density \tab W / m\eqn{^2} \tab calculated \cr
 \eqn{T_\mathrm{air}}{T_air} \tab \code{T_air} \tab air temperature \tab K \tab 298.15 \cr

@@ -73,5 +73,5 @@ https://github.com/cdmuir/tealeaves/issues
 
 * Please [report any issues or bugs](https://github.com/cdmuir/tealeaves/issues).
 * License: MIT
-<!--- * Get citation information for `tealeaves` in R doing `citation(package = 'tealeaves')` -->
+* Get citation information for `tealeaves` in R doing `citation(package = 'tealeaves')`
 * Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.

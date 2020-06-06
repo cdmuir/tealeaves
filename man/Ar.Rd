@@ -34,8 +34,8 @@ The Archimedes number is a dimensionless number that describes when free or forc
 }
 \examples{
 cs <- make_constants()
-lp <- make_enviropar()
-ep <- make_leafpar()
+ep <- make_enviropar()
+lp <- make_leafpar()
 pars <- c(cs, lp, ep)
 T_leaf <- set_units(298.15, "K")
 

@@ -1,0 +1,53 @@
+---
+title: "Defining parameters as functions of other parameters"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Defining parameters as functions of other parameters}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In some cases, users may not wish to provide a parameter value, but rather have a value calculated based on other parameters. Currently, the only parameters that can be provided as functions are:
+
+- `nu_constant` in `constants()`
+- `sh_constant` in `constants()`
+- `T_sky` in `enviro_par()`
+
+I plan to make more of these in the future, but I'll briefly demonstrate how one would change the `T_sky` function. The default function from [Okajima *et al.* (2012)](https://doi.org/10.1007/s11284-011-0905-5), which was hard-coded in versions 1.0.0 and 1.0.1, is:
+
+```{r}
+
+library(tealeaves)
+
+leaf_par   <- make_leafpar()   # leaf parameters
+enviro_par <- make_enviropar() # environmental parameters
+constants  <- make_constants() # physical constants
+
+enviro_par$T_sky
+
+```
+
+Let's change it simply be the air temperature (`T_air`). The current requirements for this function as of version 1.0.2 are:
+
+- It must take `pars` as the only argument, where `pars` is the concatenated set of leaf (`leaf_par()`) and environmental parameters (`enviro_par()`)
+- It must return `T_sky` in units K. You can ensure this by using `units::set_units(., K)`
+
+```{r}
+
+enviro_par <- make_enviropar(
+  replace = list(T_sky = function(pars) {pars$T_air})
+)
+enviro_par$T_sky
+
+T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
+
+knitr::kable(T_leaf)
+
+```

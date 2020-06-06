@@ -4,8 +4,15 @@
 \alias{energy_balance}
 \title{Calculate leaf energy balance}
 \usage{
-energy_balance(tleaf, leaf_par, enviro_par, constants, quiet = FALSE,
-  components = FALSE, set_units = FALSE)
+energy_balance(
+  tleaf,
+  leaf_par,
+  enviro_par,
+  constants,
+  quiet = FALSE,
+  components = FALSE,
+  set_units = FALSE
+)
 }
 \arguments{
 \item{tleaf}{Leaf temperature in Kelvin. If input is numeric, it will be automatically converted to \code{units}.}

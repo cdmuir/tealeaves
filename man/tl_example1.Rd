@@ -4,7 +4,9 @@
 \name{tl_example1}
 \alias{tl_example1}
 \title{{tealeaves} example output 1}
-\format{A data frame with 150 rows and 20 variables:}
+\format{
+A data frame with 150 rows and 20 variables:
+}
 \usage{
 tl_example1
 }

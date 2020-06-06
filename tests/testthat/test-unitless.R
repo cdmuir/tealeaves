@@ -18,6 +18,9 @@ test_that("unitless values match unit-ed values", {
     r = set_units(0.2),
     S_sw = set_units(runif(1, 0, 2000), "W/m^2"),
     T_air = set_units(runif(1, 273.15, 313.15), "K"),
+    T_sky = function(pars) {
+      pars$T_air - set_units(20, K) * pars$S_sw / set_units(1000, W / m ^ 2)
+    },
     wind = set_units(runif(1, 0, 20), "m/s")
   ))
   T_leaf <- set_units(runif(1, 273.15, 313.15), "K")
