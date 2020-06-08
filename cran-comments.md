@@ -4,6 +4,7 @@ This is a resubmission. In this version I have:
 * In `enviro_par()`, "sky" temperature (`T_sky`) can now be provided directly as a values (in K) or as a function (the default).
 * If `parallel = TRUE` in `tleaves()`, **future** uses `plan("multisession")` rather than `plan("multiprocess")`.
 * New vignette on making parameters functions of other parameters.
+* Added full URL for `CONDUCT.md` in README
 
 ## Test environments
 * local R installation, R 4.0.0
@@ -12,8 +13,4 @@ This is a resubmission. In this version I have:
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* checking top-level files ... NOTE
-  Non-standard file/directory found at top level:
-    ‘news.md’
+0 errors | 0 warnings | 0 notes

@@ -7,6 +7,7 @@
 * In `enviro_par()`, "sky" temperature (`T_sky`) can now be provided directly as a values (in K) or as a function (the default).
 * If `parallel = TRUE` in `tleaves()`, **future** uses `plan("multisession")` rather than `plan("multiprocess")`.
 * New vignette on making parameters functions of other parameters.
+* Added full URL for `CONDUCT.md` in README
 
 # tealeaves 1.0.1
 
