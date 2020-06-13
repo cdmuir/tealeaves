@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tealeaves</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -139,10 +139,13 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#tealeaves-development-version" class="anchor"></a>tealeaves (development version)<small> Unreleased </small>
 </h1>
+<ul>
+<li>Fixed bug in <code><a href="../reference/dot-get_Rabs.html">.get_Rabs()</a></code> that would have over-written custom <code>T_sky</code> function.</li>
+</ul>
 </div>
     <div id="tealeaves-102" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.2">
-<a href="#tealeaves-102" class="anchor"></a>tealeaves 1.0.2<small> Unreleased </small>
+<a href="#tealeaves-102" class="anchor"></a>tealeaves 1.0.2<small> 2020-06-07 </small>
 </h1>
 <ul>
 <li>Added citation to published paper. See <code><a href="https://rdrr.io/r/utils/citation.html">citation(package = "tealeaves")</a></code>.</li>
@@ -151,6 +154,7 @@
 <li>In <code><a href="../reference/enviro_par.html">enviro_par()</a></code>, “sky” temperature (<code>T_sky</code>) can now be provided directly as a values (in K) or as a function (the default).</li>
 <li>If <code>parallel = TRUE</code> in <code><a href="../reference/tleaves.html">tleaves()</a></code>, <strong>future</strong> uses <code>plan("multisession")</code> rather than <code>plan("multiprocess")</code>.</li>
 <li>New vignette on making parameters functions of other parameters.</li>
+<li>Added full URL for <code>CONDUCT.md</code> in README</li>
 </ul>
 </div>
     <div id="tealeaves-101" class="section level1">

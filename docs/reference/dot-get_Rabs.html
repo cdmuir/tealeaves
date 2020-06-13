@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tealeaves</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -163,7 +163,7 @@
 
     <p>The following treatment follows Okajima et al. (2012):</p>
 <p>$$R_\mathrm{abs} = \alpha_\mathrm{s} (1 + r) S_\mathrm{sw} + \alpha_\mathrm{l} \sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)$$</p>
-<p>The incidient longwave (aka thermal infrared) radiation is modeled from sky and air temperature \(\sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)\) where \(T_\mathrm{sky}\) is function of the air temperature and incoming solar shortwave radiation:</p>
+<p>The incident longwave (aka thermal infrared) radiation is modeled from sky and air temperature \(\sigma (T_\mathrm{sky} ^ 4 + T_\mathrm{air} ^ 4)\) where \(T_\mathrm{sky}\) is function of the air temperature and incoming solar shortwave radiation:</p>
 <p>$$T_\mathrm{sky} = T_\mathrm{air} - 20 S_\mathrm{sw} / 1000$$</p>
 <table class='table'>
 <tr><td><em>Symbol</em></td><td><em>R</em></td><td><em>Description</em></td><td><em>Units</em></td><td><em>Default</em></td></tr>
@@ -189,6 +189,7 @@
 <span class='no'>cs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_constants</a></span>()
 <span class='no'>ep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_enviropar</a></span>()
 <span class='no'>lp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_leafpar</a></span>()
+<span class='no'>ep</span>$<span class='no'>T_sky</span> <span class='kw'>&lt;-</span> <span class='no'>ep</span>$<span class='fu'>T_sky</span>(<span class='no'>ep</span>)
 
 <span class='kw pkg'>tealeaves</span><span class='kw ns'>:::</span><span class='fu'>.get_Rabs</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>cs</span>, <span class='no'>ep</span>, <span class='no'>lp</span>), <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; 1363.813 [W/m^2]</div><div class='input'>
 </div></pre>

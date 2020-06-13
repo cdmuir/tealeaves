@@ -81,7 +81,7 @@ tleaf: find leaf temperatures for a single parameter set" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tealeaves</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -241,13 +241,13 @@ A data.frame with the following numeric columns: <br /></p>
 <span class='no'>leaf_par</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_leafpar</a></span>()
 <span class='no'>enviro_par</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_enviropar</a></span>()
 <span class='no'>constants</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_constants</a></span>()
-<span class='fu'>tleaf</span>(<span class='no'>leaf_par</span>, <span class='no'>enviro_par</span>, <span class='no'>constants</span>)</div><div class='output co'>#&gt; <span class='message'><span style='color: #00BB00;'></span>
-#&gt; <span class='message'>Solving for T_leaf ...</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'> done</span><span></span></div><div class='output co'>#&gt;         T_leaf         value convergence            R_abs              S_r
+<span class='fu'>tleaf</span>(<span class='no'>leaf_par</span>, <span class='no'>enviro_par</span>, <span class='no'>constants</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Solving for T_leaf ...</span></div><div class='output co'>#&gt; <span class='message'> done</span></div><div class='output co'>#&gt;         T_leaf         value convergence            R_abs              S_r
 #&gt; 1 301.4181 [K] -2.122124e-08           0 1363.813 [W/m^2] 907.9499 [W/m^2]
 #&gt;                  H                L                      E          Ar       Gr
 #&gt; 1 107.3552 [W/m^2] 348.5078 [W/m^2] 0.00794791 [mol/m^2/s] 0.004827203 788182.4
-#&gt;         Re
-#&gt; 1 12778.08</div><div class='input'>
+#&gt;         Re       g_bw
+#&gt; 1 12778.08 0.02972824</div><div class='input'>
 <span class='co'># tleaves for multiple parameter set:</span>
 
 <span class='no'>enviro_par</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_parameters.html'>make_enviropar</a></span>(
@@ -255,18 +255,18 @@ A data.frame with the following numeric columns: <br /></p>
     <span class='kw'>T_air</span> <span class='kw'>=</span> <span class='fu'>set_units</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>293.15</span>, <span class='fl'>298.15</span>), <span class='no'>K</span>)
   )
 )
-<span class='fu'>tleaves</span>(<span class='no'>leaf_par</span>, <span class='no'>enviro_par</span>, <span class='no'>constants</span>)</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>Solving for T_leaf from 4 parameter sets...</span><span></span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 24</span><span>
+<span class='fu'>tleaves</span>(<span class='no'>leaf_par</span>, <span class='no'>enviro_par</span>, <span class='no'>constants</span>)</div><div class='output co'>#&gt; <span class='message'>Solving for T_leaf from 4 parameter sets...</span></div><div class='output co'>#&gt; # A tibble: 4 x 25
 #&gt;      abs_l    abs_s     g_sw     g_uw leafsize logit_sr        P        r
-#&gt;        </span><span style='color: #555555;'>[1]</span><span>      </span><span style='color: #555555;'>[1]</span><span> </span><span style='color: #555555;'>[umol/m^</span><span> </span><span style='color: #555555;'>[umol/m^</span><span>      </span><span style='color: #555555;'>[m]</span><span>      </span><span style='color: #555555;'>[1]</span><span>    </span><span style='color: #555555;'>[kPa]</span><span>      </span><span style='color: #555555;'>[1]</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
-#&gt; </span><span style='color: #555555;'>2</span><span>     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
-#&gt; </span><span style='color: #555555;'>3</span><span>     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
-#&gt; </span><span style='color: #555555;'>4</span><span>     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
-#&gt; </span><span style='color: #555555;'># … with 16 more variables: RH [1], S_sw [W/m^2], T_air [K], T_sky [K],</span><span>
-#&gt; </span><span style='color: #555555;'>#   wind [m/s], T_leaf [K], value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, convergence </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, R_abs [W/m^2],</span><span>
-#&gt; </span><span style='color: #555555;'>#   S_r [W/m^2], H [W/m^2], L [W/m^2], E [mol/m^2/s], Ar </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, Gr </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   Re </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
-</div></span></pre>
+#&gt;        [1]      [1] [umol/m^ [umol/m^      [m]      [1]    [kPa]      [1]
+#&gt; 1     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
+#&gt; 2     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
+#&gt; 3     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
+#&gt; 4     0.97      0.5        5      0.1      0.1        0 101.3246      0.2
+#&gt; # … with 17 more variables: RH [1], S_sw [W/m^2], T_air [K], T_sky [K],
+#&gt; #   wind [m/s], T_leaf [K], value &lt;dbl&gt;, convergence &lt;dbl&gt;, R_abs [W/m^2],
+#&gt; #   S_r [W/m^2], H [W/m^2], L [W/m^2], E [mol/m^2/s], Ar &lt;dbl&gt;, Gr &lt;dbl&gt;,
+#&gt; #   Re &lt;dbl&gt;, g_bw &lt;dbl&gt;</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
