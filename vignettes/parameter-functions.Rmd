@@ -1,10 +1,12 @@
 ---
 title: "Defining parameters as functions of other parameters"
+author: "Chris Mur"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Defining parameters as functions of other parameters}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
 ---
 
 ```{r setup, include = FALSE}
