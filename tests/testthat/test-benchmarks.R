@@ -20,6 +20,8 @@ test_that("benchmarks haven't changed", {
     T_air = set_units(seq(273.15, 313.15, 10), K),
     wind = set_units(c(0.01, 0.1, 1, 10), m/s)
   )
+  p$T_sky <- p$T_air - set_units(20, K) * p$S_sw / set_units(1000, W / m ^ 2)
+  
   p$T_leaf <- numeric(nrow(p))
   
   # Create benchmarks (last updated: 2019-04-06)

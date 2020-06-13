@@ -45,6 +45,7 @@ library(tealeaves)
 cs <- make_constants()
 ep <- make_enviropar()
 lp <- make_leafpar()
+ep$T_sky <- ep$T_sky(ep)
 
 tealeaves:::.get_Rabs(c(cs, ep, lp), FALSE)
 

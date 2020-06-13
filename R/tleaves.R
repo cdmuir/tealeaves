@@ -138,6 +138,10 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
     if (!quiet) warning("tleaf: units have not been checked prior to solving")
   }
   
+  if (is.function(enviro_par$T_sky)) {
+    enviro_par$T_sky <- enviro_par$T_sky(enviro_par)
+  }
+  
   # Drop units for solving
   ulp <- purrr::map_if(leaf_par, ~ inherits(.x, "units"), drop_units)
   uep <- purrr::map_if(enviro_par, ~ inherits(.x, "units"), drop_units)
@@ -216,6 +220,7 @@ tleaf <- function(leaf_par, enviro_par, constants, quiet = FALSE,
 #' cs <- make_constants()
 #' ep <- make_enviropar()
 #' lp <- make_leafpar()
+#' ep$T_sky <- ep$T_sky(ep)
 #' 
 #' T_leaf <- set_units(298.15, K)
 #' 
@@ -323,6 +328,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' cs <- make_constants()
 #' ep <- make_enviropar()
 #' lp <- make_leafpar()
+#' ep$T_sky <- ep$T_sky(ep)
 #' 
 #' tealeaves:::.get_Rabs(c(cs, ep, lp), FALSE)
 #' 
@@ -330,13 +336,10 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 .get_Rabs <- function(pars, unitless) {
   
   if (unitless) {
-    T_sky <- pars$T_air - 20 * pars$S_sw / 1000
-    R_abs <- pars$abs_s * (1 + pars$r) * pars$S_sw + pars$abs_l * pars$s * (T_sky ^ 4 + pars$T_air ^ 4)
+    R_abs <- pars$abs_s * (1 + pars$r) * pars$S_sw + pars$abs_l * pars$s * (pars$T_sky ^ 4 + pars$T_air ^ 4)
     
   } else {
-    T_sky <- pars$T_air - set_units(20, K) * 
-      pars$S_sw / set_units(1000, W / m ^ 2)
-    R_abs <- pars$abs_s * (set_units(1) + pars$r) * pars$S_sw + pars$abs_l * pars$s * (T_sky ^ 4 + pars$T_air ^ 4)
+    R_abs <- pars$abs_s * (set_units(1) + pars$r) * pars$S_sw + pars$abs_l * pars$s * (pars$T_sky ^ 4 + pars$T_air ^ 4)
     R_abs %<>% set_units(W / m ^ 2)
   }
 

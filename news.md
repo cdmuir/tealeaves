@@ -1,5 +1,7 @@
 # tealeaves (development version)
 
+* Fixed bug in `.get_Rabs()` that would have over-written custom `T_sky` function.
+
 # tealeaves 1.0.2
 
 * Added citation to published paper. See `citation(package = "tealeaves")`.

@@ -42,6 +42,7 @@ library(tealeaves)
 cs <- make_constants()
 ep <- make_enviropar()
 lp <- make_leafpar()
+ep$T_sky <- ep$T_sky(ep)
 
 T_leaf <- set_units(298.15, K)
 

@@ -25,6 +25,7 @@ test_that("unitless values match unit-ed values", {
   ))
   T_leaf <- set_units(runif(1, 273.15, 313.15), "K")
   pars1 <- c(cs, lp, ep)
+  pars1$T_sky <- pars1$T_sky(pars1)
   pars2 <- purrr::map_if(pars1, function(x) is(x, "units"), drop_units)
 
   ar1 <- drop_units(Ar(T_leaf, pars1, unitless = FALSE)$Ar)
