@@ -1,11 +1,11 @@
-library(tealeaves)
-library(tidyverse)
-lp <- make_leafpar()
-ep <- make_enviropar()
-cs <- make_constants()
-
-pars <- c(lp, ep, cs) %>%
-  map_if(~ is(.x, "units"), drop_units)
+# library(tealeaves)
+# library(tidyverse)
+# lp <- make_leafpar()
+# ep <- make_enviropar()
+# cs <- make_constants()
+# 
+# pars <- c(lp, ep, cs) %>%
+#   map_if(~ is(.x, "units"), drop_units)
 
 .get_hc <- function(pars) {
   
@@ -62,7 +62,7 @@ pars <- c(lp, ep, cs) %>%
   h_C <- .get_hc(pars)
   # P_a = rho_a, density of dry air
   # don't need to convert to kg/m^3 because c_p is in g rather than kg
-  P_a <- tealeaves:::.get_Pa(pars$T_air, pars, TRUE)
+  P_a <- .get_Pa(pars$T_air, pars, TRUE)
   
   # D_h = alpha_a: Thermal diffusivity of dry air (m^2/s). Eqn B17
   # basically equivalent to .get_Dx, but not adjusted for P and linear rather than exponential
@@ -105,10 +105,10 @@ pars <- c(lp, ep, cs) %>%
   
 }
 
-P_a <- tealeaves:::.get_Pa(pars$T_air, pars, TRUE)
-g_h <- sum(tealeaves:::.get_gh(pars$T_air, "lower", pars, TRUE), tealeaves:::.get_gh(pars$T_air, "upper", pars, TRUE))
-P_a * pars$c_p * g_h
-.get_ch(pars)
+# P_a <- .get_Pa(pars$T_air, pars, TRUE)
+# g_h <- sum(.get_gh(pars$T_air, "lower", pars, TRUE), .get_gh(pars$T_air, "upper", pars, TRUE))
+# P_a * pars$c_p * g_h
+# .get_ch(pars)
 
 eq27 <- function(pars) {
 
@@ -124,7 +124,7 @@ eq27 <- function(pars) {
   # p_air = P_wa: vapour pressure in the atmosphere (Pa)
   # p_sat = P_was: saturation vapour pressure in the atmosphere (Pa)
   # .get_ps return pressure in kPa, hence conversion by 1000x to Pa
-  p_sat <- 1000 * tealeaves:::.get_ps(pars$T_air, pars$P, TRUE)
+  p_sat <- 1000 * .get_ps(pars$T_air, pars$P, TRUE)
   p_air <- p_sat * pars$RH
   
   # Original equation 27 (pg 690)

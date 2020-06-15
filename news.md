@@ -1,5 +1,7 @@
 # tealeaves (development version)
 
+* Added unit tests for parameter functions under `tests/test-parameter-functions.R`
+
 # tealeaves 1.0.3
 
 * Fixed bug in `.get_Rabs()` that would have over-written custom `T_sky` function.

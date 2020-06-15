@@ -11,12 +11,12 @@
 #' @export
 
 constants <- function(.x) {
-  
+
   which <- "constants"
-  nms <- tealeaves::parameter_names(which)
-  
+  nms <- parameter_names(which)
+
   stopifnot(is.list(.x))
-  
+
   if (!all(nms %in% names(.x))) {
     nms[!(nms %in% names(.x))] %>%
       stringr::str_c(collapse = ", ") %>%
@@ -24,7 +24,7 @@ constants <- function(.x) {
                  x = ., which = which) %>%
       stop()
   }
-  
+
   .x %<>% magrittr::extract(nms)
 
   # Set units ----
@@ -38,7 +38,7 @@ constants <- function(.x) {
   .x$R %<>% set_units(J / (mol * K))
   .x$R_air %<>% set_units(J / (kg * K))
   .x$s %<>% set_units(W / (m ^ 2 * K ^ 4))
-  
+
   # Check values ----
   stopifnot(.x$c_p >= set_units(0, J / (g * K)))
   stopifnot(.x$D_h0 >= set_units(0, m ^ 2 / s))
@@ -50,8 +50,8 @@ constants <- function(.x) {
   stopifnot(.x$R >= set_units(0, J / (mol * K)))
   stopifnot(.x$R_air >= set_units(0, J / (kg * K)))
   stopifnot(.x$s >= set_units(0, W / (m ^ 2 * K ^ 4)))
-  
+
   structure(.x, class = c(which, "list"))
-  
+
 }
 

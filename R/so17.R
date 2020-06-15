@@ -6,9 +6,9 @@ so17_eqn27 <- function(leaf_par, enviro_par, constants, progress = TRUE,
                        quiet = FALSE, set_units = TRUE) {
 
   if (set_units) {
-    leaf_par %<>% tealeaves::leaf_par()
-    enviro_par %<>% tealeaves::enviro_par()
-    constants %<>% tealeaves::constants()
+    leaf_par %<>% leaf_par()
+    enviro_par %<>% enviro_par()
+    constants %<>% constants()
   } else {
     if (!quiet) warning("tleaves: units have not been checked prior to solving")
   }
@@ -36,7 +36,7 @@ so17_eqn27 <- function(leaf_par, enviro_par, constants, progress = TRUE,
   # p_air = P_wa: vapour pressure in the atmosphere (Pa)
   # p_sat = P_was: saturation vapour pressure in the atmosphere (Pa)
   # .get_ps return pressure in kPa, hence conversion by 1000x to Pa
-  p_sat <- 1000 * tealeaves:::.get_ps(pars$T_air, pars$P, TRUE)
+  p_sat <- 1000 * .get_ps(pars$T_air, pars$P, TRUE)
   p_air <- p_sat * pars$RH
   
   # Original equation 27 (pg 690)
@@ -140,7 +140,7 @@ so17_eqn27 <- function(leaf_par, enviro_par, constants, progress = TRUE,
   h_C <- .get_hc(pars, constants)
   # P_a = rho_a, density of dry air
   # don't need to convert to kg/m^3 because c_p is in g rather than kg
-  P_a <- tealeaves:::.get_Pa(pars$T_air, pars, TRUE)
+  P_a <- .get_Pa(pars$T_air, pars, TRUE)
   
   # D_h = alpha_a: Thermal diffusivity of dry air (m^2/s). Eqn B17
   # basically equivalent to .get_Dx, but not adjusted for P and linear rather than exponential

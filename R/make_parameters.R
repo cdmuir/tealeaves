@@ -103,7 +103,7 @@ make_leafpar <- function(replace = NULL) {
   obj %<>% replace_defaults(replace)
 
   # Assign class and return -----
-  obj %<>% tealeaves::leaf_par()
+  obj %<>% leaf_par()
 
   obj
 
@@ -140,7 +140,7 @@ make_enviropar <- function(replace = NULL) {
   obj %<>% replace_defaults(replace)
 
   # Assign class and return -----
-  obj %<>% tealeaves::enviro_par()
+  obj %<>% enviro_par()
   
   obj
 
@@ -227,7 +227,7 @@ make_constants <- function(replace = NULL) {
   obj %<>% replace_defaults(replace)
 
   # Assign class and return -----
-  obj %<>% tealeaves::constants()
+  obj %<>% constants()
   
   obj
 

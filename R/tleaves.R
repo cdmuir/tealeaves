@@ -238,9 +238,9 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
     tleaf %<>% 
       set_units(K) %>%
       drop_units()
-    leaf_par %<>% tealeaves::leaf_par()
-    enviro_par %<>% tealeaves::enviro_par()
-    constants %<>% tealeaves::constants()
+    leaf_par %<>% leaf_par()
+    enviro_par %<>% enviro_par()
+    constants %<>% constants()
   }
   stopifnot(length(quiet) == 1L & is.logical(quiet))
   stopifnot(length(components) == 1L & is.logical(components))
