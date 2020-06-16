@@ -100,7 +100,7 @@ make_leafpar <- function(replace = NULL) {
   )
   
   # Replace defaults -----
-  obj %<>% replace_defaults(replace)
+  obj %<>% replace_defaults(replace, "leaf")
 
   # Assign class and return -----
   obj %<>% leaf_par()
@@ -137,7 +137,7 @@ make_enviropar <- function(replace = NULL) {
     }
   }
   
-  obj %<>% replace_defaults(replace)
+  obj %<>% replace_defaults(replace, "enviro")
 
   # Assign class and return -----
   obj %<>% enviro_par()
@@ -212,19 +212,19 @@ make_constants <- function(replace = NULL) {
   )
 
   # Replace defaults -----
-  if ("nu_constant" %in% names(replace)) {
-    stopifnot(is.function(replace$nu_constant))
-    obj$nu_constant <- replace$nu_constant
-    replace$nu_constant <- NULL
-  }
+  # if ("nu_constant" %in% names(replace)) {
+  #   stopifnot(is.function(replace$nu_constant))
+  #   obj$nu_constant <- replace$nu_constant
+  #   replace$nu_constant <- NULL
+  # }
+  # 
+  # if ("sh_constant" %in% names(replace)) {
+  #   stopifnot(is.function(replace$sh_constant))
+  #   obj$sh_constant <- replace$sh_constant
+  #   replace$sh_constant <- NULL
+  # }
   
-  if ("sh_constant" %in% names(replace)) {
-    stopifnot(is.function(replace$sh_constant))
-    obj$sh_constant <- replace$sh_constant
-    replace$sh_constant <- NULL
-  }
-  
-  obj %<>% replace_defaults(replace)
+  obj %<>% replace_defaults(replace, "constants")
 
   # Assign class and return -----
   obj %<>% constants()
@@ -239,10 +239,14 @@ make_constants <- function(replace = NULL) {
 #' @param replace List of replacement values
 #' @noRd
 
-replace_defaults <- function(obj, replace) {
+replace_defaults <- function(obj, replace, which) {
 
   if (!is.null(replace)) {
 
+    checkmate::assert_character(which, len = 1L)
+    
+    which <- match.arg(which, c("constants", "enviro", "leaf"))
+    
     checkmate::assert_list(replace)
     x <- names(replace)
     if (any(!x %in% names(obj))) {
@@ -250,12 +254,10 @@ replace_defaults <- function(obj, replace) {
       x %<>% .[. %in% names(obj)]
     }
     
-    numeric_or_function <- intersect(
-      x, c(.parameter_functions("constants"), .parameter_functions("enviro"),
-           .parameter_functions("leaf"))
-    )
-    numeric_only <- 
-    # checkmate::assert_multi_class(replace[[]])
+    numeric_or_function <- intersect(x, c(.parameter_functions(which)))
+    numeric_only <- setdiff(x, numeric_or_function)
+    
+    checkmate::assert_multi_class(replace[[numeric_or_function]])
     # CHANGE TO ALLOW FUNCTION REPLACEMENTS
     stopifnot(all(sapply(replace, inherits, what = "units")))
     stopifnot(all(sapply(replace, is.numeric)))
