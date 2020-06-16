@@ -1,6 +1,7 @@
 # tealeaves (development version)
 
 * Added unit tests for parameter functions under `tests/test-parameter-functions.R`
+* Added code coverage using [codecov](https://codecov.io/gh/cdmuir/tealeaves?branch=master)
 
 # tealeaves 1.0.3
 

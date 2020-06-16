@@ -13,6 +13,8 @@ Status](https://travis-ci.org/cdmuir/tealeaves.svg?branch=master)](https://travi
 [![](https://cranlogs.r-pkg.org/badges/tealeaves)](https://cran.r-project.org/package=tealeaves)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Codecov test
+coverage](https://codecov.io/gh/cdmuir/tealeaves/branch/master/graph/badge.svg)](https://codecov.io/gh/cdmuir/tealeaves?branch=master)
 <!-- badges: end -->
 
 ## Solve for leaf temperature using energy balance
@@ -184,12 +186,12 @@ T_leaves %>%
 |       T\_air |               g\_sw |        T\_leaf |
 | -----------: | ------------------: | -------------: |
 | 293.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 300.2217 \[K\] |
-| 293.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 300.2217 \[K\] |
-| 298.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 304.2065 \[K\] |
+| 293.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 300.6031 \[K\] |
+| 298.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 303.8443 \[K\] |
 | 298.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 304.2065 \[K\] |
 | 293.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 298.3474 \[K\] |
-| 293.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 298.3474 \[K\] |
-| 298.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 302.1106 \[K\] |
+| 293.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 298.6814 \[K\] |
+| 298.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 301.7980 \[K\] |
 | 298.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 302.1106 \[K\] |
 
 ## Parallel processing

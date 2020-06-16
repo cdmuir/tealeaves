@@ -243,14 +243,22 @@ replace_defaults <- function(obj, replace) {
 
   if (!is.null(replace)) {
 
-    stopifnot(is.list(replace))
-    stopifnot(all(sapply(replace, inherits, what = "units")))
-    stopifnot(all(sapply(replace, is.numeric)))
+    checkmate::assert_list(replace)
     x <- names(replace)
     if (any(!x %in% names(obj))) {
       warning(sprintf("The following parameters in 'replace' were not recognized:\n%s", paste0(x[!x %in% names(obj)], collapse = "\n")))
       x %<>% .[. %in% names(obj)]
     }
+    
+    numeric_or_function <- intersect(
+      x, c(.parameter_functions("constants"), .parameter_functions("enviro"),
+           .parameter_functions("leaf"))
+    )
+    numeric_only <- 
+    # checkmate::assert_multi_class(replace[[]])
+    # CHANGE TO ALLOW FUNCTION REPLACEMENTS
+    stopifnot(all(sapply(replace, inherits, what = "units")))
+    stopifnot(all(sapply(replace, is.numeric)))
     obj[x] <- replace[x]
 
   }
