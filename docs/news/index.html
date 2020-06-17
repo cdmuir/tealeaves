@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tealeaves</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -138,6 +138,25 @@
     <div id="tealeaves-development-version" class="section level1">
 <h1 class="page-header" data-toc-text="development version">
 <a href="#tealeaves-development-version" class="anchor"></a>tealeaves (development version)<small> Unreleased </small>
+</h1>
+</div>
+    <div id="tealeaves-104" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.4">
+<a href="#tealeaves-104" class="anchor"></a>tealeaves 1.0.4<small> Unreleased </small>
+</h1>
+<ul>
+<li>Updated site, vignettes, and README</li>
+<li>Added unit tests for parameter functions under <code>tests/test-parameter-functions.R</code>
+</li>
+<li>Fixed bug with crossing parameters in <code><a href="../reference/tleaves.html">tleaves()</a></code> that was introduced with new <code>T_sky</code> function. This led to crossing all parameter values with all unique values of calculated <code>T_sky</code>, which was incorrect. Added unit tests to ensuring that crossing is done correctly under <code>tests/test-tleaves-crossing.R</code>
+</li>
+<li>Added code coverage using <a href="https://codecov.io/gh/cdmuir/tealeaves?branch=master">codecov</a>
+</li>
+</ul>
+</div>
+    <div id="tealeaves-103" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.3">
+<a href="#tealeaves-103" class="anchor"></a>tealeaves 1.0.3<small> 2020-06-13 </small>
 </h1>
 <ul>
 <li>Fixed bug in <code><a href="../reference/dot-get_Rabs.html">.get_Rabs()</a></code> that would have over-written custom <code>T_sky</code> function.</li>
