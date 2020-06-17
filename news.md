@@ -1,5 +1,11 @@
 # tealeaves (development version)
 
+# tealeaves 1.0.5
+
+* Updated site, vignettes, and README
+
+# tealeaves 1.0.4
+
 * Added unit tests for parameter functions under `tests/test-parameter-functions.R`
 * Fixed bug with crossing parameters in `tleaves()` that was introduced with new `T_sky` function. This led to crossing all parameter values with all unique values of calculated `T_sky`, which was incorrect. Added unit tests to ensuring that crossing is done correctly under `tests/test-tleaves-crossing.R`
 * Added code coverage using [codecov](https://codecov.io/gh/cdmuir/tealeaves?branch=master)
