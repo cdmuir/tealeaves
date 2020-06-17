@@ -92,15 +92,50 @@ tleaves <- function(leaf_par, enviro_par, constants, progress = TRUE,
   }
   
   pars <- c(leaf_par, enviro_par)
+  
+  tsky_function <- NULL
   if (is.function(pars$T_sky)) {
-    pars$T_sky <- pars$T_sky(pars)
+    tsky_function <- pars$T_sky
+    pars$T_sky <- NULL
   }
+
   par_units <- purrr::map(pars, units) %>%
     magrittr::set_names(names(pars))
   
   pars %<>% 
     purrr::map_if(~ inherits(.x, "units"), drop_units) %>%
     make_parameter_sets()
+  
+  if (!is.null(tsky_function)) {
+    
+    # For this to work, tsky_function has to work with arg pars
+    # check with function like check_parameter_function(.f)
+    # also, this seems pretty inefficient, but I don't have a better solution
+    tidyr::crossing(
+      par = names(pars[[1]]),
+      i = 1:length(pars)
+    ) %>%
+      purrr::pwalk(~ {
+        
+          glue::glue("units(pars[[{i}]]${par}) <<- par_units${par}", 
+                     par = ..1, i = ..2) %>%
+          parse(text = .) %>%
+          eval()
+        
+        })
+    
+    pars <- pars %>%
+      purrr::map(~ {
+        .x$T_sky <- tsky_function(.x)
+        .x
+      })
+      
+    par_units$T_sky <- units(pars[[1]]$T_sky)
+    
+    pars <- pars %>% 
+      purrr::map(~ {purrr::map_if(.x, ~ inherits(.x, "units"), drop_units)})
+      
+  }
   
   soln <- find_tleaves(pars, constants, progress, quiet, parallel)
   

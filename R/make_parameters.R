@@ -129,14 +129,6 @@ make_enviropar <- function(replace = NULL) {
   ) 
   
   # Replace defaults -----
-
-  if ("T_sky" %in% names(replace)) {
-    if (is.function(replace$T_sky)) {
-      obj$T_sky <- replace$T_sky
-      replace$T_sky <- NULL
-    }
-  }
-  
   obj %<>% replace_defaults(replace, "enviro")
 
   # Assign class and return -----
@@ -212,18 +204,6 @@ make_constants <- function(replace = NULL) {
   )
 
   # Replace defaults -----
-  # if ("nu_constant" %in% names(replace)) {
-  #   stopifnot(is.function(replace$nu_constant))
-  #   obj$nu_constant <- replace$nu_constant
-  #   replace$nu_constant <- NULL
-  # }
-  # 
-  # if ("sh_constant" %in% names(replace)) {
-  #   stopifnot(is.function(replace$sh_constant))
-  #   obj$sh_constant <- replace$sh_constant
-  #   replace$sh_constant <- NULL
-  # }
-  
   obj %<>% replace_defaults(replace, "constants")
 
   # Assign class and return -----
@@ -248,7 +228,12 @@ replace_defaults <- function(obj, replace, which) {
     which <- match.arg(which, c("constants", "enviro", "leaf"))
     
     checkmate::assert_list(replace)
+    
     x <- names(replace)
+    if ("nu_constant" %in% x | "sh_constant" %in% x) {
+      warning("I have not tested how replacing default functions for 'nu_constant' or 'sh_constant' behave. Proceed with caution and check results carefully")
+    }
+    
     if (any(!x %in% names(obj))) {
       warning(sprintf("The following parameters in 'replace' were not recognized:\n%s", paste0(x[!x %in% names(obj)], collapse = "\n")))
       x %<>% .[. %in% names(obj)]
@@ -257,10 +242,26 @@ replace_defaults <- function(obj, replace, which) {
     numeric_or_function <- intersect(x, c(.parameter_functions(which)))
     numeric_only <- setdiff(x, numeric_or_function)
     
-    checkmate::assert_multi_class(replace[[numeric_or_function]])
-    # CHANGE TO ALLOW FUNCTION REPLACEMENTS
-    stopifnot(all(sapply(replace, inherits, what = "units")))
-    stopifnot(all(sapply(replace, is.numeric)))
+    if (any(sapply(replace, is.list))) {
+     
+      y <- replace[is.list(replace)] %>%
+        purrr::map(~ {any(purrr::map_lgl(.x, ~ {is.function(.x)}))})
+      
+      if (any(unlist(y))) {
+        
+        y <- y[unlist(y)]
+        stop(glue::glue("Parameter{s} ({parameters}) cannot currently accept more than one element in 'replace = ...' if any elements are a function. This may change in future releases.", s = ifelse(length(y) > 1L, "s", ""), parameters = stringr::str_c(names(y), collapse = ", ")))
+        
+      }
+      
+    }
+    
+    purrr::walk(numeric_or_function, ~ {checkmate::assert_multi_class(
+      replace[[.x]], classes = c("units", "function"), .var.name = .x)})
+    
+    purrr::walk(numeric_only, ~ {checkmate::assert_class(
+      replace[[.x]], classes = "units", .var.name = .x)})
+
     obj[x] <- replace[x]
 
   }

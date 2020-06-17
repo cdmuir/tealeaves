@@ -64,3 +64,35 @@ test_that("some parameters can be defined as functions", {
   expect_error(leaf_par(.x1), regexp = NA)
   
 })
+
+test_that("parameter function replacements must be length 1L", {
+
+  # Revisit this test once I have vetted replacing defaults for nu_constant and sh_constant  
+  # x <- .parameter_functions("constants")
+  # for (i in x) {
+  #   
+  #   replace <- list(x = c(function() {}, function() {}))
+  #   names(replace) <- i
+  #   expect_error(make_constants(replace = replace))
+  #   
+  # }
+
+  x <- .parameter_functions("enviro")
+  for (i in x) {
+    
+    replace <- list(x = c(function() {}, function() {}))
+    names(replace) <- i
+    expect_error(make_enviro(replace = replace))
+    
+  }
+
+  x <- .parameter_functions("leaf")
+  for (i in x) {
+    
+    replace <- list(x = c(function() {}, function() {}))
+    names(replace) <- i
+    expect_error(make_leaf(replace = replace))
+    
+  }
+  
+})
