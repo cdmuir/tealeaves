@@ -1,5 +1,9 @@
 # tealeaves (development version)
 
+# tealeaves 1.0.5
+
+* Updated site, vignettes, and README
+
 # tealeaves 1.0.4
 
 * Added unit tests for parameter functions under `tests/test-parameter-functions.R`
