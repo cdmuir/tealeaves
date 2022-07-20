@@ -12,9 +12,9 @@ Status](https://travis-ci.org/cdmuir/tealeaves.svg?branch=master)](https://travi
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2808079.svg)](https://doi.org/10.5281/zenodo.2808079)
 [![](https://cranlogs.r-pkg.org/badges/tealeaves)](https://cran.r-project.org/package=tealeaves)
 [![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
 [![Codecov test
-coverage](https://codecov.io/gh/cdmuir/tealeaves/branch/master/graph/badge.svg)](https://codecov.io/gh/cdmuir/tealeaves?branch=master)
+coverage](https://codecov.io/gh/cdmuir/tealeaves/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cdmuir/tealeaves?branch=master)
 <!-- badges: end -->
 
 ## Solve for leaf temperature using energy balance
@@ -42,8 +42,8 @@ install.packages("tealeaves")
 or from GitHub
 
 ``` r
-install.packages("devtools")
-devtools::install_github("cdmuir/tealeaves")
+install.packages("remotes")
+remotes::install_github("cdmuir/tealeaves")
 ```
 
 And load tealeaves
@@ -66,9 +66,9 @@ budget. There are two main steps to using {tealeaves}:
 
 In this vignette, I’ll show you how to:
 
-  - run a minimum worked example using default parameters
-  - replace default parameters
-  - solve for leaf temperature along an environmental gradient
+-   run a minimum worked example using default parameters
+-   replace default parameters
+-   solve for leaf temperature along an environmental gradient
 
 Note that my examples use a lot tidyverse syntax, especially the pipe
 operator `%>%`. These are not required to use {tealeaves}, but you can
@@ -82,7 +82,6 @@ temperature in a single leaf using the `make_*()` functions and
 `tleaf()`.
 
 ``` r
-
 library(magrittr)
 library(tealeaves)
 
@@ -97,8 +96,8 @@ T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
 T_leaf %>% knitr::kable()
 ```
 
-|        T\_leaf | value | convergence |             R\_abs |               S\_r |                  H |                  L |                        E |        Ar |       Gr |       Re |     g\_bw |
-| -------------: | ----: | ----------: | -----------------: | -----------------: | -----------------: | -----------------: | -----------------------: | --------: | -------: | -------: | --------: |
+|         T_leaf | value | convergence |              R_abs |                S_r |                  H |                  L |                        E |        Ar |       Gr |       Re |      g_bw |
+|---------------:|------:|------------:|-------------------:|-------------------:|-------------------:|-------------------:|-------------------------:|----------:|---------:|---------:|----------:|
 | 301.4181 \[K\] |     0 |           0 | 1363.813 \[W/m^2\] | 907.9499 \[W/m^2\] | 107.3552 \[W/m^2\] | 348.5078 \[W/m^2\] | 0.00794791 \[mol/m^2/s\] | 0.0048272 | 788182.4 | 12778.08 | 0.0297282 |
 
 ## Replace default parameters
@@ -111,7 +110,6 @@ section, I’ll show you how to set up a gradient of parameter values over
 which to solve for leaf temperature.
 
 ``` r
-
 # Use the `replace` argument to replace defaults. This must be a named list, and
 # each named element must have the proper units specified. See `?make_parameters`
 # for all parameter names and proper units.
@@ -139,8 +137,8 @@ T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
 T_leaf %>% knitr::kable()
 ```
 
-|        T\_leaf | value | convergence |             R\_abs |               S\_r |                  H |                  L |                         E |        Ar |       Gr |       Re |     g\_bw |
-| -------------: | ----: | ----------: | -----------------: | -----------------: | -----------------: | -----------------: | ------------------------: | --------: | -------: | -------: | --------: |
+|         T_leaf | value | convergence |              R_abs |                S_r |                  H |                  L |                         E |        Ar |       Gr |       Re |      g_bw |
+|---------------:|------:|------------:|-------------------:|-------------------:|-------------------:|-------------------:|--------------------------:|----------:|---------:|---------:|----------:|
 | 302.1106 \[K\] |     0 |           0 | 1363.813 \[W/m^2\] | 916.3234 \[W/m^2\] | 130.0263 \[W/m^2\] | 317.4631 \[W/m^2\] | 0.007244854 \[mol/m^2/s\] | 0.0055546 | 903289.3 | 12752.29 | 0.0297445 |
 
 ## Environmental gradients
@@ -151,10 +149,9 @@ parameter sets. The function `tleaves` generalizes `tleaf` and makes it
 easy to solve for multiple parameter sets using the same argument
 structure. All you need to do is specify multiple values for one or more
 leaf or environmental parameters and `tleaves` uses the
-`tidyr::crossing` function to fit all combinations\[1\].
+`tidyr::crossing` function to fit all combinations[^1].
 
 ``` r
-
 # As before, use the `replace` argument to replace defaults, but this time we
 # enter multiple values
 
@@ -183,8 +180,8 @@ T_leaves %>%
   knitr::kable()
 ```
 
-|       T\_air |               g\_sw |        T\_leaf |
-| -----------: | ------------------: | -------------: |
+|        T_air |                g_sw |         T_leaf |
+|-------------:|--------------------:|---------------:|
 | 293.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 300.2217 \[K\] |
 | 298.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 304.2065 \[K\] |
 | 293.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 298.3474 \[K\] |
@@ -200,6 +197,7 @@ provide an example looking at how leaf-to-air temperature differentials
 change with air temperature.
 
 ``` r
+# NOTE: not evaluated here because it caused error on CRAN. Copy-and-paste to run on your own machine.
 
 # We'll use the `replace` argument to enter multiple air temperatures and two light levels
 
@@ -233,15 +231,13 @@ ggplot(tl, aes(T_air, T_leaf - T_air, color = Light)) +
   NULL
 ```
 
-<img src="man/figures/README-parallel-example-1.png" width="100%" />
-
 ## Contributors
 
-  - [Chris Muir](https://github.com/cdmuir)
+-   [Chris Muir](https://github.com/cdmuir)
 
 ## Comments and contributions
 
-I welcome comments, criticisms, and especially contributions\! GitHub
+I welcome comments, criticisms, and especially contributions! GitHub
 issues are the preferred way to report bugs, ask questions, or request
 new features. You can submit issues here:
 
@@ -249,18 +245,16 @@ new features. You can submit issues here:
 
 ## Meta
 
-  - Please [report any issues or
+-   Please [report any issues or
     bugs](https://github.com/cdmuir/tealeaves/issues).
-  - License: MIT
-  - Get citation information for `tealeaves` in R doing
+-   License: MIT
+-   Get citation information for `tealeaves` in R doing
     `citation(package = 'tealeaves')`
-  - Please note that this project is released with a [Contributor Code
+-   Please note that this project is released with a [Contributor Code
     of
     Conduct](https://github.com/cdmuir/tealeaves/blob/master/CONDUCT.md).
     By participating in this project you agree to abide by its terms.
 
-<!-- end list -->
-
-1.  Since optimization is somewhat time-consuming, be careful about
+[^1]: Since optimization is somewhat time-consuming, be careful about
     crossing too many combinations. Use `progress = TRUE` to show
     progress bar with estimated time remaining.
