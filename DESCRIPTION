@@ -1,6 +1,6 @@
 Package: tealeaves
-Version: 1.0.5.9000
-Date: 2020-06-17
+Version: 1.0.6
+Date: 2022-07-19
 Title: Solve for Leaf Temperature Using Energy Balance
 Authors@R: person("Chris", "Muir", role = c("aut", "cre"), email = "cdmuir@hawaii.edu", comment = c(ORCID = "0000-0003-2555-3878"))
 Depends: R (>= 3.5.0), units (>= 0.6.0)
@@ -27,5 +27,5 @@ Description: Implements models of leaf temperature using energy balance. It uses
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.2.1
 VignetteBuilder: knitr

@@ -2,7 +2,7 @@ citHeader("To cite tealeaves in publications please use these.")
 
 citEntry(
   entry = "Article",
-  author = c(person("Christopher", "Muir", "D")),
+  author = c(person(given = "Christopher", family = "Muir", middle = "D")),
   title = "tealeaves: an R package for modelling leaf temperature using energy budgets",
   journal = "AoB PLANTS",
   volume = "11",
@@ -22,7 +22,7 @@ citEntry(
 citEntry(
   entry = "Misc", 
   title = "tealeaves: an {R} package for modelling leaf temperature using energy budgets",
-  author = c(person("Christopher", "Muir", "D")),
+  author = c(person(given = "Christopher", family = "Muir", middle = "D")),
   note = "R package version 1.0.2",
   year = "2020",
   url = "https://CRAN.R-project.org/package=tealeaves",

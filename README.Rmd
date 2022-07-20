@@ -43,8 +43,8 @@ install.packages("tealeaves")
 or from GitHub
 
 ```r
-install.packages("devtools")
-devtools::install_github("cdmuir/tealeaves")
+install.packages("remotes")
+remotes::install_github("cdmuir/tealeaves")
 ```
 
 And load tealeaves

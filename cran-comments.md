@@ -1,12 +1,12 @@
 ## Resubmission
-* Fixed bug in `.get_Rabs()` that would have over-written custom `T_sky` function.
+* Fixed name in inst/CITATION
+* Stopped parallel evaluation in vignette
 
 ## Test environments
-* local R installation, R 4.1.0
-* ubuntu 16.04 (on travis-ci), R 4.1.0
-* local R installation, R 4.0.1
-* ubuntu 16.04 (on travis-ci), R 4.0.1
-* win-builder (devel)
+* local R installation, R 4.2.1
+* win-builder (old-release), R 4.1.3
+* win-builder (release), R 4.2.1
+* win-builder (devel), R 2022-07-18 r82603 ucrt
 
 ## R CMD check results
 
