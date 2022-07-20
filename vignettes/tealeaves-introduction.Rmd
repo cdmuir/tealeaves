@@ -126,7 +126,8 @@ T_leaves %>%
 
 It can take a little while to model many different parameter sets. If you have multiple processors available, you can speed things up by running simulations in parallel. In the `tealeaves` function, simply use the `parallel = TRUE` argument to simulate in parallel. Here I'll provide an example looking at how leaf-to-air temperature differentials change with air temperature.
 
-```{r, parallel-example}
+```{r, parallel-example, eval = FALSE}
+# NOTE: not evaluated here because it caused error on CRAN. Copy-and-paste to run on your own machine.
 
 # We'll use the `replace` argument to enter multiple air temperatures and two light levels
 

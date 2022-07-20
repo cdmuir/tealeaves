@@ -1,5 +1,13 @@
 # tealeaves (development version)
 
+<<<<<<< HEAD
+=======
+# tealeaves 1.0.6
+
+* Fixed name in inst/CITATION
+* Stopped parallel evaluation in vignette
+
+>>>>>>> dev
 # tealeaves 1.0.5
 
 * Updated site, vignettes, and README

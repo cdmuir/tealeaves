@@ -45,5 +45,5 @@ tealeaves:::.get_Sr(T_leaf, c(cs, ep, lp))
 
 }
 \references{
-Foster JR, Smith WK. 1986. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell \& Environment 9: 751-9.
+Foster JR, Smith WK. 1986. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell & Environment 9: 751-9.
 }

@@ -406,7 +406,7 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @references 
 #' 
-#' Foster JR, Smith WK. 1986. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell \& Environment 9: 751-9.
+#' Foster JR, Smith WK. 1986. Influence of stomatal distribution on transpiration in low-wind environments. Plant, Cell & Environment 9: 751-9.
 #' 
 #' @examples 
 #' 

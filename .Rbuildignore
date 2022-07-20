@@ -17,3 +17,4 @@ README_files/*
 ^R/scratch\.R$
 ^R/so17\.R$
 ^codecov\.yml$
+^CRAN-SUBMISSION$
