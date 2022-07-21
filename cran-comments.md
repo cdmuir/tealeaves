@@ -1,6 +1,7 @@
 ## Resubmission
 * Fixed name in inst/CITATION
 * Stopped parallel evaluation in vignette
+* Fixed links in README
 
 ## Test environments
 * local R installation, R 4.2.1

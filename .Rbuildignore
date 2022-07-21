@@ -18,3 +18,4 @@ README_files/*
 ^R/so17\.R$
 ^codecov\.yml$
 ^\.github$
+^CRAN-SUBMISSION$
