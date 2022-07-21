@@ -1,5 +1,7 @@
 # tealeaves (development version)
 
+* Added GitHub action and edited badges in README
+
 # tealeaves 1.0.6
 
 * Fixed name in inst/CITATION
