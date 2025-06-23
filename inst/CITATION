@@ -1,8 +1,7 @@
 citHeader("To cite tealeaves in publications please use these.")
 
-citEntry(
-  entry = "Article",
-  author = c(person(given = "Christopher", family = "Muir", middle = "D")),
+bibentry("Article",
+  author = c(person(given = c("Christopher", "D"), family = "Muir")),
   title = "tealeaves: an R package for modelling leaf temperature using energy budgets",
   journal = "AoB PLANTS",
   volume = "11",
@@ -11,7 +10,6 @@ citEntry(
   month = "12",
   issn = "2041-2851",
   doi = "10.1093/aobpla/plz054",
-  url = "https://academic.oup.com/aobpla/article/11/6/plz054/5666155",
   note = "plz054",
   textVersion = paste(
     "Muir CD. (2019).",
@@ -19,16 +17,15 @@ citEntry(
   )
 )
 
-citEntry(
-  entry = "Misc", 
+bibentry("Misc", 
   title = "tealeaves: an {R} package for modelling leaf temperature using energy budgets",
-  author = c(person(given = "Christopher", family = "Muir", middle = "D")),
-  note = "R package version 1.0.2",
-  year = "2020",
+  author = c(person(given = c("Christopher", "D"), family = "Muir")),
+  note = "R package version 1.0.6.1",
+  year = "2025",
   url = "https://CRAN.R-project.org/package=tealeaves",
   textVersion = paste(
-    "Muir CD. (2020).",
-    title = "tealeaves: an R package for modelling leaf temperature using energy budgets. R package version 1.0.2.",
+    "Muir CD. (2025).",
+    title = "tealeaves: an R package for modelling leaf temperature using energy budgets. R package version 1.0.6.1.",
     "https://CRAN.R-project.org/package=tealeaves"
   )
 )

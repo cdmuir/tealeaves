@@ -1,8 +1,8 @@
 Package: tealeaves
-Version: 1.0.6
-Date: 2022-07-19
+Version: 1.0.6.1
+Date: 2025-06-12
 Title: Solve for Leaf Temperature Using Energy Balance
-Authors@R: person("Chris", "Muir", role = c("aut", "cre"), email = "cdmuir@hawaii.edu", comment = c(ORCID = "0000-0003-2555-3878"))
+Authors@R: person("Chris", "Muir", role = c("aut", "cre"), email = "cdmuir@wisc.edu", comment = c(ORCID = "0000-0003-2555-3878"))
 Depends: R (>= 3.5.0), units (>= 0.6.0)
 Imports: 
     checkmate (>= 2.0.0),
