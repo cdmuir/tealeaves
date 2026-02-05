@@ -1,16 +1,15 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# tealeaves <img src="man/figures/logo.png" align="right" height="200" width="200"/>
+# tealeaves <img src="man/figures/logo.png" align="right" height="200" width="200" alt="tealeaves logo"/>
 
 <!-- badges: start -->
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/tealeaves)](https://cran.r-project.org/package=tealeaves)
-[![Build
-Status](https://travis-ci.org/cdmuir/tealeaves.svg?branch=master)](https://travis-ci.org/cdmuir/tealeaves)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2808079.svg)](https://doi.org/10.5281/zenodo.2808079)
-[![](https://cranlogs.r-pkg.org/badges/tealeaves)](https://cran.r-project.org/package=tealeaves)
+[![CRAN download
+count](https://cranlogs.r-pkg.org/badges/tealeaves)](https://cran.r-project.org/package=tealeaves)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
 [![Codecov test
@@ -66,13 +65,13 @@ budget. There are two main steps to using {tealeaves}:
 
 In this vignette, I’ll show you how to:
 
--   run a minimum worked example using default parameters
--   replace default parameters
--   solve for leaf temperature along an environmental gradient
+- run a minimum worked example using default parameters
+- replace default parameters
+- solve for leaf temperature along an environmental gradient
 
 Note that my examples use a lot tidyverse syntax, especially the pipe
 operator `%>%`. These are not required to use {tealeaves}, but you can
-learn more about the the tidyverse [here](https://www.tidyverse.org) and
+learn more about the the tidyverse [here](https://tidyverse.org/) and
 the `%>%` more specifically [here](https://magrittr.tidyverse.org/).
 
 ## Minimum worked example
@@ -82,6 +81,7 @@ temperature in a single leaf using the `make_*()` functions and
 `tleaf()`.
 
 ``` r
+
 library(magrittr)
 library(tealeaves)
 
@@ -96,9 +96,9 @@ T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
 T_leaf %>% knitr::kable()
 ```
 
-|         T_leaf | value | convergence |              R_abs |                S_r |                  H |                  L |                        E |        Ar |       Gr |       Re |      g_bw |
-|---------------:|------:|------------:|-------------------:|-------------------:|-------------------:|-------------------:|-------------------------:|----------:|---------:|---------:|----------:|
-| 301.4181 \[K\] |     0 |           0 | 1363.813 \[W/m^2\] | 907.9499 \[W/m^2\] | 107.3552 \[W/m^2\] | 348.5078 \[W/m^2\] | 0.00794791 \[mol/m^2/s\] | 0.0048272 | 788182.4 | 12778.08 | 0.0297282 |
+| T_leaf | value | convergence | R_abs | S_r | H | L | E | Ar | Gr | Re | g_bw |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 301.4181 \[K\] | 0 | 0 | 1363.813 \[W/m^2\] | 907.9499 \[W/m^2\] | 107.3552 \[W/m^2\] | 348.5078 \[W/m^2\] | 0.00794791 \[mol/(m^2\*s)\] | 0.0048272 | 788182.4 | 12778.08 | 0.0297282 |
 
 ## Replace default parameters
 
@@ -110,6 +110,7 @@ section, I’ll show you how to set up a gradient of parameter values over
 which to solve for leaf temperature.
 
 ``` r
+
 # Use the `replace` argument to replace defaults. This must be a named list, and
 # each named element must have the proper units specified. See `?make_parameters`
 # for all parameter names and proper units.
@@ -137,9 +138,9 @@ T_leaf <- tleaf(leaf_par, enviro_par, constants, quiet = TRUE)
 T_leaf %>% knitr::kable()
 ```
 
-|         T_leaf | value | convergence |              R_abs |                S_r |                  H |                  L |                         E |        Ar |       Gr |       Re |      g_bw |
-|---------------:|------:|------------:|-------------------:|-------------------:|-------------------:|-------------------:|--------------------------:|----------:|---------:|---------:|----------:|
-| 302.1106 \[K\] |     0 |           0 | 1363.813 \[W/m^2\] | 916.3234 \[W/m^2\] | 130.0263 \[W/m^2\] | 317.4631 \[W/m^2\] | 0.007244854 \[mol/m^2/s\] | 0.0055546 | 903289.3 | 12752.29 | 0.0297445 |
+| T_leaf | value | convergence | R_abs | S_r | H | L | E | Ar | Gr | Re | g_bw |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 302.1106 \[K\] | 0 | 0 | 1363.813 \[W/m^2\] | 916.3234 \[W/m^2\] | 130.0263 \[W/m^2\] | 317.4631 \[W/m^2\] | 0.007244854 \[mol/(m^2\*s)\] | 0.0055546 | 903289.3 | 12752.29 | 0.0297445 |
 
 ## Environmental gradients
 
@@ -152,6 +153,7 @@ leaf or environmental parameters and `tleaves` uses the
 `tidyr::crossing` function to fit all combinations[^1].
 
 ``` r
+
 # As before, use the `replace` argument to replace defaults, but this time we
 # enter multiple values
 
@@ -180,12 +182,12 @@ T_leaves %>%
   knitr::kable()
 ```
 
-|        T_air |                g_sw |         T_leaf |
-|-------------:|--------------------:|---------------:|
-| 293.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 300.2217 \[K\] |
-| 298.15 \[K\] | 2 \[umol/m^2/Pa/s\] | 304.2065 \[K\] |
-| 293.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 298.3474 \[K\] |
-| 298.15 \[K\] | 4 \[umol/m^2/Pa/s\] | 302.1106 \[K\] |
+|        T_air |                  g_sw |         T_leaf |
+|-------------:|----------------------:|---------------:|
+| 293.15 \[K\] | 2 \[umol/(m^2*s*Pa)\] | 300.2217 \[K\] |
+| 298.15 \[K\] | 2 \[umol/(m^2*s*Pa)\] | 304.2065 \[K\] |
+| 293.15 \[K\] | 4 \[umol/(m^2*s*Pa)\] | 298.3474 \[K\] |
+| 298.15 \[K\] | 4 \[umol/(m^2*s*Pa)\] | 302.1106 \[K\] |
 
 ## Parallel processing
 
@@ -233,7 +235,7 @@ ggplot(tl, aes(T_air, T_leaf - T_air, color = Light)) +
 
 ## Contributors
 
--   [Chris Muir](https://github.com/cdmuir)
+- [Chris Muir](https://github.com/cdmuir)
 
 ## Comments and contributions
 
@@ -245,15 +247,14 @@ new features. You can submit issues here:
 
 ## Meta
 
--   Please [report any issues or
-    bugs](https://github.com/cdmuir/tealeaves/issues).
--   License: MIT
--   Get citation information for `tealeaves` in R doing
-    `citation(package = 'tealeaves')`
--   Please note that this project is released with a [Contributor Code
-    of
-    Conduct](https://github.com/cdmuir/tealeaves/blob/master/CONDUCT.md).
-    By participating in this project you agree to abide by its terms.
+- Please [report any issues or
+  bugs](https://github.com/cdmuir/tealeaves/issues).
+- License: MIT
+- Get citation information for `tealeaves` in R doing
+  `citation(package = 'tealeaves')`
+- Please note that this project is released with a [Contributor Code of
+  Conduct](https://github.com/cdmuir/tealeaves/blob/master/CONDUCT.md).
+  By participating in this project you agree to abide by its terms.
 
 [^1]: Since optimization is somewhat time-consuming, be careful about
     crossing too many combinations. Use `progress = TRUE` to show

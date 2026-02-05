@@ -15,13 +15,12 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# tealeaves <img src="man/figures/logo.png" align="right" height="200" width="200"/>
+# tealeaves <img src="man/figures/logo.png" align="right" height="200" width="200" alt="tealeaves logo"/>
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/tealeaves)](https://cran.r-project.org/package=tealeaves)
-[![Build Status](https://travis-ci.org/cdmuir/tealeaves.svg?branch=master)](https://app.travis-ci.com/cdmuir/tealeaves)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2808079.svg)](https://doi.org/10.5281/zenodo.2808079)
-[![](https://cranlogs.r-pkg.org/badges/tealeaves)](https://cran.r-project.org/package=tealeaves)
+[![CRAN download count](https://cranlogs.r-pkg.org/badges/tealeaves)](https://cran.r-project.org/package=tealeaves)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
 [![Codecov test coverage](https://codecov.io/gh/cdmuir/tealeaves/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cdmuir/tealeaves?branch=master)
 <!-- badges: end -->

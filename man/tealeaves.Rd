@@ -2,6 +2,7 @@
 % Please edit documentation in R/tealeaves.R
 \docType{package}
 \name{tealeaves}
+\alias{tealeaves-package}
 \alias{tealeaves}
 \title{\code{tealeaves} package}
 \description{
@@ -11,3 +12,17 @@ Solve for Leaf Temperature Using Energy Balance
 See the README on
 \href{https://github.com/cdmuir/tealeaves}{GitHub}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/cdmuir/tealeaves}
+  \item \url{https://cdmuir.github.io/tealeaves/}
+  \item Report bugs at \url{https://github.com/cdmuir/tealeaves/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Chris Muir \email{cdmuir@wisc.edu} (\href{https://orcid.org/0000-0003-2555-3878}{ORCID})
+
+}
+\keyword{internal}

@@ -30,7 +30,7 @@ In this vignette, I'll show you how to:
 - replace default parameters
 - solve for leaf temperature along an environmental gradient
 
-Note that my examples use a lot tidyverse syntax, especially the pipe operator `%>%`. These are not required to use {tealeaves}, but you can learn more about the the tidyverse [here](https://www.tidyverse.org) and the `%>%` more specifically [here](https://magrittr.tidyverse.org/).
+Note that my examples use a lot tidyverse syntax, especially the pipe operator `%>%`. These are not required to use {tealeaves}, but you can learn more about the the tidyverse [here](https://tidyverse.org/) and the `%>%` more specifically [here](https://magrittr.tidyverse.org/).
 
 ## Minimum worked example
 

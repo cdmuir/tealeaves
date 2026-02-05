@@ -2,13 +2,18 @@
 % Please edit documentation in R/leaf-par.R
 \name{leaf_par}
 \alias{leaf_par}
-\title{S3 class leaf_par}
+\title{Leaf parameters}
 \usage{
 leaf_par(.x)
 }
 \arguments{
-\item{.x}{A list to be constructed into \strong{leaf_par}. If units are not provided, they will be set without conversion. If units are provided, they will be checked and converted to units that tealeaves uses.}
+\item{.x}{A list to be constructed into \strong{leaf_par}. If units are not provided, 
+they will be set without conversion. If units are provided, they will be checked and 
+converted to units that tealeaves uses.}
 }
 \description{
-Constructor function for leaf_par class. This function ensures that leaf parameter inputs are properly formatted.
+This function ensures that leaf parameter inputs are properly formatted.
+}
+\details{
+Constructor for the S3 class \code{"lef_par"}.
 }

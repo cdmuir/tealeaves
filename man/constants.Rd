@@ -2,13 +2,18 @@
 % Please edit documentation in R/constants.R
 \name{constants}
 \alias{constants}
-\title{S3 class constants}
+\title{Constants}
 \usage{
 constants(.x)
 }
 \arguments{
-\item{.x}{A list to be constructed into \strong{constants}. If units are not provided, they will be set without conversion. If units are provided, they will be checked and converted to units that tealeaves uses.}
+\item{.x}{A list to be constructed into \strong{constants}. If units are not provided,
+they will be set without conversion. If units are provided, they will be checked and
+converted to units that tealeaves uses.}
 }
 \description{
-Constructor function for constants class. This function ensures that physical constant inputs are properly formatted.
+This function ensures that physical constant inputs are properly formatted.
+}
+\details{
+Constructor for the S3 class \code{"constants"}.
 }

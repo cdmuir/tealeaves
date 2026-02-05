@@ -1,5 +1,12 @@
 # tealeaves (development version)
 
+* Fixed broken link to travis-ci badge in README
+* Replaced deprecated `dplyr::progress_estimated()` with `progressr::progressor()`
+* Removed `@docType` in `R/tealeaves.R`
+* Removed `@inheritParams` tags where all parameters already documented
+* Fixed `constants()`, `enviro_par()`, and `leaf_par()` classes
+* Fixed URLs
+
 # tealeaves 1.0.6
 
 * Fixed name in inst/CITATION

@@ -1,6 +1,5 @@
 #' Make lists of parameters of leaf, environmental, or constant parameters
 #'
-#' @inheritParams tleaf
 #' @param replace A named list of parameters to replace defaults. If \code{NULL}, defaults will be used.
 #'
 #' @name make_parameters

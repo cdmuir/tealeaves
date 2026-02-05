@@ -325,8 +325,6 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' @param pars Concatenated parameters (\code{leaf_par}, \code{enviro_par}, and \code{constants})
 #' 
 #' @param unitless Logical. Should function use parameters with \code{units}? The function is faster when FALSE, but input must be in correct units or else results will be incorrect without any warning.
-#'
-#' @inheritParams tleaves
 #' 
 #' @return Value in W / m\eqn{^2} of class \code{units}
 #' 
@@ -738,11 +736,11 @@ energy_balance <- function(tleaf, leaf_par, enviro_par, constants,
 #' 
 #' @details 
 #' 
-#' Goff-Gratch equation (see http://cires1.colorado.edu/~voemel/vp.html) \cr
+#' Goff-Gratch equation (see https://cires1.colorado.edu/~voemel/vp.html) \cr
 #' \cr
 #' This equation assumes P = 1 atm = 101.3246 kPa, otherwise boiling temperature needs to change \cr
 #' 
-#' @references \url{http://cires1.colorado.edu/~voemel/vp.html}
+#' @references \url{https://cires1.colorado.edu/~voemel/vp.html}
 #' 
 #' @examples 
 #' 
@@ -1307,20 +1305,38 @@ find_tleaves <- function(par_sets, constants, progress, quiet, parallel) {
       message(appendLF = FALSE)
   }
   
-  if (parallel) future::plan("multisession")
-
-  if (progress & !parallel) pb <- dplyr::progress_estimated(length(par_sets))
-  
-  soln <- suppressWarnings(
-    par_sets %>%
-      furrr::future_map_dfr(~{
+  if (parallel) {
+    soln <- suppressWarnings(par_sets |>
+                               furrr::future_map_dfr(
+                                 ~ tleaf(.x, .x, constants, quiet = TRUE, set_units = FALSE),
+                                 .progress = progress
+                               ))
+    
+  } else {
+    if (progress) {
+      progressr::with_progress({
+        p <- progressr::progressor(steps = length(par_sets))
         
-        ret <- tleaf(.x, .x, constants, quiet = TRUE, set_units = FALSE)
-        if (progress & !parallel) pb$tick()$print()
-        ret
+        soln <- suppressWarnings(par_sets |>
+                                   purrr::map_dfr(~ {
+                                     ret <- tleaf(.x,
+                                                  .x,
+                                                  constants,
+                                                  quiet = TRUE,
+                                                  set_units = FALSE)
+                                     p()
+                                     ret
+                                   }))
         
-      }, .progress = progress)
-  )
+        soln
+      })
+    } else {
+      soln <- suppressWarnings(par_sets |>
+                                 purrr::map_dfr(~ tleaf(
+                                   .x, .x, constants, quiet = TRUE, set_units = FALSE
+                                 )))
+    }
+  }
   
   soln
   

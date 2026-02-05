@@ -1,12 +1,14 @@
-#' S3 class enviro_par
-#' @exportClass enviro_par
-#
-
-#' @param .x A list to be constructed into \strong{enviro_par}. If units are not provided, they will be set without conversion. If units are provided, they will be checked and converted to units that tealeaves uses.
+#' Environmental parameters
+#'
+#' Constructor for the S3 class \code{"enviro_par"}.
+#'
+#' @param .x A list to be constructed into \strong{enviro_par}. If units are not provided, 
+#'   they will be set without conversion. If units are provided, they will be checked and 
+#'   converted to units that tealeaves uses.
 #' 
 #' @description 
 #' 
-#' Constructor function for enviro_par class. This function ensures that environmental parameter inputs are properly formatted.
+#' This function ensures that environmental parameter inputs are properly formatted.
 #' 
 #' @export
 

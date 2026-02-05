@@ -20,7 +20,7 @@ Value in kPa of class \code{units}
 Saturation water vapour pressure (kPa)
 }
 \details{
-Goff-Gratch equation (see http://cires1.colorado.edu/~voemel/vp.html) \cr
+Goff-Gratch equation (see https://cires1.colorado.edu/~voemel/vp.html) \cr
 \cr
 This equation assumes P = 1 atm = 101.3246 kPa, otherwise boiling temperature needs to change \cr
 }
@@ -32,5 +32,5 @@ tealeaves:::.get_ps(T_leaf, P, FALSE)
 
 }
 \references{
-\url{http://cires1.colorado.edu/~voemel/vp.html}
+\url{https://cires1.colorado.edu/~voemel/vp.html}
 }
